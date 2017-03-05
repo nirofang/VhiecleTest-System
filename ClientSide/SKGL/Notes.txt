@@ -1,0 +1,5 @@
+﻿add base10 to base26 and backwards convertion, add it to skgl
+increase length of ID
+make sck optional
+
+add a sumary to addSplitChar.....

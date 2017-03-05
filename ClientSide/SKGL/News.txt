@@ -1,0 +1,3 @@
+﻿RELEASE NOTES
+
+ * Added machine code feature at http://skgl.codeplex.com/discussions/355155
