@@ -11,6 +11,7 @@ namespace VhiecleWeb
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
@@ -18,6 +19,11 @@ namespace VhiecleWeb
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+                name:"FontPage",
+                url:"{b}/{a}/{id}",
+                defaults:new {a="",b="I",id=UrlParameter.Optional }
+                );
         }
     }
 }
