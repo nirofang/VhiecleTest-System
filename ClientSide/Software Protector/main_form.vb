@@ -172,15 +172,15 @@ singleKeyMode:
         My.Computer.Clipboard.SetText(TextBox2.Text)
     End Sub
 
-    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
-        Try
-            Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3R59VSU8LKETW")
-        Catch ex As Exception
+    'Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+    '    Try
+    '        Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3R59VSU8LKETW")
+    '    Catch ex As Exception
 
-        End Try
-    End Sub
+    '    End Try
+    'End Sub
 
-    Private Sub LinkLabel1_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
+    Private Sub LinkLabel1_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs)
         Try
             Process.Start("http://softwareprotector.codeplex.com")
         Catch ex As Exception
@@ -207,5 +207,11 @@ singleKeyMode:
     Private Sub Button6_Click(sender As System.Object, e As System.EventArgs) Handles Button6.Click
         TextBox3.Text = ""
         TextBox3.Focus()
+    End Sub
+
+    Private Sub CheckBox10_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox10.CheckedChanged
+        If (CheckBox10.Checked = True) Then
+
+        End If
     End Sub
 End Class
