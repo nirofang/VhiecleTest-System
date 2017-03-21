@@ -58,10 +58,6 @@
       <Project>{E660B2E4-EEE3-470C-8B92-B30AD6B547B6}</Project>
       <Name>SKGL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Software Protector\Software Protector.vbproj">
-      <Project>{16BA9EE3-2E71-4D43-954B-6DFFE8471F65}</Project>
-      <Name>Software Protector</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
