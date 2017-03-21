@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("Software Protector")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Artem Los")> 
-<Assembly: AssemblyProduct("Software Protector")> 
-<Assembly: AssemblyCopyright("Copyright ©  2012-2013 Artem Los, www.artemlos.net")> 
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyProduct("Software Protector")>
+<Assembly: AssemblyCopyright("")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
