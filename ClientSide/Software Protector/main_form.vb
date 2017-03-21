@@ -125,7 +125,12 @@ singleKeyMode:
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         Dim validator As New validateCheck
         validateKey.Key = TextBox2.Text
-        validateKey.secretPhase = TextBox1.Text
+
+        If TextBox1.Text = "" Then
+            validateKey.secretPhase = Nothing
+        Else
+            validateKey.secretPhase = TextBox1.Text
+        End If
 
         If validateKey.IsValid Then
 

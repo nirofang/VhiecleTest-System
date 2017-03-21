@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("SKGL")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Artem Los")> 
-<Assembly: AssemblyProduct("SKGL")> 
-<Assembly: AssemblyCopyright("Copyright ©  2011-2012  Artem Los, www.artemlos.net")> 
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyProduct("SKGL")>
+<Assembly: AssemblyCopyright("")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 

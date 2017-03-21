@@ -161,7 +161,9 @@ Public Class Generate
             Return _secretPhase
         End Get
         Set(ByVal value As String)
-            If value <> _secretPhase Then
+            If value = Nothing Or value = "" Then
+                _secretPhase = Nothing
+            ElseIf value <> _secretPhase Then
                 _secretPhase = m.twentyfiveByteHash(value)
             End If
         End Set
@@ -280,7 +282,9 @@ Public Class Validate
             Return _secretPhase
         End Get
         Set(ByVal value As String)
-            If value <> _secretPhase Then
+            If value = Nothing Then
+                _secretPhase = ""
+            ElseIf value <> _secretPhase Then
                 _secretPhase = _a.twentyfiveByteHash(value)
             End If
         End Set
@@ -559,7 +563,7 @@ Friend Class methods
     End Function
     Protected Friend Function _encText(ByVal _inputPhase As String, ByVal _secretPhase As String) As String
         'in this class we are encrypting the integer array.
-        Dim _res As String = vbEmpty
+        Dim _res As String = ""
 
         For i As Integer = 0 To _inputPhase.Length - 1
             _res &= modulo(_inputPhase.Substring(i, 1) + +_secretPhase.Substring(modulo(i, _secretPhase.Length), 1), 10)
@@ -569,7 +573,7 @@ Friend Class methods
     End Function
     Protected Friend Function _decText(ByVal _encryptedPhase As String, ByVal _secretPhase As String) As String
         'in this class we are decrypting the text encrypted with the function above.
-        Dim _res As String = vbEmpty
+        Dim _res As String = ""
 
         For i As Integer = 0 To _encryptedPhase.Length - 1
             _res &= modulo(_encryptedPhase.Substring(i, 1) - _secretPhase.Substring(modulo(i, _secretPhase.Length), 1), 10)
@@ -599,7 +603,7 @@ Friend Class methods
 
         If s.Length <= 5 Then
             'if the input string is shorter than 5, no need of blocks! 
-            preHash(0) = getEightByteHash(s).ToString()
+                preHash(0) = getEightByteHash(s).ToString()
         ElseIf s.Length > 5 Then
             'if the input is more than 5, there is a need of dividing it into blocks.
             For i As Integer = 0 To amountOfBlocks - 2
