@@ -15,7 +15,7 @@ namespace AppLauncher.Util
 {
     internal class LaunchUtil
     {
-        const string fileName = "CVA 1000.exe";
+        const string fileName = "embeded.exe";
 
         internal static void Launch()
         {
