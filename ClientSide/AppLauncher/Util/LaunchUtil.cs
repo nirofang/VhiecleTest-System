@@ -15,13 +15,13 @@ namespace AppLauncher.Util
 {
     internal class LaunchUtil
     {
-        const string fileName = "CVA 1000.exe";
+        const string fileName = "embeded.exe";
 
         internal static void Launch()
         {
-                        
+            string projectName = Assembly.GetExecutingAssembly().GetName().Name;
             using (Stream stream = typeof(LaunchUtil).Assembly.
-                       GetManifestResourceStream("AppLauncher.Data.app.bin"))
+                       GetManifestResourceStream(projectName + ".Data.app.bin"))
             {
                 // Kill the process if its still running.
                 ProcessUtil.EndProcess(fileName);

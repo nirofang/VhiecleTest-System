@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AppLauncher.Util;
 using AppWcfService;
+using CVA1000;
+using Microsoft.Win32;
 
 namespace AppLauncher
 {
@@ -24,7 +26,21 @@ namespace AppLauncher
             }
 
             // 检查 "CDKey" 是已经输入，如没有用要用对话框输入
+            string cdKey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CVA1000", "CDKey");
+
             // MPMVL-YGXOL-QQWMM-PZZFF
+            if (string.IsNullOrEmpty(cdKey))
+            {
+                InputCDKey inputForm = new InputCDKey();
+                inputForm.ShowDialog();
+
+                if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CVA10001", inputForm.CDKey) == false)
+                {
+                    MessageBox.Show("由于系统问题无法注册软件");
+                    return;
+                }
+            }
+
 
             // 检查 "CDKey" 是否合法， 提示剩余时间
             MyWcfService myWcf = new MyWcfService();
@@ -42,5 +58,7 @@ namespace AppLauncher
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new MainForm());
         }
+
+
     }
 }
