@@ -26,7 +26,7 @@ namespace AppLauncher
             }
 
             // 检查 "CDKey" 是已经输入，如没有用要用对话框输入
-            string cdKey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CVA1000", "CDKey");
+            string cdKey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "CDKey");
 
             // MPMVL-YGXOL-QQWMM-PZZFF
             if (string.IsNullOrEmpty(cdKey))
@@ -34,7 +34,7 @@ namespace AppLauncher
                 InputCDKey inputForm = new InputCDKey();
                 inputForm.ShowDialog();
 
-                if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CVA10001", inputForm.CDKey) == false)
+                if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", inputForm.CDKey) == false)
                 {
                     MessageBox.Show("由于系统问题无法注册软件");
                     return;
@@ -44,7 +44,7 @@ namespace AppLauncher
 
             // 检查 "CDKey" 是否合法， 提示剩余时间
             MyWcfService myWcf = new MyWcfService();
-            var keyInfo = myWcf.GetKeyInfo("MPMVL-YGXOL-QQWMM-PZZFF", string.Empty);
+            var keyInfo = myWcf.GetKeyInfo("JQTOI-DLJLW-XQVKL-GJCWO", string.Empty);
 
             ValidInfo mainForm = new ValidInfo();
             mainForm.KeyInfo = keyInfo;
