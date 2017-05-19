@@ -1,4 +1,5 @@
-﻿using AppWcfService;
+﻿using AppLauncher.Util;
+using AppWcfService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +28,7 @@ namespace AppLauncher
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+            LaunchUtil.Launch();
         }
     }
 }

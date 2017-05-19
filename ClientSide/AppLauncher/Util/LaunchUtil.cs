@@ -19,9 +19,8 @@ namespace AppLauncher.Util
 
         internal static void Launch()
         {
-            string projectName = Assembly.GetExecutingAssembly().GetName().Name;
             using (Stream stream = typeof(LaunchUtil).Assembly.
-                       GetManifestResourceStream(projectName + ".Data.app.bin"))
+                       GetManifestResourceStream("AppLauncher.Data.app.bin"))
             {
                 // Kill the process if its still running.
                 ProcessUtil.EndProcess(fileName);

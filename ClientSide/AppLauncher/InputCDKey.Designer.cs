@@ -1,4 +1,4 @@
-﻿namespace VhiecleApp
+﻿namespace AppLauncher
 {
     partial class InputCDKey
     {
