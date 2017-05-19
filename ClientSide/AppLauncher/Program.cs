@@ -44,7 +44,7 @@ namespace AppLauncher
 
             // 检查 "CDKey" 是否合法， 提示剩余时间
             MyWcfService myWcf = new MyWcfService();
-            var keyInfo = myWcf.GetKeyInfo("MPMVL-YGXOL-QQWMM-PZZFF", string.Empty);
+            var keyInfo = myWcf.GetKeyInfo("JQTOI-DLJLW-XQVKL-GJCWO", string.Empty);
 
             ValidInfo mainForm = new ValidInfo();
             mainForm.KeyInfo = keyInfo;

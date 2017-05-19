@@ -49,7 +49,7 @@ namespace AppLauncher.Util
                 ProcessStartInfo startInfo = new ProcessStartInfo();
 
                 // Read registry to get install location info
-                string workDir = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CVA1000", "InstallPath");
+                string workDir = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "InstallPath");
 
                 if (string.IsNullOrEmpty(workDir))
                 {
