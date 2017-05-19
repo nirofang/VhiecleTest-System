@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CVA1000.ServiceReference1 {
+namespace VhiecleApp.ServiceReference1 {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -29,12 +29,12 @@ namespace CVA1000.ServiceReference1 {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IMyWcfServiceChannel : CVA1000.ServiceReference1.IMyWcfService, System.ServiceModel.IClientChannel {
+    public interface IMyWcfServiceChannel : VhiecleApp.ServiceReference1.IMyWcfService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class MyWcfServiceClient : System.ServiceModel.ClientBase<CVA1000.ServiceReference1.IMyWcfService>, CVA1000.ServiceReference1.IMyWcfService {
+    public partial class MyWcfServiceClient : System.ServiceModel.ClientBase<VhiecleApp.ServiceReference1.IMyWcfService>, VhiecleApp.ServiceReference1.IMyWcfService {
         
         public MyWcfServiceClient() {
         }

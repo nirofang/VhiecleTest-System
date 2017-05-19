@@ -1,4 +1,4 @@
-﻿namespace CVA1000
+﻿namespace VhiecleApp
 {
     partial class InputCDKey
     {

@@ -1,4 +1,4 @@
-﻿using CVA1000.Util;
+﻿using VhiecleApp.Util;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CVA1000
+namespace VhiecleApp
 {
     public partial class InputCDKey : Form
     {
