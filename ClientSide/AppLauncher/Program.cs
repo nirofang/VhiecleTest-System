@@ -24,22 +24,13 @@ namespace AppLauncher
                 return;
             }
 
-
             // 检查 "CDKey" 是已经输入
             string cdKey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "CDKey");
 
             MyWcfService myWcf = new MyWcfService();
             KeyInfo keyInfo, validKeyInfo = null;
             bool reEnterCDKey = false;
-            //try
-            //{
-            //    keyInfo = myWcf.GetKeyInfo(cdKey, "hello");
-            //    validKeyInfo = keyInfo;
-            //}
-            //catch
-            //{
-            //    reEnterCDKey = true;
-            //}
+
             // 如果注册表没有CDKEY要用对话框输入
             if (!string.IsNullOrEmpty(cdKey))
             {
@@ -115,6 +106,7 @@ namespace AppLauncher
             // 打开模态对话框，新线程， 显示CDKey状态
             ValidInfo mainForm = new ValidInfo();
             mainForm.KeyInfo = validKeyInfo;
+            mainForm.CDKey = cdKey;
             mainForm.ShowDialog();
 
             // 结束新线程，为了线程安全使用flag

@@ -15,9 +15,11 @@ namespace AppLauncher
     public partial class ValidInfo : Form
     {
         public bool launhFlag = false;
-        public KeyInfo keyInfo;
+
+        public string CDKey { get; internal set; }
 
         public KeyInfo KeyInfo { get; internal set; }
+
         public ValidInfo()
         {
             InitializeComponent();
@@ -25,8 +27,15 @@ namespace AppLauncher
 
         private void ValidInfo_Load(object sender, EventArgs e)
         {
-            label1.Text += KeyInfo.DaysLeft + " " + (KeyInfo.IsExpired ? "过期": "未过期");
-            
+            label1.Text = "CDKey:" + CDKey;
+            if (KeyInfo.Features[0] == true)
+                label1.Text += "\n永久密钥";
+            label1.Text += "\n剩余时间:" + KeyInfo.DaysLeft + " " + (KeyInfo.IsExpired ? "过期": "未过期");
+
+            if (KeyInfo.Features[0] == false &&
+                KeyInfo.IsExpired == true
+                )
+                button1.Enabled = false;
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -33,6 +33,8 @@ namespace AppWcfService
             keyInfo.DaysLeft = validate.DaysLeft;
             keyInfo.CreationDate = validate.CreationDate;
             keyInfo.IsValid = validate.IsValid;
+            keyInfo.Features = validate.Features;
+            keyInfo.Key = validate.Key;
 
             return keyInfo;
         }

@@ -15,16 +15,8 @@ namespace AppLauncher
     public partial class InputCDKey : Form
     {
         public bool enterKeyFlag = false;
-        string cdKey = string.Empty;
 
-
-        internal string CDKey
-        {
-            get
-            {
-                return cdKey;
-            }
-        }
+        public string CDKey { get; internal set; }
 
         public InputCDKey()
         {
@@ -43,7 +35,7 @@ namespace AppLauncher
             //{
             //    MessageBox.Show("CDKey格式不对请重新输入");
             //}
-            cdKey = textBox1.Text;
+            CDKey = textBox1.Text;
             enterKeyFlag = true;
             this.Close();
         }
