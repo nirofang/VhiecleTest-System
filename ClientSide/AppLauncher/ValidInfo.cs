@@ -15,6 +15,7 @@ namespace AppLauncher
     public partial class ValidInfo : Form
     {
         public bool launhFlag = false;
+        public KeyInfo keyInfo;
 
         public KeyInfo KeyInfo { get; internal set; }
         public ValidInfo()
@@ -25,6 +26,7 @@ namespace AppLauncher
         private void ValidInfo_Load(object sender, EventArgs e)
         {
             label1.Text += KeyInfo.DaysLeft + " " + (KeyInfo.IsExpired ? "过期": "未过期");
+            
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -14,6 +14,7 @@ namespace AppLauncher
 {
     public partial class InputCDKey : Form
     {
+        public bool enterKeyFlag = false;
         string cdKey = string.Empty;
 
 
@@ -38,13 +39,15 @@ namespace AppLauncher
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (CDKeyUtil.CheckPass(textBox1.Text)==false)
-            {
-                MessageBox.Show("CDKey格式不对请重新输入");
-            }
+            //if (CDKeyUtil.CheckPass(textBox1.Text)==false)
+            //{
+            //    MessageBox.Show("CDKey格式不对请重新输入");
+            //}
             cdKey = textBox1.Text;
+            enterKeyFlag = true;
             this.Close();
-
         }
+
+
     }
 }
