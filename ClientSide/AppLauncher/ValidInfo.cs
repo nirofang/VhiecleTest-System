@@ -20,6 +20,8 @@ namespace AppLauncher
 
         public KeyInfo KeyInfo { get; internal set; }
 
+        public MyWcfService MyWcf { get; internal set; }
+
         public ValidInfo()
         {
             InitializeComponent();
@@ -30,7 +32,7 @@ namespace AppLauncher
             label1.Text = "CDKey:" + CDKey;
             if (KeyInfo.Features[0] == true)
                 label1.Text += "\n永久密钥";
-            label1.Text += "\n剩余时间:" + KeyInfo.DaysLeft + " " + (KeyInfo.IsExpired ? "过期": "未过期");
+            label1.Text += "\n剩余天数:" + KeyInfo.DaysLeft + " " + (KeyInfo.IsExpired ? "过期": "未过期");
 
             if (KeyInfo.Features[0] == false &&
                 KeyInfo.IsExpired == true
@@ -42,7 +44,45 @@ namespace AppLauncher
         {
             launhFlag = true;
             this.Close();
-            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            InputCDKey inputForm = new InputCDKey();
+            inputForm.ShowDialog();
+            if (inputForm.enterKeyFlag == false)
+            {
+                return;
+            }
+
+            string cdKey = inputForm.CDKey;
+            try
+            {
+                KeyInfo = MyWcf.GetKeyInfo(cdKey, "hello");
+
+                if (KeyInfo.IsValid == true)
+                {
+                    // CDKey 合法，写注册表
+                    if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", cdKey) == false)
+                    {
+                        MessageBox.Show("由于系统问题无法注册软件");
+                        return;
+                    }
+                    CDKey = cdKey;
+
+                    ValidInfo_Load(this, e);
+                }
+                else
+                {
+                    MessageBox.Show("CDKey内容非法");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("CDKey格式非法");
+            }
+
+            return;
         }
     }
 }

@@ -106,6 +106,7 @@ namespace AppLauncher
             // 打开模态对话框，新线程， 显示CDKey状态
             ValidInfo mainForm = new ValidInfo();
             mainForm.KeyInfo = validKeyInfo;
+            mainForm.MyWcf = myWcf;
             mainForm.CDKey = cdKey;
             mainForm.ShowDialog();
 
