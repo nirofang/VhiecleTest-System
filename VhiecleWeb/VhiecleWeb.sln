@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VhiecleWeb", "VhiecleWeb\VhiecleWeb.csproj", "{2814F272-A9FA-4FEC-B1F4-6E09F2AEB173}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CC536895-A044-4192-BF29-8C93F9F25639} = {CC536895-A044-4192-BF29-8C93F9F25639}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{145CF475-6579-4F5F-821D-F3F00C8BA38C}"
 	ProjectSection(SolutionItems) = preProject

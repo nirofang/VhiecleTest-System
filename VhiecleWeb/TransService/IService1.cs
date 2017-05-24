@@ -14,12 +14,18 @@ namespace TransService
     {
 
         [OperationContract]
-        string GetData(int value);
+        string GetNameByID(int value);
+
+        [OperationContract]
+        MyEntity[] GetTransByID(int value);
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         // TODO: Add your service operations here
+
+        [OperationContract]
+        string WriteNameWithID(int id, string name);
     }
 
 

@@ -1,0 +1,36 @@
+﻿
+@model IEnumerable<VhiecleWeb.ServiceReference1.MyEntity>
+
+@{
+    ViewBag.Title = "Data Trans Sample";
+}
+
+
+<h2>Data Trans Sample</h2>
+
+<div>
+    <h4>Data</h4>
+    <hr />
+    <table style="width:100%">
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Name
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+            </tr>
+
+        }
+    </table>
+</div>
