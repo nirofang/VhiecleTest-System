@@ -39,6 +39,13 @@ namespace AppWcfService
             return keyInfo;
         }
 
+        public string GetMachineCode()
+        {
+            SKGL.SerialKeyConfiguration skc = new SKGL.SerialKeyConfiguration();
+            SKGL.Generate generate = new SKGL.Generate(skc);
+            return generate.MachineCode.ToString();
+        }
+
         public string GetData(int value)
         {
             return string.Format("You entered: {0}", value);
