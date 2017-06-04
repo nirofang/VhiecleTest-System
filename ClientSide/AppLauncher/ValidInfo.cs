@@ -46,7 +46,9 @@ namespace AppLauncher
             this.Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             InputCDKey inputForm = new InputCDKey();
             inputForm.ShowDialog();

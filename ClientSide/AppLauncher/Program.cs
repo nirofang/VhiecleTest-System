@@ -20,6 +20,9 @@ namespace AppLauncher
             // 检查 "appController" 服务状态
             if (ServiceUtil.checkServiceIsValid("appController") == false)
             {
+                // TODO 尝试三次启动服务 如还不行
+                // TODO 放到LOGO页面
+
                 MessageBox.Show("软件故障请重新安装");
                 return;
             }
