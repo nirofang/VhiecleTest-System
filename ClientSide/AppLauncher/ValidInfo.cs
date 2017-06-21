@@ -86,5 +86,13 @@ namespace AppLauncher
 
             return;
         }
+
+        private void ValidInfo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Escape)
+            {
+                this.Close();
+            }
+        }
     }
 }

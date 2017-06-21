@@ -40,7 +40,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(650, 370);
+            this.button1.Location = new System.Drawing.Point(651, 370);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(101, 23);
             this.button1.TabIndex = 0;
@@ -68,7 +68,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(550, 370);
+            this.checkBox1.Location = new System.Drawing.Point(540, 370);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(102, 16);
             this.checkBox1.TabIndex = 4;
@@ -89,7 +89,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pictureBox1.Image = global::AppLauncher.Properties.Resources.logo;
+            this.pictureBox1.Image = global::AppLauncher.Properties.Resources.zhukai_corp_logo;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(784, 351);
@@ -115,6 +115,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "注册信息";
             this.Load += new System.EventHandler(this.ValidInfo_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ValidInfo_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
