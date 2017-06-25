@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +15,10 @@ namespace AppLauncher
 {
     public partial class ValidInfo : Form
     {
+        //private System.Timers.Timer timer = new System.Timers.Timer();
+
+        int countDownLeftNum = 5;
+
         public bool launhFlag = false;
 
         public string CDKey { get; internal set; }
@@ -34,11 +39,17 @@ namespace AppLauncher
                 label1.Text += "\n永久密钥";
             label1.Text += "\n剩余天数:" + KeyInfo.DaysLeft + " " + (KeyInfo.IsExpired ? "过期": "未过期");
 
-            if (KeyInfo.Features[0] == false &&
-                KeyInfo.IsExpired == true
-                )
-                button1.Enabled = false;
+            checkBox1.Checked = true;
+            button1.Enabled = false;
+            linkLabel1.Enabled = false;
+
+            countDownLeft.Text = string.Empty;
+
+            timer1.Start();
         }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool EndDialog(IntPtr hDlg, out IntPtr nResult);
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -92,6 +103,39 @@ namespace AppLauncher
             if (e.KeyChar == (char)Keys.Escape)
             {
                 this.Close();
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            
+            if (checkBox1.Checked == false)
+            {
+                if (KeyInfo.Features[0] == false &&
+                    KeyInfo.IsExpired == true)
+                    button1.Enabled = false;
+                else
+                    button1.Enabled = true;
+
+                this.timer1.Enabled = false;
+            }
+            else
+            {
+                button1.Enabled = false;
+                this.timer1.Enabled = true;
+            }
+        }
+
+        delegate void CallBackHandle1();
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            countDownLeft.Text = "自动启动剩余:" + (countDownLeftNum--).ToString() + "秒";
+            if (countDownLeftNum < 0)
+            {
+                timer1.Enabled = false;
+                this.Close();
+                launhFlag = true;
+
             }
         }
     }

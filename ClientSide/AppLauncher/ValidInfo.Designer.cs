@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.countDownLeft = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,6 +77,7 @@
             this.checkBox1.TabIndex = 4;
             this.checkBox1.Text = "5秒后自动登录";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // linkLabel1
             // 
@@ -97,6 +101,21 @@
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
+            // countDownLeft
+            // 
+            this.countDownLeft.AutoSize = true;
+            this.countDownLeft.Location = new System.Drawing.Point(273, 369);
+            this.countDownLeft.Name = "countDownLeft";
+            this.countDownLeft.Size = new System.Drawing.Size(83, 12);
+            this.countDownLeft.TabIndex = 7;
+            this.countDownLeft.Text = "countDownLeft";
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // ValidInfo
             // 
             this.AcceptButton = this.button1;
@@ -104,6 +123,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button1;
             this.ClientSize = new System.Drawing.Size(784, 461);
+            this.Controls.Add(this.countDownLeft);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.checkBox1);
@@ -130,6 +150,8 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label countDownLeft;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

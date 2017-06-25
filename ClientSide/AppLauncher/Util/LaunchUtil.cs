@@ -66,7 +66,14 @@ namespace AppLauncher.Util
                 exep.Start();
                 exep.WaitForExit();
 
-                File.Delete(exePath);
+                try
+                {
+                    File.Delete(exePath);
+                }
+                catch
+                {
+                    
+                }
             }
             return;
         }
