@@ -35,6 +35,7 @@ namespace AppWcfService
             keyInfo.IsValid = validate.IsValid;
             keyInfo.Features = validate.Features;
             keyInfo.Key = validate.Key;
+            keyInfo.MachineCode = validate.MachineCode;
 
             return keyInfo;
         }

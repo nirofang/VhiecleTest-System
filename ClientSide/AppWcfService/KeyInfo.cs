@@ -11,5 +11,6 @@ namespace AppWcfService
         public bool IsValid { get; internal set; }
         public string Key { get; internal set; }
         public int SetTime { get; internal set; }
+        public int MachineCode { get; internal set; }
     }
 }

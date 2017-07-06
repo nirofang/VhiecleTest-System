@@ -43,9 +43,9 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Location = new System.Drawing.Point(651, 401);
+            this.button1.Location = new System.Drawing.Point(651, 370);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(101, 25);
+            this.button1.Size = new System.Drawing.Size(101, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "进入";
             this.button1.UseVisualStyleBackColor = true;
@@ -54,37 +54,37 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(50, 455);
+            this.label1.Location = new System.Drawing.Point(50, 420);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 13);
+            this.label1.Size = new System.Drawing.Size(71, 12);
             this.label1.TabIndex = 1;
             this.label1.Text = "剩余时间： ";
             // 
             // panel1
             // 
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 432);
+            this.panel1.Location = new System.Drawing.Point(0, 410);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(784, 67);
+            this.panel1.Size = new System.Drawing.Size(784, 70);
             this.panel1.TabIndex = 3;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(540, 401);
+            this.checkBox1.Location = new System.Drawing.Point(540, 370);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(104, 17);
+            this.checkBox1.Size = new System.Drawing.Size(102, 16);
             this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "5秒后自动登录";
+            this.checkBox1.Text = "n秒后自动登录";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(430, 401);
+            this.linkLabel1.Location = new System.Drawing.Point(430, 370);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(88, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(83, 12);
             this.linkLabel1.TabIndex = 5;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "重新输入CDKey";
@@ -96,7 +96,7 @@
             this.pictureBox1.Image = global::AppLauncher.Properties.Resources.zhukai_corp_logo;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(784, 380);
+            this.pictureBox1.Size = new System.Drawing.Size(784, 351);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
@@ -104,7 +104,7 @@
             // countDownLeft
             // 
             this.countDownLeft.AutoSize = true;
-            this.countDownLeft.Location = new System.Drawing.Point(273, 369);
+            this.countDownLeft.Location = new System.Drawing.Point(224, 370);
             this.countDownLeft.Name = "countDownLeft";
             this.countDownLeft.Size = new System.Drawing.Size(83, 12);
             this.countDownLeft.TabIndex = 7;
@@ -112,17 +112,17 @@
             // 
             // timer1
             // 
-            this.timer1.Enabled = true;
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // ValidInfo
             // 
             this.AcceptButton = this.button1;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button1;
-            this.ClientSize = new System.Drawing.Size(784, 461);
+            this.ClientSize = new System.Drawing.Size(784, 480);
+            this.ControlBox = false;
             this.Controls.Add(this.countDownLeft);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.linkLabel1);
@@ -130,10 +130,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ValidInfo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "注册信息";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ValidInfo_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ValidInfo_FormClosed);
             this.Load += new System.EventHandler(this.ValidInfo_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ValidInfo_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

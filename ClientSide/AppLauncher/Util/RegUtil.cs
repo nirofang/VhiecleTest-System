@@ -54,7 +54,7 @@ namespace AppLauncher.Util
         }
 
 
-        public static bool CreateKeyValue(string keyPath, string keyValue)
+        public static bool CreateKeyValue(string keyPath, string subKeyName, string keyValue)
         {
             RegistryKey subKey;
             try
@@ -92,7 +92,7 @@ namespace AppLauncher.Util
             }
             try
             {
-                subKey.SetValue("CDKey", keyValue);
+                subKey.SetValue(subKeyName, keyValue);
             }
             catch
             {

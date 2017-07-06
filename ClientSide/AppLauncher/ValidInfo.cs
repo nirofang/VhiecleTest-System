@@ -6,116 +6,107 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace AppLauncher
 {
     public partial class ValidInfo : Form
     {
-        //private System.Timers.Timer timer = new System.Timers.Timer();
+        const int COUNT_DOWN_NUM = 10;
 
-        int countDownLeftNum = 5;
+        int countDownLeftNum = COUNT_DOWN_NUM;
 
         public bool launhFlag = false;
 
-        private string CDKey;
+        private string cdKey = string.Empty;
 
-        private KeyInfo KeyInfo;
+        private KeyInfo validKeyInfo = null;
 
-        private MyWcfService MyWcf = new MyWcfService();
+        private MyWcfService myWcf = new MyWcfService();
 
         public ValidInfo()
         {
             InitializeComponent();
         }
 
-        private void ValidInfo_Load(object sender, EventArgs e)
-        {
-            CheckKeyStatus();
-            LoadKeyInfoOnPanel();
-        }
-
-        internal void LoadKeyInfoOnPanel()
-        {
-            label1.Text = "CDKey:" + CDKey;
-
-            if (KeyInfo == null)
-            {
-                button1.Enabled = false;
-                return;
-            }
-
-            if (KeyInfo.Features[0] == true)
-                label1.Text += "\n永久密钥";
-            label1.Text += "\n剩余天数:" + KeyInfo.DaysLeft + " " + (KeyInfo.IsExpired ? "过期" : "未过期");
-
-            checkBox1.Checked = true;
-            button1.Enabled = false;
-            linkLabel1.Enabled = false;
-
-            countDownLeft.Text = string.Empty;
-
-            timer1.Start();
-        }
-
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool EndDialog(IntPtr hDlg, out IntPtr nResult);
 
+        private void ValidInfo_Load(object sender, EventArgs e)
+        {
+            button1.Enabled = false;
+            checkBox1.Enabled = false;
+            countDownLeft.Text = string.Empty;
+            checkBox1.Text = checkBox1.Text.Replace("n", COUNT_DOWN_NUM.ToString());
+
+            CheckSoftStatus(sender);
+            
+        }
+
+        private void LoadValidKeyOnPanel()
+        {
+            label1.Text = "CDKey:" + cdKey;
+            
+
+            if (validKeyInfo.Features[0] == true)
+                label1.Text += "\n永久密钥";
+            label1.Text += "\n剩余天数:" + validKeyInfo.DaysLeft + " " + (validKeyInfo.IsExpired ? "过期" : "未过期");
+           
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            launhFlag = true;
+            QuitPanelByCode(sender);
+        }
+
+        private void QuitPanelByCode(object sender)
+        {
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-
-
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            InputCDKey inputForm = new InputCDKey();
-            inputForm.ShowDialog();
-            if (inputForm.enterKeyFlag == false)
-            {
-                return;
-            }
 
-            string cdKey = inputForm.CDKey;
-            try
-            {
-                KeyInfo = MyWcf.GetKeyInfo(cdKey, "hello");
-
-                if (KeyInfo.IsValid == true)
-                {
-                    // CDKey 合法，写注册表
-                    if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", cdKey) == false)
-                    {
-                        MessageBox.Show("由于系统问题无法注册软件");
-                        return;
-                    }
-                    CDKey = cdKey;
-
-                    ValidInfo_Load(this, e);
-                }
-                else
-                {
-                    MessageBox.Show("CDKey内容非法");
-                }
-            }
-            catch
-            {
-                MessageBox.Show("CDKey格式非法");
-            }
+            EnterNewCDKey(ref cdKey, myWcf, ref validKeyInfo, true);
 
             return;
+        }
+
+        private void JudgeCDKeyStillWorks()
+        {
+
+            // 密钥非永久且未过期或密钥永久 都会启动程序
+            if ((validKeyInfo.Features[0] == false && validKeyInfo.IsExpired == false)
+                || validKeyInfo.Features[0] == true)
+
+            {
+                timer1.Start();
+                launhFlag = true;
+
+
+                checkBox1.Enabled = true;
+                checkBox1.Checked = true;
+
+                linkLabel1.Enabled = false;
+
+            }
+            else
+            {
+                checkBox1.Enabled = false;
+                
+                linkLabel1.Enabled = true;
+            }
         }
 
         private void ValidInfo_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Escape)
             {
-                this.Close();
+                QuitPanelByCode(sender);
             }
         }
 
@@ -124,59 +115,107 @@ namespace AppLauncher
             
             if (checkBox1.Checked == false)
             {
-                if (KeyInfo.Features[0] == false &&
-                    KeyInfo.IsExpired == true)
+                if (validKeyInfo.Features[0] == false &&
+                    validKeyInfo.IsExpired == true)
                     button1.Enabled = false;
                 else
                     button1.Enabled = true;
 
-                this.timer1.Enabled = false;
+                this.timer1.Stop();
+                countDownLeft.Text = string.Empty;
             }
             else
             {
                 button1.Enabled = false;
-                this.timer1.Enabled = true;
+                countDownLeftNum = COUNT_DOWN_NUM;
+                this.timer1.Start();
+                //this.timer1.Enabled = true;
+
             }
         }
 
-        delegate void CallBackHandle1();
         private void timer1_Tick(object sender, EventArgs e)
         {
             countDownLeft.Text = "自动启动剩余:" + (countDownLeftNum--).ToString() + "秒";
             if (countDownLeftNum < 0)
             {
                 timer1.Enabled = false;
-                this.Close();
-                launhFlag = true;
-
+                //this.Close();
+                QuitPanelByCode(sender);
             }
         }
 
-        private void CheckKeyStatus()
+        /// <summary>
+        ///检查windows服务
+        ///检查注册表CDKey
+        ///检查注册表FacName
+        /// </summary>
+        private void CheckSoftStatus(object sender)
         {
             // 检查 "appController" 服务状态
             if (ServiceUtil.checkServiceIsValid("appController") == false)
             {
-                // TODO 尝试三次启动服务 如还不行
-                // TODO 放到LOGO页面
 
                 MessageBox.Show("软件故障请重新安装");
+                QuitPanelByCode(sender);
                 return;
             }
 
-            // 检查 Factory Name 是否已经输入
-            string facName = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "FacName");
-
 
             // 检查 "CDKey" 是否已经输入
-            string cdKey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "CDKey");
+            cdKey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "CDKey");
 
-            MyWcfService myWcf = new MyWcfService();
-            KeyInfo keyInfo, validKeyInfo = null;
+            EnterNewCDKey(ref cdKey, myWcf, ref validKeyInfo);
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cdKey"></param>
+        /// <param name="myWcf"></param>
+        /// <param name="validKeyInfo"></param>
+        /// <param name="reEnterCDKey"></param>
+        private void EnterNewCDKey(ref string cdKey, MyWcfService myWcf, ref KeyInfo validKeyInfo, bool reEnterCDKey =false)
+        {
+            // KXXNR-OCMGT-SOFQO-WBJRY
+            // ICFXR - YDZOG - LDPLB - NMODN
+            // MachineCode
+            // ProcessorId
+            // "178BFBFF00600F12"
+            // Win32_BIOS
+            // "To be filled by O.E.M."
+            // Win32_BaseBoard
+            // "MB-1234567890"
+            // join 3 part togeter and cal 8byte hash
+            // result like 83628
+
+            string machineCode = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "MachineCode");
+
+            if (string.IsNullOrEmpty(machineCode))
+            {
+                try
+                {
+                    machineCode = myWcf.GetMachineCode();
+                }
+                catch
+                {
+                    MessageBox.Show("计算机器码错误");
+                    this.Close();
+                    return;
+                }
+            }
 
 
-            // CDKey 不存在 或者 存在不合法，重新输入
-            if (string.IsNullOrEmpty(cdKey))
+            // Machine Code 合法，写注册表
+            if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", "MachineCode", machineCode) == false)
+            {
+                MessageBox.Show("机器码写入注册表失败");
+                return;
+            }
+
+            // CDKey 不存在 或者 需要重新输入（因为过期），重新输入
+            if (string.IsNullOrEmpty(cdKey) || reEnterCDKey)
             {
 
                 InputCDKey inputForm = new InputCDKey();
@@ -198,11 +237,12 @@ namespace AppLauncher
 
             try
             {
-                keyInfo = myWcf.GetKeyInfo(cdKey, "hello");
+                validKeyInfo = myWcf.GetKeyInfo(cdKey, "hello");
 
-                if (keyInfo.IsValid == true)
+                if (validKeyInfo.IsValid == true)
                 {
-                    validKeyInfo = keyInfo;
+                    JudgeCDKeyStillWorks();
+                    LoadValidKeyOnPanel();
                 }
                 else
                 {
@@ -216,21 +256,31 @@ namespace AppLauncher
 
             if (validKeyInfo == null)
             {
+                button1.Enabled = false;
+                timer1.Enabled = false;
+
                 return;
             }
 
             // CDKey 合法，写注册表
-            if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", cdKey) == false)
+            if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", "CDKey", cdKey) == false)
             {
                 MessageBox.Show("由于系统问题无法注册软件");
                 return;
             }
+        }
 
-            KeyInfo = validKeyInfo;
-            MyWcf = myWcf;
-            CDKey = cdKey;
+        private void ValidInfo_FormClosed(object sender, FormClosedEventArgs e)
+        {
 
         }
 
+        private void ValidInfo_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //if (this.DialogResult == DialogResult.OK)
+            //    return;
+            if (this.DialogResult == DialogResult.Cancel)
+                launhFlag = false;
+        }
     }
 }

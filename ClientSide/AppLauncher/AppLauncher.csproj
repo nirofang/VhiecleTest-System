@@ -59,6 +59,12 @@
     <Compile Include="InputCDKey.Designer.cs">
       <DependentUpon>InputCDKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="InputFacName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputFacName.Designer.cs">
+      <DependentUpon>InputFacName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util\CDKeyUtil.cs" />
     <Compile Include="Util\ProcessUtil.cs" />
     <Compile Include="Util\RegUtil.cs" />
@@ -79,6 +85,9 @@
     <Compile Include="Util\ServiceUtil.cs" />
     <EmbeddedResource Include="InputCDKey.resx">
       <DependentUpon>InputCDKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputFacName.resx">
+      <DependentUpon>InputFacName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ValidInfo.resx">
       <DependentUpon>ValidInfo.cs</DependentUpon>

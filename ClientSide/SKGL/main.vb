@@ -80,7 +80,15 @@ Public MustInherit Class BaseConfiguration
         ' here we will put the informa
         For Each share As ManagementObject In searcher.[Get]()
             ' first of all, the processorid
-            collectedInfo += share.GetPropertyValue("ProcessorId").ToString()
+
+            Dim pVal As Object
+            pVal = share.GetPropertyValue("ProcessorId")
+            If pVal = vbNull Or pVal = Nothing Then
+                'Give a demo value for testing
+                collectedInfo += "178BFBFF00600F12"
+            Else
+                collectedInfo += pVal.ToString()
+            End If
         Next
 
         searcher.Query = New ObjectQuery("select * from Win32_BIOS")
