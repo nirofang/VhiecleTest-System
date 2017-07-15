@@ -132,7 +132,16 @@ singleKeyMode:
             validateKey.secretPhase = TextBox1.Text
         End If
 
-        If validateKey.IsValid Then
+
+        If （validateKey.IsValid And TextBox3.Text = "") Or
+            (validateKey.IsValid And TextBox3.Text <> "" And
+            validateKey.IsOnRightMachine) Then
+
+            If TextBox3.Text = "" Then
+                validator.Label9.Text = validator.Label9.Text + ": N/A"
+            Else
+                validator.Label9.Text = validator.Label9.Text + ": CORRECT"
+            End If
 
 
             validator.TextBox2.Text = TextBox2.Text
@@ -166,6 +175,16 @@ singleKeyMode:
         Else
             validator.Label2.ForeColor = Color.Red
             validator.Label2.Text = "Error"
+
+
+            ' Means the machine code is incorrect
+            If validateKey.IsValid Then
+                validator.Label9.Text = validator.Label9.Text + ": INCORRECT"
+                validator.Label9.ForeColor = Color.Red
+            Else
+                validator.Label9.Text = validator.Label9.Text + ": N/A"
+            End If
+
             validator.TextBox2.Text = TextBox2.Text
 
             validator.Show()

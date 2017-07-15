@@ -17,6 +17,7 @@ namespace AppLauncher
         public bool enterKeyFlag = false;
 
         public string CDKey { get; internal set; }
+        public string MachineCode { get; internal set; }
 
         public InputCDKey()
         {
@@ -25,6 +26,7 @@ namespace AppLauncher
 
         private void InputCDKey_Load(object sender, EventArgs e)
         {
+            label1.Text += MachineCode;
             textBox1.Text = "xxxxx-xxxxx-xxxxx-xxxxx";
             textBox1.SelectAll();
         }

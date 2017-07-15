@@ -83,7 +83,8 @@ Public MustInherit Class BaseConfiguration
 
             Dim pVal As Object
             pVal = share.GetPropertyValue("ProcessorId")
-            If pVal = vbNull Or pVal = Nothing Then
+            'If pVal = vbNull Or pVal = Nothing Then
+            If pVal = Nothing Then
                 'Give a demo value for testing
                 collectedInfo += "178BFBFF00600F12"
             Else

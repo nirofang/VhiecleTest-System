@@ -52,6 +52,7 @@ Partial Class validateCheck
         Me.Label8 = New System.Windows.Forms.Label()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Label18 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -99,7 +100,7 @@ Partial Class validateCheck
         Me.Label1.Font = New System.Drawing.Font("Verdana", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(15, 58)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(37, 14)
+        Me.Label1.Size = New System.Drawing.Size(43, 14)
         Me.Label1.TabIndex = 3
         Me.Label1.Text = "密钥："
         '
@@ -236,7 +237,7 @@ Partial Class validateCheck
         Me.Label4.Font = New System.Drawing.Font("Verdana", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(15, 108)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(85, 14)
+        Me.Label4.Size = New System.Drawing.Size(91, 14)
         Me.Label4.TabIndex = 10
         Me.Label4.Text = "许可截止日期："
         '
@@ -246,7 +247,7 @@ Partial Class validateCheck
         Me.Label5.Font = New System.Drawing.Font("Verdana", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(15, 83)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(85, 14)
+        Me.Label5.Size = New System.Drawing.Size(91, 14)
         Me.Label5.TabIndex = 8
         Me.Label5.Text = "许可生成日期："
         '
@@ -286,7 +287,7 @@ Partial Class validateCheck
         Me.Label3.Font = New System.Drawing.Font("Verdana", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(15, 133)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(61, 14)
+        Me.Label3.Size = New System.Drawing.Size(67, 14)
         Me.Label3.TabIndex = 11
         Me.Label3.Text = "设置时间："
         '
@@ -306,7 +307,7 @@ Partial Class validateCheck
         Me.Label6.Font = New System.Drawing.Font("Verdana", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(15, 158)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(61, 14)
+        Me.Label6.Size = New System.Drawing.Size(67, 14)
         Me.Label6.TabIndex = 15
         Me.Label6.Text = "剩余天数："
         '
@@ -339,7 +340,7 @@ Partial Class validateCheck
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(235, 14)
         Me.Label8.TabIndex = 18
-        Me.Label8.Text = "请注意““生效””代表着密钥没又被非法修改过"
+        Me.Label8.Text = "请注意""生效""代表着密钥没又被非法修改过"
         '
         'Label18
         '
@@ -353,6 +354,17 @@ Partial Class validateCheck
         Me.Label18.TabIndex = 19
         Me.Label18.Text = "这个密钥只在机器码指定的机器上生效"
         Me.Label18.Visible = False
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.ForeColor = System.Drawing.Color.Green
+        Me.Label9.Location = New System.Drawing.Point(106, 34)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(147, 13)
+        Me.Label9.TabIndex = 6
+        Me.Label9.Text = "MACHINE CODE STATUS"
         '
         'validateCheck
         '
@@ -373,6 +385,7 @@ Partial Class validateCheck
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.TextBox2)
         Me.Controls.Add(Me.GroupBox2)
@@ -421,5 +434,5 @@ Partial Class validateCheck
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
     Friend WithEvents Label18 As System.Windows.Forms.Label
-
+    Friend WithEvents Label9 As Label
 End Class

@@ -219,6 +219,8 @@ namespace AppLauncher
             {
 
                 InputCDKey inputForm = new InputCDKey();
+
+                inputForm.MachineCode = machineCode;
                 inputForm.ShowDialog();
                 if (inputForm.enterKeyFlag == false)
                 {
@@ -239,7 +241,7 @@ namespace AppLauncher
             {
                 validKeyInfo = myWcf.GetKeyInfo(cdKey, "hello");
 
-                if (validKeyInfo.IsValid == true)
+                if (validKeyInfo.IsValid == true && validKeyInfo.IsOnRightMachine == true)
                 {
                     JudgeCDKeyStillWorks();
                     LoadValidKeyOnPanel();
