@@ -48,10 +48,8 @@ namespace AppLauncher
             ValidInfo mainForm = new ValidInfo();
             mainForm.KeyInfo = keyInfo;
             mainForm.ShowDialog();
-
-            
-            
-
+            if (mainForm.launhFlag == true)
+                LaunchUtil.Launch();
 
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);

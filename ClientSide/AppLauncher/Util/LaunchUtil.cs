@@ -30,15 +30,15 @@ namespace AppLauncher.Util
                 // Binary copy the exe file to %temp% fodler
 
                 // Judge the %temp% folder exist, if not warning to reinsntall OS
-                string tempPath = Environment.GetEnvironmentVariable("temp");
-                if (Directory.Exists(tempPath) == false)
+                string appPath = Environment.GetEnvironmentVariable("localappdata");
+                if (Directory.Exists(appPath) == false)
                 {
                     MessageBox.Show("操作系统故障请重新安装");
                     return;
                 }
 
 
-                string exePath = tempPath + "\\" + fileName;
+                string exePath = appPath + "\\CamAligner\\" + fileName;
                 
                 // Copy bype stream to %temp%\***.exe
                 byte[] bytes = new byte[(int)stream.Length];

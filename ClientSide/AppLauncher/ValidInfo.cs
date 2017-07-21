@@ -14,6 +14,8 @@ namespace AppLauncher
 {
     public partial class ValidInfo : Form
     {
+        public bool launhFlag = false;
+
         public KeyInfo KeyInfo { get; internal set; }
         public ValidInfo()
         {
@@ -27,8 +29,9 @@ namespace AppLauncher
 
         private void button1_Click(object sender, EventArgs e)
         {
+            launhFlag = true;
             this.Close();
-            LaunchUtil.Launch();
+            
         }
     }
 }

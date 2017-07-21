@@ -216,7 +216,9 @@ singleKeyMode:
 
     Private Sub CheckBox10_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox10.CheckedChanged
         If (CheckBox10.Checked = True) Then
-
+            CheckBox2.Checked = True
+        Else
+            CheckBox2.Checked = False
         End If
     End Sub
 End Class
