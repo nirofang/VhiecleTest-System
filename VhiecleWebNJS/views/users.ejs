@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>用户管理</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
+    <!-- Loading Bootstrap -->
+<!--     <link href="/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- Loading Flat UI -->
+    <!-- <link href="/css/flat-ui.min.css" rel="stylesheet">
+    <link href="/css/demo.css" rel="stylesheet"> -->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    
+    <!-- <link rel='stylesheet' href='/css/style.css' /> -->
+    <link rel='stylesheet' href='/css/responsive-nav.css' />
+
+
+  </head>
+  <body>
+     <div role="navigation" id="nav">
+      <ul>
+        <li class="active"><a href="/home">首页</a></li>
+        <li><a href="/pass">修改密码</a></li>
+        <li><a href="/logs">日志</a></li>
+        <li><a href="/help">帮组文档</a></li>
+      </ul>
+    </div>
+
+    <div role="main" class="main">
+      <a href="#nav" id="toggle">Menu</a>
+      <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Panel heading</div>
+  <div class="panel-body">
+    <p>...</p>
+  </div>
+
+  <!-- Table -->
+  <table class="table">
+    <thead>
+          <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+  </table>
+</div>
+    </div>
+      <!-- script -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/video.js"></script>
+    <script src="/js/flat-ui.min.js"></script>
+    <script src="/js/application.js"></script>
+    <script src='/js/responsive-nav.js' />
+    <script>
+    $(function(){
+    var navigation = responsiveNav(".nav-collapse");
+      videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
+
+    	$('.loginBtn').click(function(){
+    		var name=$('#login-name').val();
+    		var pwd=$('#login-pass').val();
+    		$.ajax({
+    			url:'/login',
+    			data:{
+    				name:name,
+    				pwd:pwd
+    			},
+    			success:function(data){
+    				console.log(data);
+    			}
+    		});
+    	});
+    });
+
+    </script>
+       <!-- script -->
+  </body>
+</html>

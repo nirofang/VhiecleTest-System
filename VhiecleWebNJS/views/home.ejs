@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>首页</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
+    <!-- Loading Bootstrap -->
+<!--     <link href="/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- Loading Flat UI -->
+    <!-- <link href="/css/flat-ui.min.css" rel="stylesheet">
+    <link href="/css/demo.css" rel="stylesheet"> -->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    
+    <!-- <link rel='stylesheet' href='/css/style.css' /> -->
+    <link rel='stylesheet' href='/css/responsive-nav.css' />
+
+
+  </head>
+  <body>
+     <div role="navigation" id="nav">
+      <ul>
+        <li class="active"><a href="/home">首页</a></li>
+        <li><a href="/pass">修改密码</a></li>
+        <li><a href="/logs">日志</a></li>
+        <li><a href="/help">帮组文档</a></li>
+      </ul>
+    </div>
+
+    <div role="main" class="main">
+      <a href="#nav" id="toggle">Menu</a>
+      <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">列表</div>
+  <div class="panel-body">
+    <p>...</p>
+    <input type="button" value="保存"/>
+      <input type="button" value="取消"/>
+  </div>
+
+  <!-- Table -->
+  <table class="table">
+    <thead>
+          <tr>
+            <th>序号</th>
+            <th>状态</th>
+            <th>用户</th>
+            <th>机器码</th>
+            <th>有效期</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+             <td>在线</td>
+            <td>海淀黄庄店</td>
+            <td>34345-sdf-sdf-cxdsdf-sdfsd-344</td>
+            <td>2017-06-31</td>
+            <th>
+            <select>
+            <option>立即停用</option>
+            <option>延期一个月</option>
+            <option>延期三个月</option>
+            <option>延期六个月</option>
+            <option>延期一年</option>
+            <option>延期两年</option>
+            <option>永久有效</option>
+            </select>
+            </th>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>离线</td>
+            <td>苏州街店</td>
+            <td>34345-sdf-sdf-cxdsdf-sdfsd-344</td>
+            <td>2017-06-31</td>
+            <th>
+  <select>
+            <option>立即停用</option>
+            <option>延期一个月</option>
+            <option>延期三个月</option>
+            <option>延期六个月</option>
+            <option>延期一年</option>
+            <option>延期两年</option>
+            <option>永久有效</option>
+            </select>
+            </th>
+          </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>在线</td>
+            <td>草房店</td>
+            <td>34345-sdf-sdf-cxdsdf-sdfsd-344</td>
+            <td>2017-06-31</td>
+            <th>
+  <select>
+            <option>立即停用</option>
+            <option>延期一个月</option>
+            <option>延期三个月</option>
+            <option>延期六个月</option>
+            <option>延期一年</option>
+            <option>延期两年</option>
+            <option>永久有效</option>
+            </select>
+            </th>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>在线</td>
+            <td>地安门店</td>
+            <td>34345-sdf-sdf-cxdsdf-sdfsd-344</td>
+            <td>2017-06-31</td>
+            <th>
+  <select>
+            <option>立即停用</option>
+            <option>延期一个月</option>
+            <option>延期三个月</option>
+            <option>延期六个月</option>
+            <option>延期一年</option>
+            <option>延期两年</option>
+            <option>永久有效</option>
+            </select>
+            </th>
+          </tr>
+        </tbody>
+  </table>
+</div>
+    </div>
+      <!-- script -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/video.js"></script>
+    <script src="/js/flat-ui.min.js"></script>
+    <script src="/js/application.js"></script>
+    <script src='/js/responsive-nav.js' />
+    <script>
+    $(function(){
+    var navigation = responsiveNav(".nav-collapse");
+      videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
+
+    	$('.loginBtn').click(function(){
+    		var name=$('#login-name').val();
+    		var pwd=$('#login-pass').val();
+    		$.ajax({
+    			url:'/login',
+    			data:{
+    				name:name,
+    				pwd:pwd
+    			},
+    			success:function(data){
+    				console.log(data);
+    			}
+    		});
+    	});
+    });
+
+    </script>
+       <!-- script -->
+  </body>
+</html>
