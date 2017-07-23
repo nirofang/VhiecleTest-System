@@ -17,4 +17,49 @@ router.get('/login',function(req,res,next){
 	res.send('error');
 }
 });
+
+/* Test API */
+var CustomerDAO=require('../DAO/CustomerDAO');
+
+
+router.get('/testapi', function(req, res, next) {
+	var a = req.query.a;
+	var b = req.query.b;
+	CustomerDAO.save({
+		CustomerName:a,
+		Status:b
+	},function(err,result){
+	//console.log(err);
+	//console.log(result);
+	if(err)
+	{
+		res.send({ err:err});
+	}
+	else
+	{
+		res.send({ result:result});
+	}
+	
+	//res.send({ title: 'Express' , a:err, b:result});
+});
+
+});
+
+
+// router.post('/testapi_po', function(req, res, next) {
+	 // var a = req.body.a;
+	 // var b = req.body.b;
+	 
+	 // CustomerDAO.save({},function(err,result){
+	// console.log(err);
+	// console.log(result);
+	 // });
+// });
+	 
+	// // console.log(req);
+  // res.send({ title: 'Express' , a:a, b:b});
+// });
+
+
+
 module.exports = router;
