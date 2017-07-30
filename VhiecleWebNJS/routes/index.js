@@ -22,26 +22,138 @@ router.get('/login',function(req,res,next){
 var CustomerDAO=require('../DAO/CustomerDAO');
 
 
-router.get('/testapi', function(req, res, next) {
-	var a = req.query.a;
-	var b = req.query.b;
-	CustomerDAO.save({
-		CustomerName:a,
-		Status:b
+router.get('/testFind', function(req, res, next) {
+	var id = req.query.id;
+	CustomerDAO.find({
+		CustomerId:id,
 	},function(err,result){
-	//console.log(err);
-	//console.log(result);
-	if(err)
-	{
-		res.send({ err:err});
-	}
-	else
-	{
-		res.send({ result:result});
-	}
-	
-	//res.send({ title: 'Express' , a:err, b:result});
+		//console.log(err);
+		console.log(result);
+		if(err)
+		{
+			res.send({ err:err});
+		}
+		else
+		{
+			res.send({ result:result});
+		}
+		
+		//res.send({ title: 'Express' , a:err, b:result});
+	});
+
 });
+
+router.get('/UploadCustomerInfo', function(req, res, next) {
+	CustomerDAO.save({
+		MachineCode:req.query.MachineCode,
+		MachineStatus:req.query.MachineStatus,
+		CDKey:req.query.CDKey,
+		CreationDate:req.query.CreationDate,
+		CreationDate:req.query.CreationDate,
+		ValidDate:req.query.ValidDate,
+	},function(err,result){
+		//console.log(err);
+		console.log(result);
+		if(err)
+		{
+			res.send({ err:err});
+		}
+		else
+		{
+			res.send({ result:result});
+		}
+		
+		//res.send({ title: 'Express' , a:err, b:result});
+	});
+
+});
+
+
+
+router.get('/UpdateLastLogTime', function(req, res, next) {
+	CustomerDAO.update({
+		MachineCode:req.query.MachineCode
+	},{LastLogTime:req.query.LastLogTime},
+	function(err,result){
+		//console.log(err);
+		console.log(result);
+		if(err)
+		{
+			res.send({ err:err});
+		}
+		else
+		{
+			//res.send({ result:result});
+			CustomerDAO.find({
+				MachineCode:req.query.MachineCode,
+			},function(err,result){
+				//console.log(err);
+				console.log(result);
+				if(err)
+				{
+					res.send({ err:err});
+				}
+				else
+				{
+					res.send({ result:result});
+				}			
+			})
+		}
+		//res.send({ title: 'Express' , a:err, b:result});
+	});
+});
+
+router.get('/UpdateCDKey', function(req, res, next) {
+	CustomerDAO.update({
+		MachineCode:req.query.MachineCode
+	},{CDKey:req.query.CDKey},
+	function(err,result){
+		//console.log(err);
+		console.log(result);
+		if(err)
+		{
+			res.send({ err:err});
+		}
+		else
+		{
+			//res.send({ result:result});
+			CustomerDAO.find({
+				MachineCode:req.query.MachineCode,
+			},function(err,result){
+				//console.log(err);
+				console.log(result);
+				if(err)
+				{
+					res.send({ err:err});
+				}
+				else
+				{
+					res.send({ result:result});
+				}			
+			})
+		}
+		//res.send({ title: 'Express' , a:err, b:result});
+	});
+});
+
+
+router.get('/GetCustomerInfo', function(req, res, next) {
+	CustomerDAO.find({
+		MachineCode:req.query.MachineCode,
+	},function(err,result){
+		//console.log(err);
+		console.log(result);
+		if(err)
+		{
+			res.send({ err:err});
+		}
+		else
+		{
+			res.send({ result:result});
+		}
+		
+		//res.send({ title: 'Express' , a:err, b:result});
+	});
 
 });
 

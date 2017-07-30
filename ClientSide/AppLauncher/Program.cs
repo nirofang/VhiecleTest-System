@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AppLauncher.Util;
 using AppWcfService;
+using AppWcfService.Util;
 using Microsoft.Win32;
 
 namespace AppLauncher

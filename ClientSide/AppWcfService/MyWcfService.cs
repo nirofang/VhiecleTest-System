@@ -48,6 +48,14 @@ namespace AppWcfService
             return generate.MachineCode.ToString();
         }
 
+        public string GetNewCDKey(int daysLeft, DateTime creationDate, int machineCode)
+        {
+            SKGL.SerialKeyConfiguration skc = new SKGL.SerialKeyConfiguration();
+            SKGL.Generate generate = new SKGL.Generate(skc);
+            
+            return generate.doKey(daysLeft, creationDate, machineCode);
+        }
+
         public string GetData(int value)
         {
             return string.Format("You entered: {0}", value);

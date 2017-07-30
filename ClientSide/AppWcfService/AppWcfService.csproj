@@ -49,6 +49,7 @@
     <Compile Include="KeyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyWcfService.cs" />
+    <Compile Include="Util\RegUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

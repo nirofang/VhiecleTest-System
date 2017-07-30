@@ -11,7 +11,11 @@ CustomerDAO.save=function(c,callback){
 	var customer=new Customer({
 		CustomerId:c.CustomerId||1,
 		CustomerName:c.CustomerName||'临时用户',
-		MachineKey:c.MachineKey||'123456'
+		MachineStatus:c.MachineStatus||'已停用',
+		MachineCode:c.MachineCode||'123456',
+		CDKey:c.CDKey||'xxxxx-xxxxx-xxxxx-xxxxx',
+		CreationDate:c.CreationDate||'2017-06-06',
+		ValidDate:c.ValidDate||'2017-07-06'
 	});
 	customer.save(function(err,result){
 		callback(err,result);
