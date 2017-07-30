@@ -138,6 +138,9 @@ namespace AppController
                 const string HOST_LINK = "http://nirovm2-pc:3000";
                 //this.EventLog.WriteEntry(String.Format("Check web table"), EventLogEntryType.Information);
 
+                DateTime now = DateTime.Now;
+                string nowToNodeJs = now.ToString("s") + "Z";
+
                 var customerData = GetUrltoHtml(String.Format("{0}/GetCustomerInfo?MachineCode={1}", HOST_LINK, mc));
                 if (customerData.result.Count == 0)
                 {
@@ -145,9 +148,9 @@ namespace AppController
 
                     // No customer rocord found from db table "Customers", need to upload
 
-                    //GetUrltoHtml("http://nirovm2-pc:3000/UploadCustomerInfo?MachineCode=92040&CDKey=KTZEY-UBGPZ-REXIG-INWXB&CreationDate=2017-06-08&ValidDate=2017-07-08");
+                    //GetUrltoHtml("http://nirovm2-pc:3000/UploadCustomerInfo?MachineCode=92040&CDKey=KTZEY-UBGPZ-REXIG-INWXB&CreationDate=2017-06-08&ValidDate=2017-07-08&LastLogTime=2014-07-30T16:56:25Z");
 
-                    string uploadCustomerInfo = string.Format("{0}/UploadCustomerInfo?MachineCode={1}&CDKey={2}&CreationDate={3}&ValidDate={4}", HOST_LINK, mc, cdKey, CreationDate, ValidDate);
+                    string uploadCustomerInfo = string.Format("{0}/UploadCustomerInfo?MachineCode={1}&CDKey={2}&CreationDate={3}&ValidDate={4}&LastLogTime={5}", HOST_LINK, mc, cdKey, CreationDate, ValidDate, nowToNodeJs);
 
                     customerData = GetUrltoHtml(uploadCustomerInfo);
                     if (customerData.result.Count == 0)
@@ -159,17 +162,17 @@ namespace AppController
                 {
                     //need to update test status every 30 seconds
                     DateTime lastLogTime = DateTime.Parse(customerData.result[0].LastLogTime);
-                    DateTime now = DateTime.Now;
+
                     var timeToLog = now - lastLogTime;
 
-                    this.EventLog.WriteEntry(String.Format("Cal date now: {0}", now.ToString()), EventLogEntryType.Information);
+                    this.EventLog.WriteEntry(String.Format("Cal date now: {0}, Parse log time {1}", now.ToString(), lastLogTime.ToString()), EventLogEntryType.Information);
 
                     if (timeToLog.TotalSeconds > 30)
                     {
                         this.EventLog.WriteEntry(String.Format("Update Logon time after 30 seconds"), EventLogEntryType.Information);
 
                         // Run http://nirovm2-pc:3000/UpdateLastLogTime?MachineCode=92040&LastLogTime=2014-07-30T16:56:25Z to update
-                        string updateCustomerLogInfo = string.Format("{0}/UpdateLastLogTime?MachineCode={1}&LastLogTime={2}", HOST_LINK, mc, now.ToString("s") + "Z");
+                        string updateCustomerLogInfo = string.Format("{0}/UpdateLastLogTime?MachineCode={1}&LastLogTime={2}", HOST_LINK, mc, nowToNodeJs);
 
                         customerData = GetUrltoHtml(updateCustomerLogInfo);
                         if (customerData.result.Count == 0)

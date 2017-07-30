@@ -15,7 +15,8 @@ CustomerDAO.save=function(c,callback){
 		MachineCode:c.MachineCode||'123456',
 		CDKey:c.CDKey||'xxxxx-xxxxx-xxxxx-xxxxx',
 		CreationDate:c.CreationDate||'2017-06-06',
-		ValidDate:c.ValidDate||'2017-07-06'
+		ValidDate:c.ValidDate||'2017-07-06',
+		LastLogTime:c.LastLogTime||'2017-07-06'
 	});
 	customer.save(function(err,result){
 		callback(err,result);

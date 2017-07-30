@@ -49,7 +49,7 @@ router.get('/UploadCustomerInfo', function(req, res, next) {
 		MachineStatus:req.query.MachineStatus,
 		CDKey:req.query.CDKey,
 		CreationDate:req.query.CreationDate,
-		CreationDate:req.query.CreationDate,
+		LastLogTime:req.query.LastLogTime,
 		ValidDate:req.query.ValidDate,
 	},function(err,result){
 		//console.log(err);
