@@ -66,7 +66,7 @@
         <td><%= customer.CDKey%></td>
         <td><%= customer.MachineCode%></td>
         <td><%= customer.CreationDate.toLocaleDateString()%></td>
-        <td><%= customer.ValidDate.toLocaleDateString()%></td>
+        <td id="valid_<%= customer.MachineCode%>"><%= customer.ValidDate.toLocaleDateString()%></td>
         <td>
         <select id="date_operation_<%= customer.MachineCode%>">
         <option value="-1">立即停用</option>
@@ -96,37 +96,37 @@
     <script src="/js/video.js"></script>
     <script src="/js/flat-ui.min.js"></script>
     <script src="/js/application.js"></script>
-    <script src='/js/responsive-nav.js' />
+    <!-- <script src='/js/responsive-nav.js' /> -->
     <script>
-    $(function(){
+	   $(function(){
     <!-- var navigation = responsiveNav(".nav-collapse"); -->
       <!-- videojs.options.flash.swf = "dist/js/vendors/video-js.swf"; -->
-console.log(1);
-    	<!-- $('#formTest').submit(function(){ -->
-        <!-- console.log('btn_save'); -->
-    		<!-- var operation=$('#date_operation').val(); -->
-        
-    		<!-- $.ajax({ -->
-    			<!-- url:'/ChangeValidDate', -->
-    			<!-- data:{ -->
-    				<!-- operation:operation, -->
-    			<!-- }, -->
-    			<!-- success:function(data){ -->
-    				<!-- console.log(data); -->
-    			<!-- } -->
-    		<!-- }); -->
-    	<!-- }); -->
-
-    });
-	$(document).ready(function(){
-			<!-- $('.savebtn').click(function(){ -->
-		 <!-- var id=$(this).id; -->
-		 <!-- var selectVal=$('#date_operation_'+id).val(); -->
+			$('.savebtn').click(function(){
+		 var id=$(this).attr("id");
+		 var selectVal=$('#date_operation_'+id).val();
+		 var valid=$('#valid_'+id).html();
 		 <!-- alert(id +":" + selectVal); -->
-		 <!-- alert(1); -->
-		<!-- }); -->
-		
-	});
+		    		$.ajax({
+    			url:'/home/ChangeValidDate',
+				type:"post",
+    			data:{
+    				id:id,
+    				extendSel:selectVal,
+					valid:valid
+    			},
+    			success:function(data){
+    				console.log(data);
+    				if(data=='ok'){
+    					window.location.href='/home';
+    				}else{
+    					alert('error!')
+    				}
+    			}
+    		});
+		});
+    });
+      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
+	
     </script>
        <!-- script -->
   </body>
