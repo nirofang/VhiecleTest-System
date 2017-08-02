@@ -38,20 +38,20 @@
     
   </div>
 
-  <form id="formTest" action="test" method="post">
-  
+
   <!-- Table -->
   <table class="table">
     <thead>
       <tr>
         <th>序号</th>
         <th>状态</th>
-        <th>用户</th>
-        <th>机器码</th>
+        <th width = "150px" min-width = "150px" max-width = "150px">用户</th>
+        <th width = "300px" min-width = "300px" max-width = "300px">机器码</th>
         <th>注册号</th>
         <th>起始有效期</th>
         <th>截止有效期</th>
         <th>操作</th>
+		<th></th>
       </tr>
     </thead>
     <tbody>
@@ -67,17 +67,20 @@
         <td><%= customer.MachineCode%></td>
         <td><%= customer.CreationDate.toLocaleDateString()%></td>
         <td><%= customer.ValidDate.toLocaleDateString()%></td>
-        <th>
-        <select id='date_operation'>
-        <option>立即停用</option>
-        <option>延期一个月</option>
-        <option>延期三个月</option>
-        <option>延期六个月</option>
-        <option>延期一年</option>
-        <option>延期两年</option>
-        <option>永久有效</option>
+        <td>
+        <select id="date_operation_<%= customer.MachineCode%>">
+        <option value="-1">立即停用</option>
+        <option value="1">延期一个月</option>
+        <option value="3">延期三个月</option>
+        <option value="6">延期六个月</option>
+        <option value="12">延期一年</option>
+        <option value="24">延期两年</option>
+        <option value="0">永久有效</option>
         </select>
-        </th>
+        </td>
+		<td>
+			<input id="<%= customer.MachineCode%>" type="button" class="savebtn" value = "保存"/>
+		</td>
       </tr>
     <%
       i++;
@@ -85,11 +88,6 @@
     %>  
     </tbody>
   </table>
-
-  </form>
-  
-  <button type="button" class="btn btn-default" data-dismiss="modal">保存</button>
-  
   
 </div>
     </div>
@@ -101,25 +99,34 @@
     <script src='/js/responsive-nav.js' />
     <script>
     $(function(){
-    var navigation = responsiveNav(".nav-collapse");
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
-
-    	$('#formTest').submit(function(){
-        console.log('btn_save');
-    		var operation=$('#date_operation').val();
+    <!-- var navigation = responsiveNav(".nav-collapse"); -->
+      <!-- videojs.options.flash.swf = "dist/js/vendors/video-js.swf"; -->
+console.log(1);
+    	<!-- $('#formTest').submit(function(){ -->
+        <!-- console.log('btn_save'); -->
+    		<!-- var operation=$('#date_operation').val(); -->
         
-    		$.ajax({
-    			url:'/ChangeValidDate',
-    			data:{
-    				operation:operation,
-    			},
-    			success:function(data){
-    				console.log(data);
-    			}
-    		});
-    	});
-    });
+    		<!-- $.ajax({ -->
+    			<!-- url:'/ChangeValidDate', -->
+    			<!-- data:{ -->
+    				<!-- operation:operation, -->
+    			<!-- }, -->
+    			<!-- success:function(data){ -->
+    				<!-- console.log(data); -->
+    			<!-- } -->
+    		<!-- }); -->
+    	<!-- }); -->
 
+    });
+	$(document).ready(function(){
+			<!-- $('.savebtn').click(function(){ -->
+		 <!-- var id=$(this).id; -->
+		 <!-- var selectVal=$('#date_operation_'+id).val(); -->
+		 <!-- alert(id +":" + selectVal); -->
+		 <!-- alert(1); -->
+		<!-- }); -->
+		
+	});
     </script>
        <!-- script -->
   </body>

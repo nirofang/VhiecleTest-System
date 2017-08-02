@@ -49,7 +49,7 @@ router.get('/UploadCustomerInfo', function(req, res, next) {
 		MachineStatus:req.query.MachineStatus,
 		CDKey:req.query.CDKey,
 		CreationDate:req.query.CreationDate,
-		LastLogTime:req.query.LastLogTime,
+		// LastLogTime:req.query.LastLogTime,
 		ValidDate:req.query.ValidDate,
 	},function(err,result){
 		//console.log(err);
@@ -73,7 +73,7 @@ router.get('/UploadCustomerInfo', function(req, res, next) {
 router.get('/UpdateLastLogTime', function(req, res, next) {
 	CustomerDAO.update({
 		MachineCode:req.query.MachineCode
-	},{LastLogTime:req.query.LastLogTime},
+	},{LastLogTime:Date.now()},
 	function(err,result){
 		//console.log(err);
 		console.log(result);
@@ -83,21 +83,21 @@ router.get('/UpdateLastLogTime', function(req, res, next) {
 		}
 		else
 		{
-			//res.send({ result:result});
-			CustomerDAO.find({
-				MachineCode:req.query.MachineCode,
-			},function(err,result){
-				//console.log(err);
-				console.log(result);
-				if(err)
-				{
-					res.send({ err:err});
-				}
-				else
-				{
-					res.send({ result:result});
-				}			
-			})
+			res.send({ result:result});
+			// CustomerDAO.find({
+				// MachineCode:req.query.MachineCode,
+			// },function(err,result){
+				// //console.log(err);
+				// console.log(result);
+				// if(err)
+				// {
+					// res.send({ err:err});
+				// }
+				// else
+				// {
+					// res.send({ result:result});
+				// }			
+			// })
 		}
 		//res.send({ title: 'Express' , a:err, b:result});
 	});
@@ -116,21 +116,21 @@ router.get('/UpdateCDKey', function(req, res, next) {
 		}
 		else
 		{
-			//res.send({ result:result});
-			CustomerDAO.find({
-				MachineCode:req.query.MachineCode,
-			},function(err,result){
-				//console.log(err);
-				console.log(result);
-				if(err)
-				{
-					res.send({ err:err});
-				}
-				else
-				{
-					res.send({ result:result});
-				}			
-			})
+			res.send({ result:result});
+			// CustomerDAO.find({
+				// MachineCode:req.query.MachineCode,
+			// },function(err,result){
+				// //console.log(err);
+				// console.log(result);
+				// if(err)
+				// {
+					// res.send({ err:err});
+				// }
+				// else
+				// {
+					// res.send({ result:result});
+				// }			
+			// })
 		}
 		//res.send({ title: 'Express' , a:err, b:result});
 	});

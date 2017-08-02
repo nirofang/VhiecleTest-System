@@ -17,6 +17,23 @@ using System.Runtime.Serialization.Json;
 
 namespace AppController
 {
+    static class RegConfig
+    {
+        // Machine code
+        public static string mc
+        {
+            get;
+            set;
+        }
+
+        // CDKey
+        public static string cdkey
+        {
+            get;
+            set;
+        }
+    }
+
     public partial class MyService : ServiceBase
     {
         /// <summary>
@@ -28,14 +45,39 @@ namespace AppController
 
         private string interval = ConfigurationManager.AppSettings["Interval"];
 
-        private static bool uploadMachineInfoOnNetConn = true;
+        //private static bool uploadMachineInfoOnNetConn = true;
 
 
         public MyService()
         {
             InitializeComponent();
+
+            ReadReg();
+
             initTimer();
         }
+
+        private void ReadReg()
+        {
+
+            string mc = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "MachineCode");
+            if (string.IsNullOrEmpty(mc))
+            {
+                this.EventLog.WriteEntry(String.Format("Cannot get MachineCode from REG"), EventLogEntryType.Information);
+                return;
+            }
+
+            // 检查 "CDKey" 是否已经输入
+            string cdKey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "CDKey");
+            if (string.IsNullOrEmpty(cdKey))
+            {
+                this.EventLog.WriteEntry(String.Format("Cannot get CDKey from REG"), EventLogEntryType.Information);
+            }
+            RegConfig.mc = mc;
+            RegConfig.cdkey = cdKey;
+        }
+
+        
 
         protected override void OnStart(string[] args)
         {
@@ -107,20 +149,7 @@ namespace AppController
             ////    this.EventLog.WriteEntry(String.Format("UploadMachineInfoOnNetConn success, db record name is {0}", trans[0].Name), EventLogEntryType.Information);
 
             //this.EventLog.WriteEntry(String.Format("Net connected"), EventLogEntryType.Information);
-            
-            string mc = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "MachineCode");
-            if (string.IsNullOrEmpty(mc))
-            {
-                this.EventLog.WriteEntry(String.Format("Cannot get MachineCode from REG"), EventLogEntryType.Information);
-                return;
-            }
 
-            // 检查 "CDKey" 是否已经输入
-            string cdKey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "CDKey");
-            if (string.IsNullOrEmpty(cdKey))
-            {
-                this.EventLog.WriteEntry(String.Format("Cannot get CDKey from REG"), EventLogEntryType.Information);
-            }
 
             //this.EventLog.WriteEntry(String.Format("CDKey:{0}, MachineCode:{1}", cdKey, mc), EventLogEntryType.Information);
 
@@ -129,7 +158,7 @@ namespace AppController
             //this.EventLog.WriteEntry(String.Format("GetMachineCode success, value is {0}", mc), EventLogEntryType.Information);
             try
             {
-                var validKeyInfo = myWcfService.GetKeyInfo(cdKey, "hello");
+                var validKeyInfo = myWcfService.GetKeyInfo(RegConfig.cdkey, "hello");
 
 
                 string CreationDate = validKeyInfo.CreationDate.ToShortDateString();
@@ -138,21 +167,28 @@ namespace AppController
                 const string HOST_LINK = "http://nirovm2-pc:3000";
                 //this.EventLog.WriteEntry(String.Format("Check web table"), EventLogEntryType.Information);
 
-                DateTime now = DateTime.Now;
-                string nowToNodeJs = now.ToString("s") + "Z";
+                //DateTime now = DateTime.Now;
+                //string nowToNodeJs = now.ToString("s") + "Z";
 
-                var customerData = GetUrltoHtml(String.Format("{0}/GetCustomerInfo?MachineCode={1}", HOST_LINK, mc));
+                var customerData = GetNewCustomer(String.Format("{0}/GetCustomerInfo?MachineCode={1}", HOST_LINK, RegConfig.mc));
+                if (customerData == null)
+                {
+                    return;
+                }
+
+
+
                 if (customerData.result.Count == 0)
                 {
                     //this.EventLog.WriteEntry(String.Format("Check web table finished"), EventLogEntryType.Information);
 
                     // No customer rocord found from db table "Customers", need to upload
 
-                    //GetUrltoHtml("http://nirovm2-pc:3000/UploadCustomerInfo?MachineCode=92040&CDKey=KTZEY-UBGPZ-REXIG-INWXB&CreationDate=2017-06-08&ValidDate=2017-07-08&LastLogTime=2014-07-30T16:56:25Z");
+                    //GetUrltoHtml("http://nirovm2-pc:3000/UploadCustomerInfo?MachineCode=92040&CDKey=KTZEY-UBGPZ-REXIG-INWXB&CreationDate=2017-06-08&ValidDate=2017-07-08");
 
-                    string uploadCustomerInfo = string.Format("{0}/UploadCustomerInfo?MachineCode={1}&CDKey={2}&CreationDate={3}&ValidDate={4}&LastLogTime={5}", HOST_LINK, mc, cdKey, CreationDate, ValidDate, nowToNodeJs);
+                    string uploadCustomerInfo = string.Format("{0}/UploadCustomerInfo?MachineCode={1}&CDKey={2}&CreationDate={3}&ValidDate={4}", HOST_LINK, RegConfig.mc, RegConfig.cdkey, CreationDate, ValidDate);
 
-                    customerData = GetUrltoHtml(uploadCustomerInfo);
+                    customerData = GetNewCustomer(uploadCustomerInfo);
                     if (customerData.result.Count == 0)
                     {
                         this.EventLog.WriteEntry(String.Format("Upload Customer data failed"), EventLogEntryType.Information);
@@ -163,24 +199,17 @@ namespace AppController
                     //need to update test status every 30 seconds
                     DateTime lastLogTime = DateTime.Parse(customerData.result[0].LastLogTime);
 
-                    var timeToLog = now - lastLogTime;
+                    this.EventLog.WriteEntry(String.Format("Update Logon time after 30 seconds"), EventLogEntryType.Information);
 
-                    this.EventLog.WriteEntry(String.Format("Cal date now: {0}, Parse log time {1}", now.ToString(), lastLogTime.ToString()), EventLogEntryType.Information);
+                    // Run http://nirovm2-pc:3000/UpdateLastLogTime?MachineCode=92040 to update
+                    string updateCustomerLogInfo = string.Format("{0}/UpdateLastLogTime?MachineCode={1}", HOST_LINK, RegConfig.mc);
 
-                    if (timeToLog.TotalSeconds > 30)
+                    var updateResult = GetNewUpdateResult(updateCustomerLogInfo);
+                    if (updateResult.result.ok != 1)
                     {
-                        this.EventLog.WriteEntry(String.Format("Update Logon time after 30 seconds"), EventLogEntryType.Information);
-
-                        // Run http://nirovm2-pc:3000/UpdateLastLogTime?MachineCode=92040&LastLogTime=2014-07-30T16:56:25Z to update
-                        string updateCustomerLogInfo = string.Format("{0}/UpdateLastLogTime?MachineCode={1}&LastLogTime={2}", HOST_LINK, mc, nowToNodeJs);
-
-                        customerData = GetUrltoHtml(updateCustomerLogInfo);
-                        if (customerData.result.Count == 0)
-                        {
-                            this.EventLog.WriteEntry(String.Format("Update Logon Time failed"), EventLogEntryType.Information);
-                        }
-                        
+                        this.EventLog.WriteEntry(String.Format("Update Logon Time failed"), EventLogEntryType.Information);
                     }
+
 
                     // Check if CDKey need to be updated
                     DateTime webValidDate = DateTime.Parse(customerData.result[0].ValidDate);
@@ -191,16 +220,20 @@ namespace AppController
 
                         int lefDays = (int)(webValidDate - webCreationDate).TotalDays;
                         // Re-generate CDKey
-                        string newCDKey = myWcfService.GetNewCDKey(lefDays, webCreationDate, int.Parse(mc));
+                        string newCDKey = myWcfService.GetNewCDKey(lefDays, webCreationDate, int.Parse(RegConfig.mc));
 
                         // update cdkey to web database
                         // Run http://nirovm2-pc:3000/UpdateCDKey?MachineCode=92040&CDKey=KTZEY-UBGPZ-REXIG-INWXB to update
-                        string updateCDKeyInfo = string.Format("{0}/UpdateLastLogTime?MachineCode={1}&CDKey={2}", HOST_LINK, mc, newCDKey);
+                        string updateCDKeyInfo = string.Format("{0}/UpdateCDKey?MachineCode={1}&CDKey={2}", HOST_LINK, RegConfig.mc, newCDKey);
 
                         this.EventLog.WriteEntry(String.Format("Re-generate CDKey"), EventLogEntryType.Information);
 
-                        customerData = GetUrltoHtml(updateCDKeyInfo);
-                        if (customerData.result.Count == 0)
+                        // Update local Registry
+                        ReadReg();
+
+
+                        updateResult = GetNewUpdateResult(updateCDKeyInfo);
+                        if (updateResult.result.ok != 1)
                         {
                             this.EventLog.WriteEntry(String.Format("Update CDKey failed"), EventLogEntryType.Information);
                         }
@@ -215,7 +248,7 @@ namespace AppController
             }
         }
 
-        public RootObject GetUrltoHtml(string Url)
+        public NewCustomer GetNewCustomer(string Url)
         {
             try
             {
@@ -224,8 +257,29 @@ namespace AppController
                 System.Net.WebResponse wResp = wReq.GetResponse();
                 using (System.IO.Stream respStream = wResp.GetResponseStream())
                 { 
-                    DataContractJsonSerializer deseralizer = new DataContractJsonSerializer(typeof(RootObject));
-                   return (RootObject)deseralizer.ReadObject(respStream);// //反序列化ReadObject
+                    DataContractJsonSerializer deseralizer = new DataContractJsonSerializer(typeof(NewCustomer));
+                   return (NewCustomer)deseralizer.ReadObject(respStream);// //反序列化ReadObject
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                this.EventLog.WriteEntry(String.Format("Get Web Data Message {0}", ex.Message), EventLogEntryType.Information);
+            }
+            return null;
+        }
+
+        public UpdateDb GetNewUpdateResult(string Url)
+        {
+            try
+            {
+                System.Net.WebRequest wReq = System.Net.WebRequest.Create(Url);
+                // Get the response instance.
+                System.Net.WebResponse wResp = wReq.GetResponse();
+                using (System.IO.Stream respStream = wResp.GetResponseStream())
+                {
+                    DataContractJsonSerializer deseralizer = new DataContractJsonSerializer(typeof(UpdateDb));
+                    return (UpdateDb)deseralizer.ReadObject(respStream);// //反序列化ReadObject
                 }
 
             }

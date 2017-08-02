@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AppController
 {
 
-    public class Result
+    public class Customer
     {
         public string _id { get; set; }
         public int CustomerId { get; set; }
@@ -23,8 +23,21 @@ namespace AppController
         public string CustomerName { get; set; }
     }
 
-    public class RootObject
+    public class NewCustomer
     {
-        public List<Result> result { get; set; }
+        public List<Customer> result { get; set; }
     }
+
+    public class UpdateResult
+    {
+        public int n { get; set; }
+        public int nModified { get; set; }
+        public int ok { get; set; }
+    }
+
+    public class UpdateDb
+    {
+        public UpdateResult result { get; set; }
+    }
+
 }
