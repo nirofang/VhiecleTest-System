@@ -158,6 +158,24 @@ router.get('/GetCustomerInfo', function(req, res, next) {
 });
 
 
+router.get('/GetCustomerAll', function(req, res, next) {
+	CustomerDAO.find(true,function(err,result){
+		//console.log(err);
+		console.log(result);
+		if(err)
+		{
+			res.send({ err:err});
+		}
+		else
+		{
+			res.send({ result:result});
+		}
+		
+		//res.send({ title: 'Express' , a:err, b:result});
+	});
+
+});
+
 // router.post('/testapi_po', function(req, res, next) {
 	 // var a = req.body.a;
 	 // var b = req.body.b;

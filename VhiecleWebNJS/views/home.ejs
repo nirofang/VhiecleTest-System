@@ -31,99 +31,66 @@
       <div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading">列表</div>
+
   <div class="panel-body">
     <p>...</p>
-    <input type="button" value="保存"/>
-      <input type="button" value="取消"/>
+	
+    
   </div>
 
+  <form id="formTest" action="test" method="post">
+  
   <!-- Table -->
   <table class="table">
     <thead>
-          <tr>
-            <th>序号</th>
-            <th>状态</th>
-            <th>用户</th>
-            <th>机器码</th>
-            <th>有效期</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-             <td>在线</td>
-            <td>海淀黄庄店</td>
-            <td>34345-sdf-sdf-cxdsdf-sdfsd-344</td>
-            <td>2017-06-31</td>
-            <th>
-            <select>
-            <option>立即停用</option>
-            <option>延期一个月</option>
-            <option>延期三个月</option>
-            <option>延期六个月</option>
-            <option>延期一年</option>
-            <option>延期两年</option>
-            <option>永久有效</option>
-            </select>
-            </th>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>离线</td>
-            <td>苏州街店</td>
-            <td>34345-sdf-sdf-cxdsdf-sdfsd-344</td>
-            <td>2017-06-31</td>
-            <th>
-  <select>
-            <option>立即停用</option>
-            <option>延期一个月</option>
-            <option>延期三个月</option>
-            <option>延期六个月</option>
-            <option>延期一年</option>
-            <option>延期两年</option>
-            <option>永久有效</option>
-            </select>
-            </th>
-          </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>在线</td>
-            <td>草房店</td>
-            <td>34345-sdf-sdf-cxdsdf-sdfsd-344</td>
-            <td>2017-06-31</td>
-            <th>
-  <select>
-            <option>立即停用</option>
-            <option>延期一个月</option>
-            <option>延期三个月</option>
-            <option>延期六个月</option>
-            <option>延期一年</option>
-            <option>延期两年</option>
-            <option>永久有效</option>
-            </select>
-            </th>
-          </tr>
-          <tr>
-            <th scope="row">4</th>
-            <td>在线</td>
-            <td>地安门店</td>
-            <td>34345-sdf-sdf-cxdsdf-sdfsd-344</td>
-            <td>2017-06-31</td>
-            <th>
-  <select>
-            <option>立即停用</option>
-            <option>延期一个月</option>
-            <option>延期三个月</option>
-            <option>延期六个月</option>
-            <option>延期一年</option>
-            <option>延期两年</option>
-            <option>永久有效</option>
-            </select>
-            </th>
-          </tr>
-        </tbody>
+      <tr>
+        <th>序号</th>
+        <th>状态</th>
+        <th>用户</th>
+        <th>机器码</th>
+        <th>注册号</th>
+        <th>起始有效期</th>
+        <th>截止有效期</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    <%
+      var i = 1;    
+      customers.forEach(function(customer) {
+    %>
+      <tr>
+        <th scope="row"><%=i%></th>
+         <td>在线</td>
+        <td>海淀黄庄店</td>
+        <td><%= customer.CDKey%></td>
+        <td><%= customer.MachineCode%></td>
+        <td><%= customer.CreationDate.toLocaleDateString()%></td>
+        <td><%= customer.ValidDate.toLocaleDateString()%></td>
+        <th>
+        <select id='date_operation'>
+        <option>立即停用</option>
+        <option>延期一个月</option>
+        <option>延期三个月</option>
+        <option>延期六个月</option>
+        <option>延期一年</option>
+        <option>延期两年</option>
+        <option>永久有效</option>
+        </select>
+        </th>
+      </tr>
+    <%
+      i++;
+      });
+    %>  
+    </tbody>
   </table>
+
+  </form>
+  
+  <button type="button" class="btn btn-default" data-dismiss="modal">保存</button>
+  
+  
 </div>
     </div>
       <!-- script -->
@@ -137,14 +104,14 @@
     var navigation = responsiveNav(".nav-collapse");
       videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
 
-    	$('.loginBtn').click(function(){
-    		var name=$('#login-name').val();
-    		var pwd=$('#login-pass').val();
+    	$('#formTest').submit(function(){
+        console.log('btn_save');
+    		var operation=$('#date_operation').val();
+        
     		$.ajax({
-    			url:'/login',
+    			url:'/ChangeValidDate',
     			data:{
-    				name:name,
-    				pwd:pwd
+    				operation:operation,
     			},
     			success:function(data){
     				console.log(data);
