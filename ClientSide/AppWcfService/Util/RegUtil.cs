@@ -38,6 +38,11 @@ namespace AppWcfService.Util
             {
                 if (regKey != null)
                 {
+                    var keyNames = regKey.GetValueNames();
+                    if (!keyNames.Contains(name))
+                    {
+                        return null;
+                    }
                     value = regKey.GetValue(name).ToString();
                 }
                 else

@@ -14,7 +14,6 @@
     <!-- <link rel='stylesheet' href='/css/style.css' /> -->
     <link rel='stylesheet' href='/css/responsive-nav.css' />
 
-
   </head>
   <body>
      <div role="navigation" id="nav">
@@ -100,7 +99,7 @@
     <script>
 	   $(function(){
     <!-- var navigation = responsiveNav(".nav-collapse"); -->
-      <!-- videojs.options.flash.swf = "dist/js/vendors/video-js.swf"; -->
+      videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
 			$('.savebtn').click(function(){
 		 var id=$(this).attr("id");
 		 var selectVal=$('#date_operation_'+id).val();

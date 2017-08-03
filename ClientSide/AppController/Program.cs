@@ -33,7 +33,7 @@ namespace AppController
                     case "--install":
                         //ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
                         ServiceProcessInstaller processInstaller = new ServiceProcessInstaller();
-                        processInstaller.Account = ServiceAccount.LocalService;
+                        processInstaller.Account = ServiceAccount.LocalSystem;
                         
                         System.Configuration.Install.InstallContext Context = new System.Configuration.Install.InstallContext();
                         string processPath = Process.GetCurrentProcess().MainModule.FileName;

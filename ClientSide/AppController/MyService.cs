@@ -17,22 +17,7 @@ using System.Runtime.Serialization.Json;
 
 namespace AppController
 {
-    static class RegConfig
-    {
-        // Machine code
-        public static string mc
-        {
-            get;
-            set;
-        }
 
-        // CDKey
-        public static string cdkey
-        {
-            get;
-            set;
-        }
-    }
 
     public partial class MyService : ServiceBase
     {
@@ -43,40 +28,86 @@ namespace AppController
 
         private System.Timers.Timer timer = new System.Timers.Timer();
 
-        private string interval = ConfigurationManager.AppSettings["Interval"];
-
-        //private static bool uploadMachineInfoOnNetConn = true;
-
 
         public MyService()
         {
             InitializeComponent();
 
-            ReadReg();
+            InitReadReg();
+
+            InitReadConfig();
+
+            InitDefaultVals();
 
             initTimer();
         }
 
-        private void ReadReg()
+        private void InitDefaultVals()
+        {
+            RegConfig.ValidKeyInfo = null;
+        }
+
+        private void InitReadConfig()
+        {
+            int webContactInterval;
+            if (!int.TryParse(ConfigurationManager.AppSettings["Interval"], out webContactInterval))
+            {
+                webContactInterval = 16000;
+            }
+            RegConfig.webContactInterval = webContactInterval;
+        }
+
+        private void InitReadReg()
         {
 
             string mc = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "MachineCode");
             if (string.IsNullOrEmpty(mc))
             {
-                this.EventLog.WriteEntry(String.Format("Cannot get MachineCode from REG"), EventLogEntryType.Information);
+                //this.EventLog.WriteEntry(String.Format("Cannot get MachineCode from REG"), EventLogEntryType.Information);
+                return;
+            }
+            RegConfig.MachineCode = mc;
+            
+
+            string facName = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "FacName");
+            if (string.IsNullOrEmpty(facName))
+            {
+                //this.EventLog.WriteEntry(String.Format("Cannot get FacName from REG"), 
+                //    EventLogEntryType.Information);
                 return;
             }
 
+            RegConfig.FacName = facName;
+
+
             // 检查 "CDKey" 是否已经输入
-            string cdKey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "CDKey");
-            if (string.IsNullOrEmpty(cdKey))
+            string cdkey = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "CDKey");
+            if (string.IsNullOrEmpty(cdkey))
             {
-                this.EventLog.WriteEntry(String.Format("Cannot get CDKey from REG"), EventLogEntryType.Information);
+                //this.EventLog.WriteEntry(String.Format("Cannot get CDKey from REG"), 
+                //    EventLogEntryType.Information);
+                return;
             }
-            RegConfig.mc = mc;
-            RegConfig.cdkey = cdKey;
+            RegConfig.Cdkey = cdkey;
+
+
+            // 检查 "CDKey" 是否已经输入
+            string hostlink = RegUtil.GetRegValue(@"HKLM\SOFTWARE\Wow6432Node\CamAligner", "HostLink");
+            if (string.IsNullOrEmpty(cdkey))
+            {
+                //this.EventLog.WriteEntry(String.Format("Cannot get HostLink from REG"),
+                //    EventLogEntryType.Information);
+                return;
+            }
+            RegConfig.HostLink = hostlink;
+
         }
 
+
+        private void UpdateValidKeyInfoByCDKey()
+        {
+            RegConfig.ValidKeyInfo = RegConfig.MyWcfService.GetKeyInfo(RegConfig.Cdkey, "hello");
+        }
         
 
         protected override void OnStart(string[] args)
@@ -102,12 +133,7 @@ namespace AppController
 
         private void initTimer()
         {
-            int num;
-            if (!int.TryParse(this.interval, out num))
-            {
-                num = 16000;
-            }
-            this.timer.Interval = (double)num;
+            this.timer.Interval = (double)RegConfig.webContactInterval;
             this.timer.Elapsed += new ElapsedEventHandler(this.timer_Elapsed);
         }
 
@@ -119,20 +145,6 @@ namespace AppController
 
             bool isConnect = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
 
-            //if(isConnect)
-            //{
-            //    // 通过WebService告知状态
-            //    if (uploadMachineInfoOnNetConn)
-            //    {
-            //        UploadMachineInfoOnNetConn();
-            //        uploadMachineInfoOnNetConn = false;
-            //    }
-            //}
-            //else
-            //{
-            //    uploadMachineInfoOnNetConn = true;
-            //}
-
             if (isConnect)
             {
                 UploadMachineInfoOnNetConn();
@@ -141,42 +153,60 @@ namespace AppController
 
         private void UploadMachineInfoOnNetConn()
         {
-            // Test: Get Data from network WCF service
-            //ServiceReference1.Service1Client srvDataTrans = new ServiceReference1.Service1Client();
-            //var trans = srvDataTrans.GetTransByID(2);
-
-            ////if (trans.Count() != 0)
-            ////    this.EventLog.WriteEntry(String.Format("UploadMachineInfoOnNetConn success, db record name is {0}", trans[0].Name), EventLogEntryType.Information);
-
-            //this.EventLog.WriteEntry(String.Format("Net connected"), EventLogEntryType.Information);
-
 
             //this.EventLog.WriteEntry(String.Format("CDKey:{0}, MachineCode:{1}", cdKey, mc), EventLogEntryType.Information);
 
-            MyWcfService myWcfService = new MyWcfService();
             //string mc = myWcfService.GetMachineCode();
             //this.EventLog.WriteEntry(String.Format("GetMachineCode success, value is {0}", mc), EventLogEntryType.Information);
             try
             {
-                var validKeyInfo = myWcfService.GetKeyInfo(RegConfig.cdkey, "hello");
 
+                // checked if all infomration are available
+                if (string.IsNullOrEmpty(RegConfig.Cdkey) ||
+                    string.IsNullOrEmpty(RegConfig.MachineCode) ||
+                    string.IsNullOrEmpty(RegConfig.FacName) ||
+                    string.IsNullOrEmpty(RegConfig.HostLink)
+                    )
+                {
+                    InitReadReg();
+                    return;
+                }
 
-                string CreationDate = validKeyInfo.CreationDate.ToShortDateString();
-                string ValidDate = validKeyInfo.CreationDate.AddDays(validKeyInfo.DaysLeft).ToShortDateString();
+                if (RegConfig.ValidKeyInfo == null)
+                {
+                    UpdateValidKeyInfoByCDKey();
+                }
+                if (!RegConfig.ValidKeyInfo.IsValid && !RegConfig.ValidKeyInfo.IsOnRightMachine)
+                {
+                    this.EventLog.WriteEntry(String.Format("Fail to get info from cdkey {0}, IsValid: {1}, IsOnRightMachine: {2}", RegConfig.Cdkey,
+                        RegConfig.ValidKeyInfo.IsValid,
+                        RegConfig.ValidKeyInfo.IsOnRightMachine), 
+                        EventLogEntryType.Error
+                        );
+                }
 
-                const string HOST_LINK = "http://nirovm2-pc:3000";
+                // Update RegConfig.ValidKeyInfo by read new cdkey from Reg
+                if (RegConfig.ValidKeyInfo.CreationDate == null ||
+                     RegConfig.ValidKeyInfo.DaysLeft < 0)
+                {
+                    this.EventLog.WriteEntry(String.Format("Fail to get CreationDate, DaysLeft from cdkey {0}", RegConfig.Cdkey), EventLogEntryType.Error);
+                }
+
+                string CreationDate = RegConfig.ValidKeyInfo.CreationDate.ToShortDateString();
+                string ValidDate = RegConfig.ValidKeyInfo.CreationDate.AddDays(RegConfig.ValidKeyInfo.DaysLeft).ToShortDateString();
+
+                
                 //this.EventLog.WriteEntry(String.Format("Check web table"), EventLogEntryType.Information);
 
                 //DateTime now = DateTime.Now;
                 //string nowToNodeJs = now.ToString("s") + "Z";
 
-                var customerData = GetNewCustomer(String.Format("{0}/GetCustomerInfo?MachineCode={1}", HOST_LINK, RegConfig.mc));
+                var customerData = GetNewCustomer(String.Format("{0}/GetCustomerInfo?MachineCode={1}", RegConfig.HostLink, RegConfig.MachineCode));
                 if (customerData == null)
                 {
                     return;
                 }
-
-
+                
 
                 if (customerData.result.Count == 0)
                 {
@@ -186,7 +216,7 @@ namespace AppController
 
                     //GetUrltoHtml("http://nirovm2-pc:3000/UploadCustomerInfo?MachineCode=92040&CDKey=KTZEY-UBGPZ-REXIG-INWXB&CreationDate=2017-06-08&ValidDate=2017-07-08");
 
-                    string uploadCustomerInfo = string.Format("{0}/UploadCustomerInfo?MachineCode={1}&CDKey={2}&CreationDate={3}&ValidDate={4}", HOST_LINK, RegConfig.mc, RegConfig.cdkey, CreationDate, ValidDate);
+                    string uploadCustomerInfo = string.Format("{0}/UploadCustomerInfo?MachineCode={1}&CDKey={2}&CreationDate={3}&ValidDate={4}", RegConfig.HostLink, RegConfig.MachineCode, RegConfig.Cdkey, CreationDate, ValidDate);
 
                     customerData = GetNewCustomer(uploadCustomerInfo);
                     if (customerData.result.Count == 0)
@@ -202,7 +232,7 @@ namespace AppController
                     this.EventLog.WriteEntry(String.Format("Update Logon time after 30 seconds"), EventLogEntryType.Information);
 
                     // Run http://nirovm2-pc:3000/UpdateLastLogTime?MachineCode=92040 to update
-                    string updateCustomerLogInfo = string.Format("{0}/UpdateLastLogTime?MachineCode={1}", HOST_LINK, RegConfig.mc);
+                    string updateCustomerLogInfo = string.Format("{0}/UpdateLastLogTime?MachineCode={1}", RegConfig.HostLink, RegConfig.MachineCode);
 
                     var updateResult = GetNewUpdateResult(updateCustomerLogInfo);
                     if (updateResult.result.ok != 1)
@@ -220,18 +250,23 @@ namespace AppController
 
                         int lefDays = (int)(webValidDate - webCreationDate).TotalDays;
                         // Re-generate CDKey
-                        string newCDKey = myWcfService.GetNewCDKey(lefDays, webCreationDate, int.Parse(RegConfig.mc));
+                        string newCDKey = RegConfig.MyWcfService.GetNewCDKey(lefDays, webCreationDate, int.Parse(RegConfig.MachineCode));
 
                         // update cdkey to web database
                         // Run http://nirovm2-pc:3000/UpdateCDKey?MachineCode=92040&CDKey=KTZEY-UBGPZ-REXIG-INWXB to update
-                        string updateCDKeyInfo = string.Format("{0}/UpdateCDKey?MachineCode={1}&CDKey={2}", HOST_LINK, RegConfig.mc, newCDKey);
+                        string updateCDKeyInfo = string.Format("{0}/UpdateCDKey?MachineCode={1}&CDKey={2}", RegConfig.HostLink, RegConfig.MachineCode, newCDKey);
+                        
+                        // CDKey 合法，写注册表
+                        if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", "CDKey", newCDKey) == false)
+                        {
+                            this.EventLog.WriteEntry(String.Format("CDKey write to reg Fail"),                EventLogEntryType.Error);
+                        }
 
-                        this.EventLog.WriteEntry(String.Format("Re-generate CDKey"), EventLogEntryType.Information);
+                        // Reload Config and Reg
+                        InitReadReg();
+                        UpdateValidKeyInfoByCDKey();
 
-                        // Update local Registry
-                        ReadReg();
-
-
+                        // Update cdkey on web mongo db
                         updateResult = GetNewUpdateResult(updateCDKeyInfo);
                         if (updateResult.result.ok != 1)
                         {
