@@ -53,9 +53,10 @@ router.post('/ChangeValidDate',function(req,res,next){
 	{
 		creation = Date.parse(req.body.creation)
 	}
-	console.log("valid:" + valid)
-	console.log("creation: " + creation)
-	console.log("extendSel: " + req.body.extendSel)
+	// console.log("valid:" + valid)
+	// console.log("creation: " + creation)
+	// console.log("extendSel: " + req.body.extendSel)
+	var webCommand = "UpdateCDKey";
 	
 	switch(extendSel)
 	{
@@ -64,8 +65,9 @@ router.post('/ChangeValidDate',function(req,res,next){
 			creation = Date.yesterday();
 			break;
 	    case 0:
-			valid = Date.parse("2000-1-1");
-			break;
+			creation = Date.now();
+			valid = Date.now();
+			webCommand = "ForeverCDKey";
 	    case 1:
 			valid = (new Date(valid)).addMonths(1);
 			break;
@@ -85,12 +87,13 @@ router.post('/ChangeValidDate',function(req,res,next){
 		break;
 	}
 
-	
+
 	CustomerDAO.update({
 		MachineCode:req.body.id
 	},{
 		ValidDate:valid,
-		CreationDate:creation
+		CreationDate:creation,
+		WebCommand:webCommand
 	},
 	function(err,result){
 		//console.log(err);
@@ -107,7 +110,7 @@ router.post('/ChangeValidDate',function(req,res,next){
 		}
 		//res.send({ title: 'Express' , a:err, b:result});
 	});	
-
+	
 });
 
 module.exports = router;

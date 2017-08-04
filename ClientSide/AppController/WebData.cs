@@ -21,6 +21,7 @@ namespace AppController
         public string CDKey { get; set; }
         public string MachineCode { get; set; }
         public string CustomerName { get; set; }
+        public string WebCommand { get; set; }
     }
 
     public class NewCustomer

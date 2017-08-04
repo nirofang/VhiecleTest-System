@@ -94,6 +94,7 @@ router.get('/UpdateCDKey', function(req, res, next) {
 	},{
 		CDKey:req.query.CDKey,
 		MachineStatus:req.query.MachineStatus,
+		WebCommand:''
 		},
 	function(err,result){
 		//console.log(err);
@@ -118,6 +119,7 @@ router.get('/UpdateCustomer', function(req, res, next) {
 		CDKey:req.query.CDKey,
 		CreationDate:req.query.CreationDate,
 		ValidDate:req.query.ValidDate,
+		CustomerName:req.query.CustomerName,
 		},
 	function(err,result){
 		//console.log(err);

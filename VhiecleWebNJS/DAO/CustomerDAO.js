@@ -16,7 +16,8 @@ CustomerDAO.save=function(c,callback){
 		CDKey:c.CDKey||'xxxxx-xxxxx-xxxxx-xxxxx',
 		CreationDate:c.CreationDate||'2017-06-06',
 		ValidDate:c.ValidDate||'2017-07-06',
-		LastLogTime:c.LastLogTime||Date.now()
+		LastLogTime:c.LastLogTime||Date.now(),
+		WebCommand:c.WebCommand||''
 	});
 	customer.save(function(err,result){
 		callback(err,result);

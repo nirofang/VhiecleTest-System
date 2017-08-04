@@ -42,13 +42,13 @@
   <table class="table">
     <thead>
       <tr>
-        <th>序号</th>
-        <th>状态</th>
+        <th width = "80px">序号</th>
+        <th width = "150px" min-width = "150px" max-width = "150px">状态</th>
         <th width = "150px" min-width = "150px" max-width = "150px">用户</th>
         <th width = "300px" min-width = "300px" max-width = "300px">机器码</th>
         <th>注册号</th>
-        <th>起始有效期</th>
-        <th>截止有效期</th>
+        <th width = "150px">起始有效期</th>
+        <th width = "150px">截止有效期</th>
         <th>操作</th>
 		<th></th>
       </tr>
@@ -61,7 +61,7 @@
       <tr>
         <th scope="row"><%=i%></th>
          <td><%= customer.MachineStatus%></td>
-        <td>海淀黄庄店</td>
+        <td><%= customer.CustomerName%></td>
         <td><%= customer.CDKey%></td>
         <td><%= customer.MachineCode%></td>
         <td id="creation_<%= customer.MachineCode%>">

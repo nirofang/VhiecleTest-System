@@ -13,6 +13,7 @@ var CustomerSchma = new mongoose.Schema({ //定义一个Schema
     LastLogTime:{ type:Date,default:Date.now},//上次心跳时间
     MachineStatus:{type:String,default:"使用中"},//状态
     ValidDate:{type:Date,default:Date.now},//有效截止时间
+	WebCommand:{type:String,default:"xxxxxxxxxxxx"},//Web下命令，客户端执行，UpdateCDKey,ForeverCDKey
     Desp:{type:String,default:"xxxxxxxxxxxx"},//描述
     Target:{type:String,default:"xxxxxxxxxxxx"}//拓展字段 
 });

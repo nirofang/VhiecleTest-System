@@ -97,7 +97,9 @@ namespace AppController
             {
                 //this.EventLog.WriteEntry(String.Format("Cannot get HostLink from REG"),
                 //    EventLogEntryType.Information);
-                return;
+                //return;
+
+                hostlink = "http://nirovm2-pc:3000";
             }
             RegConfig.HostLink = hostlink;
 
@@ -179,7 +181,6 @@ namespace AppController
                 }
 
 
-
                 if (RegConfig.ValidKeyInfo == null)
                 {
                     //this.EventLog.WriteEntry(String.Format("Calling UpdateValidKeyInfoByCDKey"), EventLogEntryType.Information);
@@ -196,23 +197,28 @@ namespace AppController
 
                 if (RegConfig.ValidKeyInfo == null)
                 {
-                    RegConfig.KeyStatus = "Wrong Format CDKey";
+                    RegConfig.KeyStatus = "密钥格式错误";
                 }
-                else if (!RegConfig.ValidKeyInfo.IsValid && !RegConfig.ValidKeyInfo.IsOnRightMachine)
+                else if (RegConfig.ValidKeyInfo.Features[0])
+                {
+                    RegConfig.KeyStatus = "永久密钥";
+                }
+                else if (!RegConfig.ValidKeyInfo.IsValid || !RegConfig.ValidKeyInfo.IsOnRightMachine || RegConfig.ValidKeyInfo.IsExpired)
                 {
                     this.EventLog.WriteEntry(String.Format("Fail to get info from cdkey {0}, IsValid: {1}, IsOnRightMachine: {2}", RegConfig.Cdkey,
                         RegConfig.ValidKeyInfo.IsValid,
-                        RegConfig.ValidKeyInfo.IsOnRightMachine), 
+                        RegConfig.ValidKeyInfo.IsOnRightMachine),
                         EventLogEntryType.Error
                         );
 
-                    RegConfig.KeyStatus = "Invalid CDKey";
+                    RegConfig.KeyStatus = "密钥失效";
                     
                 }
                 else
                 {
-                    RegConfig.KeyStatus = "Working";
+                    RegConfig.KeyStatus = "密钥正常";
                 }
+
 
                 //this.EventLog.WriteEntry(String.Format("After judage ValidKeyInfo"), EventLogEntryType.Information);
 
@@ -220,18 +226,18 @@ namespace AppController
                 string CreationDate = null;
                 string ValidDate = null;
                 // Update RegConfig.ValidKeyInfo by read new cdkey from Reg
-                if (RegConfig.ValidKeyInfo == null ||
-                    RegConfig.KeyStatus != "Working" ||
-                RegConfig.ValidKeyInfo.DaysLeft < 0)
+                try
                 {
-                    this.EventLog.WriteEntry(String.Format("Fail to get CreationDate, DaysLeft from cdkey {0}", RegConfig.Cdkey), EventLogEntryType.Error);
-
+                    if (RegConfig.ValidKeyInfo != null)
+                    {
+                        // This coversion may cause issue
+                        CreationDate = RegConfig.ValidKeyInfo.CreationDate.ToShortDateString();
+                        ValidDate = RegConfig.ValidKeyInfo.CreationDate.AddDays(RegConfig.ValidKeyInfo.SetTime).ToShortDateString();
+                    }
                 }
-                else
+                catch(Exception ex)
                 {
-
-                    CreationDate = RegConfig.ValidKeyInfo.CreationDate.ToShortDateString();
-                    ValidDate = RegConfig.ValidKeyInfo.CreationDate.AddDays(RegConfig.ValidKeyInfo.DaysLeft).ToShortDateString();
+                    this.EventLog.WriteEntry(String.Format("Convert Date string excption: {0}", ex.Message), EventLogEntryType.Information);
                 }
 
                 //this.EventLog.WriteEntry(String.Format("CreationDate: {0}", CreationDate), EventLogEntryType.Information);
@@ -266,7 +272,7 @@ namespace AppController
                     //need to update test status every 30 seconds
                     DateTime lastLogTime = DateTime.Parse(customerData.result[0].LastLogTime);
 
-                    this.EventLog.WriteEntry(String.Format("Send heartbeat message UpdateLastLogTime"), EventLogEntryType.Information);
+                    //this.EventLog.WriteEntry(String.Format("Send heartbeat message UpdateLastLogTime"), EventLogEntryType.Information);
 
                     // Run http://nirovm2-pc:3000/UpdateLastLogTime?MachineCode=92040 to update
                     string updateCustomerLogInfo = string.Format("{0}/UpdateLastLogTime?MachineCode={1}", RegConfig.HostLink, RegConfig.MachineCode);
@@ -278,50 +284,60 @@ namespace AppController
                     }
 
 
-                    // Check if CDKey != webCDKey, need to udpate the webCDKey
-                    if (RegConfig.Cdkey != customerData.result[0].CDKey || RegConfig.KeyStatus != customerData.result[0].MachineStatus)
+                    string webValidDate = null;
+                    if (customerData.result[0].ValidDate != null)
                     {
-                        // update cdkey to web database
-                        // Run http://nirovm2-pc:3000/UpdateCustomer?MachineCode=92040&CDKey=KTZEY-UBGPZ-REXIG-INWXB to update
-                        string updateCDKeyInfo = string.Format("{0}/UpdateCustomer?MachineCode={1}&CDKey={2}&CreationDate={3}&ValidDate={4}&MachineStatus={5}", RegConfig.HostLink, RegConfig.MachineCode, RegConfig.Cdkey, CreationDate, ValidDate, RegConfig.KeyStatus);
-
-                        // Update cdkey on web mongo db
-                        updateResult = GetNewUpdateResult(updateCDKeyInfo);
-                        if (updateResult.result.ok != 1)
-                        {
-                            this.EventLog.WriteEntry(String.Format("Update CDKey failed"), EventLogEntryType.Information);
-                        }
-
-                        return;
+                        webValidDate = DateTime.Parse(customerData.result[0].ValidDate).ToShortDateString();
                     }
-
-
-
-                    // Check if CDKey need to be updated
-                    if (string.IsNullOrEmpty(customerData.result[0].ValidDate) || string.IsNullOrEmpty(customerData.result[0].CreationDate))
+                    string webCreationDate = null;
+                    if (customerData.result[0].CreationDate != null)
                     {
-                        return;
+                        webCreationDate = DateTime.Parse(customerData.result[0].CreationDate).ToShortDateString();
                     }
-                    DateTime webValidDate = DateTime.Parse(customerData.result[0].ValidDate);
-                    DateTime webCreationDate = DateTime.Parse(customerData.result[0].CreationDate);
 
                     //this.EventLog.WriteEntry(String.Format("webCreationDate: {0}", webCreationDate), EventLogEntryType.Information);
                     //this.EventLog.WriteEntry(String.Format("webValidDate: {0}", webValidDate), EventLogEntryType.Information);
 
                     //this.EventLog.WriteEntry(String.Format("CreationDate: {0}", CreationDate), EventLogEntryType.Information);
                     //this.EventLog.WriteEntry(String.Format("ValidDate: {0}", ValidDate), EventLogEntryType.Information);
+                    //this.EventLog.WriteEntry(String.Format("RegConfig.FacName: {0}", RegConfig.FacName), EventLogEntryType.Information);
+                    //this.EventLog.WriteEntry(String.Format("customerData.result[0].CustomerName: {0}", customerData.result[0].CustomerName), EventLogEntryType.Information);
+                    this.EventLog.WriteEntry(String.Format("RegConfig.KeyStatus: {0}", RegConfig.KeyStatus), EventLogEntryType.Information);
 
-                    this.EventLog.WriteEntry(String.Format("webValidDate short format: {0}", webValidDate.ToShortDateString()), EventLogEntryType.Information);
+                    // Check if CDKey not need to be updated
+                    if (string.IsNullOrEmpty(customerData.result[0].WebCommand))
+                    {
+                        // Check if CDKey != webCDKey, need to udpate the webCDKey
+                        if (RegConfig.Cdkey != customerData.result[0].CDKey || RegConfig.KeyStatus != customerData.result[0].MachineStatus || webCreationDate != CreationDate || webValidDate != ValidDate || customerData.result[0].CustomerName != RegConfig.FacName)
+                        {
+                            // update cdkey to web database
+                            // Run http://nirovm2-pc:3000/UpdateCustomer?MachineCode=92040&CDKey=KTZEY-UBGPZ-REXIG-INWXB to update
+                            string updateCDKeyInfo = string.Format("{0}/UpdateCustomer?MachineCode={1}&CDKey={2}&CreationDate={3}&ValidDate={4}&MachineStatus={5}&&CustomerName={6}", RegConfig.HostLink, RegConfig.MachineCode, RegConfig.Cdkey, CreationDate, ValidDate, RegConfig.KeyStatus, RegConfig.FacName);
 
-                    if (webCreationDate.ToShortDateString() != CreationDate || webValidDate.ToShortDateString() != ValidDate)
+                            // Update cdkey on web mongo db
+                            updateResult = GetNewUpdateResult(updateCDKeyInfo);
+                            if (updateResult.result.ok != 1)
+                            {
+                                this.EventLog.WriteEntry(String.Format("Update CDKey failed"), EventLogEntryType.Information);
+                            }
+
+                        }
+                        return;
+                    }
+
+
+                    if (webCreationDate != CreationDate || webValidDate != ValidDate)
                     {
 
                         //this.EventLog.WriteEntry(String.Format("Re-generate CDKey"), EventLogEntryType.Information);
+                        var webCreationDateObj = DateTime.Parse(customerData.result[0].CreationDate);
+                        var webValidDateObj = DateTime.Parse(customerData.result[0].ValidDate);
 
-                        int lefDays = (int)(webValidDate - webCreationDate).TotalDays;
+
+                        int lefDays = (int)(webValidDateObj - webCreationDateObj).TotalDays;
 
                         bool foreverWork = false;
-                        if (webValidDate.ToShortDateString() == "2000-01-01")
+                        if (customerData.result[0].WebCommand == "ForeverCDKey")
                         {
                             lefDays = 0;
                             foreverWork = true;
@@ -333,7 +349,7 @@ namespace AppController
                         // Re-generate CDKey
                         // TODO: add a param to pass secret phrase to GetNewCDKey
 
-                        string newCDKey = RegConfig.MyWcfService.GetNewCDKey(lefDays, webCreationDate, int.Parse(RegConfig.MachineCode), "hello", foreverWork);
+                        string newCDKey = RegConfig.MyWcfService.GetNewCDKey(lefDays, webCreationDateObj, int.Parse(RegConfig.MachineCode), "hello", foreverWork);
   
                         // CDKey 合法，写注册表
                         if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", "CDKey", newCDKey) == false)
