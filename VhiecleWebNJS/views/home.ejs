@@ -60,12 +60,24 @@
     %>
       <tr>
         <th scope="row"><%=i%></th>
-         <td>在线</td>
+         <td><%= customer.MachineStatus%></td>
         <td>海淀黄庄店</td>
         <td><%= customer.CDKey%></td>
         <td><%= customer.MachineCode%></td>
-        <td><%= customer.CreationDate.toLocaleDateString()%></td>
-        <td id="valid_<%= customer.MachineCode%>"><%= customer.ValidDate.toLocaleDateString()%></td>
+        <td id="creation_<%= customer.MachineCode%>">
+		<% if (customer.CreationDate == null) {%>
+		<%= "N/A"%>
+		<%} else {%>
+		<%= customer.CreationDate.toLocaleDateString()%>
+		<% } %>
+		</td>
+        <td id="valid_<%= customer.MachineCode%>">
+		<% if (customer.ValidDate == null) {%>
+		<%= "N/A"%>
+		<%} else {%>
+		<%= customer.ValidDate.toLocaleDateString()%>
+		<% } %>
+		</td>
         <td>
         <select id="date_operation_<%= customer.MachineCode%>">
         <option value="-1">立即停用</option>
@@ -103,7 +115,8 @@
 			$('.savebtn').click(function(){
 		 var id=$(this).attr("id");
 		 var selectVal=$('#date_operation_'+id).val();
-		 var valid=$('#valid_'+id).html();
+		 var valid=$('#valid_'+id).html().replace(/\s/g,'');
+		 var creation=$('#creation_'+id).html().replace(/\s/g,'');
 		 <!-- alert(id +":" + selectVal); -->
 		    		$.ajax({
     			url:'/home/ChangeValidDate',
@@ -111,7 +124,8 @@
     			data:{
     				id:id,
     				extendSel:selectVal,
-					valid:valid
+					valid:valid,
+					creation:creation
     			},
     			success:function(data){
     				console.log(data);

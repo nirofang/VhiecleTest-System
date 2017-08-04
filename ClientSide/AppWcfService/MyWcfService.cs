@@ -48,11 +48,16 @@ namespace AppWcfService
             return generate.MachineCode.ToString();
         }
 
-        public string GetNewCDKey(int daysLeft, DateTime creationDate, int machineCode)
+        public string GetNewCDKey(int daysLeft, DateTime creationDate, int machineCode, string secretPhase, bool foreverWork = false)
         {
             SKGL.SerialKeyConfiguration skc = new SKGL.SerialKeyConfiguration();
+            if (foreverWork == true)
+            {
+                skc.Features[0] = true;
+            }
             SKGL.Generate generate = new SKGL.Generate(skc);
-            
+            generate.secretPhase = secretPhase;
+
             return generate.doKey(daysLeft, creationDate, machineCode);
         }
 

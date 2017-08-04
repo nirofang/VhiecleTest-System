@@ -36,35 +36,62 @@ router.get('/addUser',function(req,res,next){
 router.post('/ChangeValidDate',function(req,res,next){
 	var extendSel = parseInt(req.body.extendSel);
 	var valid;
+	var creation;
+	
+	
+	if (req.body.valid == "N/A"){
+		valid = Date.now();
+	}
+	else
+	{
+		valid = Date.parse(req.body.valid)
+	}
+	if (req.body.creation == "N/A"){
+		creation = Date.now();
+	}
+	else
+	{
+		creation = Date.parse(req.body.creation)
+	}
+	console.log("valid:" + valid)
+	console.log("creation: " + creation)
+	console.log("extendSel: " + req.body.extendSel)
+	
 	switch(extendSel)
 	{
 		case -1:
-			valid = Date.now();
+			valid = Date.yesterday();
+			creation = Date.yesterday();
 			break;
 	    case 0:
-			valid = Date.parse("2222-2-2");
+			valid = Date.parse("2000-1-1");
 			break;
 	    case 1:
-			valid = (new Date(Date.parse(req.body.valid))).addMonths(1);
+			valid = (new Date(valid)).addMonths(1);
 			break;
 	    case 3:
-			valid = (new Date(Date.parse(req.body.valid))).addMonths(3);
+			valid = (new Date(valid)).addMonths(3);
 			break;
 	    case 6:
-			valid =  (new Date(Date.parse(req.body.valid))).addMonths(6);
+			valid = (new Date(valid)).addMonths(6);
 			break;
 	    case 12:
-			valid =  (new Date(Date.parse(req.body.valid))).addYears(1);
+			valid = (new Date(valid)).addYears(1);
 			break;
 	    case 24:
-			valid =  (new Date(Date.parse(req.body.valid))).addYears(2);
+			valid = (new Date(valid)).addYears(2);
 			break;	
 		default:
 		break;
 	}
+
+	
 	CustomerDAO.update({
 		MachineCode:req.body.id
-	},{ValidDate:valid},
+	},{
+		ValidDate:valid,
+		CreationDate:creation
+	},
 	function(err,result){
 		//console.log(err);
 		console.log(result);

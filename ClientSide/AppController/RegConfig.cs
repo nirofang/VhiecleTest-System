@@ -32,5 +32,6 @@ namespace AppController
         }
         public static KeyInfo ValidKeyInfo { get; internal set; }
         public static string FacName { get; internal set; }
+        public static string KeyStatus { get; internal set; }
     }
 }

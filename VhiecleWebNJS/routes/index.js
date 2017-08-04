@@ -49,7 +49,6 @@ router.get('/UploadCustomerInfo', function(req, res, next) {
 		MachineStatus:req.query.MachineStatus,
 		CDKey:req.query.CDKey,
 		CreationDate:req.query.CreationDate,
-		// LastLogTime:req.query.LastLogTime,
 		ValidDate:req.query.ValidDate,
 	},function(err,result){
 		//console.log(err);
@@ -84,20 +83,6 @@ router.get('/UpdateLastLogTime', function(req, res, next) {
 		else
 		{
 			res.send({ result:result});
-			// CustomerDAO.find({
-				// MachineCode:req.query.MachineCode,
-			// },function(err,result){
-				// //console.log(err);
-				// console.log(result);
-				// if(err)
-				// {
-					// res.send({ err:err});
-				// }
-				// else
-				// {
-					// res.send({ result:result});
-				// }			
-			// })
 		}
 		//res.send({ title: 'Express' , a:err, b:result});
 	});
@@ -106,7 +91,10 @@ router.get('/UpdateLastLogTime', function(req, res, next) {
 router.get('/UpdateCDKey', function(req, res, next) {
 	CustomerDAO.update({
 		MachineCode:req.query.MachineCode
-	},{CDKey:req.query.CDKey},
+	},{
+		CDKey:req.query.CDKey,
+		MachineStatus:req.query.MachineStatus,
+		},
 	function(err,result){
 		//console.log(err);
 		console.log(result);
@@ -117,25 +105,34 @@ router.get('/UpdateCDKey', function(req, res, next) {
 		else
 		{
 			res.send({ result:result});
-			// CustomerDAO.find({
-				// MachineCode:req.query.MachineCode,
-			// },function(err,result){
-				// //console.log(err);
-				// console.log(result);
-				// if(err)
-				// {
-					// res.send({ err:err});
-				// }
-				// else
-				// {
-					// res.send({ result:result});
-				// }			
-			// })
 		}
 		//res.send({ title: 'Express' , a:err, b:result});
 	});
 });
 
+router.get('/UpdateCustomer', function(req, res, next) {
+	CustomerDAO.update({
+		MachineCode:req.query.MachineCode
+	},{
+		MachineStatus:req.query.MachineStatus,
+		CDKey:req.query.CDKey,
+		CreationDate:req.query.CreationDate,
+		ValidDate:req.query.ValidDate,
+		},
+	function(err,result){
+		//console.log(err);
+		console.log(result);
+		if(err)
+		{
+			res.send({ err:err});
+		}
+		else
+		{
+			res.send({ result:result});
+		}
+		//res.send({ title: 'Express' , a:err, b:result});
+	});
+});
 
 router.get('/GetCustomerInfo', function(req, res, next) {
 	CustomerDAO.find({
@@ -151,7 +148,6 @@ router.get('/GetCustomerInfo', function(req, res, next) {
 		{
 			res.send({ result:result});
 		}
-		
 		//res.send({ title: 'Express' , a:err, b:result});
 	});
 
