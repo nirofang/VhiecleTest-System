@@ -88,6 +88,7 @@ router.get('/UpdateLastLogTime', function(req, res, next) {
 	});
 });
 
+
 router.get('/UpdateCDKey', function(req, res, next) {
 	CustomerDAO.update({
 		MachineCode:req.query.MachineCode
@@ -173,21 +174,6 @@ router.get('/GetCustomerAll', function(req, res, next) {
 	});
 
 });
-
-// router.post('/testapi_po', function(req, res, next) {
-	 // var a = req.body.a;
-	 // var b = req.body.b;
-	 
-	 // CustomerDAO.save({},function(err,result){
-	// console.log(err);
-	// console.log(result);
-	 // });
-// });
-	 
-	// // console.log(req);
-  // res.send({ title: 'Express' , a:a, b:b});
-// });
-
 
 
 module.exports = router;

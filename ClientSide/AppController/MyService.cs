@@ -205,11 +205,11 @@ namespace AppController
                 }
                 else if (!RegConfig.ValidKeyInfo.IsValid || !RegConfig.ValidKeyInfo.IsOnRightMachine || RegConfig.ValidKeyInfo.IsExpired)
                 {
-                    this.EventLog.WriteEntry(String.Format("Fail to get info from cdkey {0}, IsValid: {1}, IsOnRightMachine: {2}", RegConfig.Cdkey,
-                        RegConfig.ValidKeyInfo.IsValid,
-                        RegConfig.ValidKeyInfo.IsOnRightMachine),
-                        EventLogEntryType.Error
-                        );
+                    //this.EventLog.WriteEntry(String.Format("Fail to get info from cdkey {0}, IsValid: {1}, IsOnRightMachine: {2}", RegConfig.Cdkey,
+                    //    RegConfig.ValidKeyInfo.IsValid,
+                    //    RegConfig.ValidKeyInfo.IsOnRightMachine),
+                    //    EventLogEntryType.Error
+                    //    );
 
                     RegConfig.KeyStatus = "密钥失效";
                     
@@ -302,7 +302,7 @@ namespace AppController
                     //this.EventLog.WriteEntry(String.Format("ValidDate: {0}", ValidDate), EventLogEntryType.Information);
                     //this.EventLog.WriteEntry(String.Format("RegConfig.FacName: {0}", RegConfig.FacName), EventLogEntryType.Information);
                     //this.EventLog.WriteEntry(String.Format("customerData.result[0].CustomerName: {0}", customerData.result[0].CustomerName), EventLogEntryType.Information);
-                    this.EventLog.WriteEntry(String.Format("RegConfig.KeyStatus: {0}", RegConfig.KeyStatus), EventLogEntryType.Information);
+                    //this.EventLog.WriteEntry(String.Format("RegConfig.KeyStatus: {0}", RegConfig.KeyStatus), EventLogEntryType.Information);
 
                     // Check if CDKey not need to be updated
                     if (string.IsNullOrEmpty(customerData.result[0].WebCommand))
@@ -326,7 +326,11 @@ namespace AppController
                     }
 
 
-                    if (webCreationDate != CreationDate || webValidDate != ValidDate)
+                    if (webCreationDate != CreationDate || 
+                        webValidDate != ValidDate || 
+                        (RegConfig.ValidKeyInfo != null &&      // This condition check if want to replace forever cdkey
+                        RegConfig.ValidKeyInfo.Features[0] == true && 
+                        customerData.result[0].WebCommand != "ForeverCDKey"))
                     {
 
                         //this.EventLog.WriteEntry(String.Format("Re-generate CDKey"), EventLogEntryType.Information);
@@ -359,12 +363,12 @@ namespace AppController
 
                         // Reload Config and Reg
                         InitReadReg();
-                        this.EventLog.WriteEntry(String.Format("After Re-generate CDKey, cdkey {0}, machinecode {1}", RegConfig.Cdkey, int.Parse(RegConfig.MachineCode)), EventLogEntryType.Information);
+                        //this.EventLog.WriteEntry(String.Format("After Re-generate CDKey, cdkey {0}, machinecode {1}", RegConfig.Cdkey, int.Parse(RegConfig.MachineCode)), EventLogEntryType.Information);
 
 
                         UpdateValidKeyInfoByCDKey();
 
-                        this.EventLog.WriteEntry(String.Format("After Rereload cdkey and get key info"), EventLogEntryType.Information);
+                        //this.EventLog.WriteEntry(String.Format("After Rereload cdkey and get key info"), EventLogEntryType.Information);
 
 
                         // update cdkey to web database

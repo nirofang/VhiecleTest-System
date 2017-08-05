@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var Customer=mongoose.model('Customer');
 
 
-
 var CustomerDAO={};
 
 CustomerDAO.save=function(c,callback){
@@ -33,6 +32,7 @@ CustomerDAO.update=function(condition,newValues,callback){
 		callback(err,result);
 	});
 };
+
 
 module.exports=CustomerDAO;
 

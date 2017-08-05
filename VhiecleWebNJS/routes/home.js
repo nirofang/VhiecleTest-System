@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var CustomerDAO=require('../DAO/CustomerDAO');
 
+var LogInfoDAO=require('../DAO/LogDAO');
+
 require('date-utils');
 
 
@@ -53,9 +55,7 @@ router.post('/ChangeValidDate',function(req,res,next){
 	{
 		creation = Date.parse(req.body.creation)
 	}
-	// console.log("valid:" + valid)
-	// console.log("creation: " + creation)
-	// console.log("extendSel: " + req.body.extendSel)
+
 	var webCommand = "UpdateCDKey";
 	
 	switch(extendSel)
@@ -87,6 +87,9 @@ router.post('/ChangeValidDate',function(req,res,next){
 		break;
 	}
 
+	// console.log("customerName:" + req.body.customerName)
+	// console.log("machineCode: " + req.body.machineCode)
+	// console.log("operation: " + req.body.operation)
 
 	CustomerDAO.update({
 		MachineCode:req.body.id
@@ -104,11 +107,26 @@ router.post('/ChangeValidDate',function(req,res,next){
 		}
 		else
 		{
-			res.send('ok');
-			//res.send({ result:result});
-			
+			//res.send('ok');
+			LogInfoDAO.save({
+				CustomerName:req.body.customerName,
+				MachineCode:req.body.machineCode,
+				Operation:req.body.operation
+			},
+			function(err,result){
+				//console.log(err);
+				console.log(result);
+				if(err)
+				{
+					res.send({ err:err});
+				}
+				else
+				{
+					res.send('ok');
+				}
+			});	
 		}
-		//res.send({ title: 'Express' , a:err, b:result});
+
 	});	
 	
 });

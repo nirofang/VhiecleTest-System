@@ -3,8 +3,6 @@ var mongoose = require('mongoose');
 
 var UserInfo=mongoose.model('UserInfo');
 
-
-
 var UserDAO={};
 
 UserDAO.save=function(user,callback){

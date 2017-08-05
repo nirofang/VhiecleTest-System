@@ -1,107 +1,113 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>首页</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
-    <!-- Loading Bootstrap -->
-<!--     <link href="/css/bootstrap.min.css" rel="stylesheet"> -->
-    <!-- Loading Flat UI -->
-    <!-- <link href="/css/flat-ui.min.css" rel="stylesheet">
-    <link href="/css/demo.css" rel="stylesheet"> -->
-    <link rel="shortcut icon" href="img/favicon.ico">
-    
-    <!-- <link rel='stylesheet' href='/css/style.css' /> -->
-    <link rel='stylesheet' href='/css/responsive-nav.css' />
-
+	<% include ./partials/head %>
   </head>
   <body>
-     <div role="navigation" id="nav">
-      <ul>
-        <li class="active"><a href="/home">首页</a></li>
-        <li><a href="/pass">修改密码</a></li>
-        <li><a href="/logs">日志</a></li>
-        <li><a href="/help">帮组文档</a></li>
-      </ul>
-    </div>
-
-    <div role="main" class="main">
-      <a href="#nav" id="toggle">Menu</a>
-      <div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">列表</div>
-
-  <div class="panel-body">
-    <p>...</p>
-	
-    
-  </div>
-
-
-  <!-- Table -->
-  <table class="table">
-    <thead>
-      <tr>
-        <th width = "80px">序号</th>
-        <th width = "150px" min-width = "150px" max-width = "150px">状态</th>
-        <th width = "150px" min-width = "150px" max-width = "150px">用户</th>
-        <th width = "300px" min-width = "300px" max-width = "300px">机器码</th>
-        <th>注册号</th>
-        <th width = "150px">起始有效期</th>
-        <th width = "150px">截止有效期</th>
-        <th>操作</th>
-		<th></th>
-      </tr>
-    </thead>
-    <tbody>
-    <%
-      var i = 1;    
-      customers.forEach(function(customer) {
-    %>
-      <tr>
-        <th scope="row"><%=i%></th>
-         <td><%= customer.MachineStatus%></td>
-        <td><%= customer.CustomerName%></td>
-        <td><%= customer.CDKey%></td>
-        <td><%= customer.MachineCode%></td>
-        <td id="creation_<%= customer.MachineCode%>">
-		<% if (customer.CreationDate == null) {%>
-		<%= "N/A"%>
-		<%} else {%>
-		<%= customer.CreationDate.toLocaleDateString()%>
-		<% } %>
-		</td>
-        <td id="valid_<%= customer.MachineCode%>">
-		<% if (customer.ValidDate == null) {%>
-		<%= "N/A"%>
-		<%} else {%>
-		<%= customer.ValidDate.toLocaleDateString()%>
-		<% } %>
-		</td>
-        <td>
-        <select id="date_operation_<%= customer.MachineCode%>">
-        <option value="-1">立即停用</option>
-        <option value="1">延期一个月</option>
-        <option value="3">延期三个月</option>
-        <option value="6">延期六个月</option>
-        <option value="12">延期一年</option>
-        <option value="24">延期两年</option>
-        <option value="0">永久有效</option>
-        </select>
-        </td>
-		<td>
-			<input id="<%= customer.MachineCode%>" type="button" class="savebtn" value = "保存"/>
-		</td>
-      </tr>
-    <%
-      i++;
-      });
-    %>  
-    </tbody>
-  </table>
   
-</div>
+	<header>
+		<% include ./partials/header %>
+    </header>
+  
+
+    <div role="main" class="main wrapper">
+      <a href="#nav" id="toggle">Menu</a>
+      <div class="panel panel-default content">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">列表</div>
+
+	  <div class="panel-body">
+		<p>...</p>    
+	  </div>
+
+
+	  <!-- Table -->
+	  <table class="table">
+		<thead>
+		  <tr>
+			<th width = "80px">序号</th>
+			<th width = "150px" min-width = "150px" max-width = "150px">密钥状态</th>
+			<th width = "150px" min-width = "150px" max-width = "150px">用户</th>
+			<th width = "300px" min-width = "300px" max-width = "300px">密钥</th>
+			<th width = "80px">机器码</th>
+			<th width = "150px">起始有效期</th>
+			<th width = "150px">截止有效期</th>
+			<th>操作</th>
+			<th></th>
+		  </tr>
+		</thead>
+		<tbody>
+		<%
+		  var i = 1;    
+		  customers.forEach(function(customer) {
+		%>
+		  <tr>
+			<td scope="row"><%=i%></td>
+			<td>
+			<% if (customer.MachineStatus != "密钥失效") { %>
+					<font color = 'green'>
+				<%} else {%>
+					<font color = 'red'>
+				<% } %>
+				<%= customer.MachineStatus%>
+				</font>
+			</td>
+			<td id="customerName_<%= customer.MachineCode%>">
+				<% if (Math.abs((Date.now() - customer.LastLogTime)/1000) < 6) { %>
+					<font color = 'green'>
+				<%} else {%>
+					<font color = 'red'>
+				<% } %>
+					<%= customer.CustomerName%>
+				</font>
+			</td>
+			<td><%= customer.CDKey%></td>
+			<td id="machineCode_<%= customer.MachineCode%>">
+				<%= customer.MachineCode%>
+			</td>
+			<td id="creation_<%= customer.MachineCode%>">
+			<% if (customer.CreationDate == null) {%>
+			<%= "N/A"%>
+			<%} else {%>
+			<%= customer.CreationDate.toLocaleDateString()%>
+			<% } %>
+			</td>
+			<td id="valid_<%= customer.MachineCode%>">
+			<% if (customer.ValidDate == null) {%>
+			<%= "N/A"%>
+			<%} else {%>
+			<%= customer.ValidDate.toLocaleDateString()%>
+			<% } %>
+			</td>
+			<td>
+			<select id="date_operation_<%= customer.MachineCode%>">
+			<option value="-1">立即停用</option>
+			<option value="1">延期一个月</option>
+			<option value="3">延期三个月</option>
+			<option value="6">延期六个月</option>
+			<option value="12">延期一年</option>
+			<option value="24">延期两年</option>
+			<option value="0">永久有效</option>
+			</select>
+			</td>
+			<td>
+				<input id="<%= customer.MachineCode%>" type="button" class="savebtn" value = "保存"/>
+			</td>
+		  </tr>
+		<%
+		  i++;
+		  });
+		%>  
+		</tbody>
+	  </table>
+	  
+	</div>
+
+	<footer>
+		<% include ./partials/footer %>
+    </footer>
     </div>
+	
       <!-- script -->
     <script src="/js/jquery.min.js"></script>
     <script src="/js/video.js"></script>
@@ -115,8 +121,11 @@
 			$('.savebtn').click(function(){
 		 var id=$(this).attr("id");
 		 var selectVal=$('#date_operation_'+id).val();
-		 var valid=$('#valid_'+id).html().replace(/\s/g,'');
-		 var creation=$('#creation_'+id).html().replace(/\s/g,'');
+		 var valid=$('#valid_'+id).text().replace(/\s/g,'');
+		 var creation=$('#creation_'+id).text().replace(/\s/g,'');
+		 var operation=$('#date_operation_'+id).find("option:selected").text();;
+		 var customerName=$('#customerName_'+id).text().replace(/\s/g,'');;
+		 var machineCode=id;
 		 <!-- alert(id +":" + selectVal); -->
 		    		$.ajax({
     			url:'/home/ChangeValidDate',
@@ -125,7 +134,10 @@
     				id:id,
     				extendSel:selectVal,
 					valid:valid,
-					creation:creation
+					creation:creation,
+					operation,
+					customerName,
+					machineCode,	
     			},
     			success:function(data){
     				console.log(data);
@@ -141,6 +153,7 @@
       videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
 	
     </script>
-       <!-- script -->
+    <!-- script -->
+
   </body>
 </html>
