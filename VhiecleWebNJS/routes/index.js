@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
+
+var UserDAO=require('../DAO/CustomerDAO');
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -11,14 +14,19 @@ router.get('/login',function(req,res,next){
 	var pwd=req.query.pwd;
 	console.log(name+"---"+pwd);
 	if(name=='abc'&&pwd=='123456'){
-		res.send('ok');
 		req.session.name=name;
+		res.send('ok');
 	}else{
-	res.send('error');
-}
+		res.send('error');
+	}
 });
 
-/* Test API */
+router.get('/logout',function(req,res,next){
+	req.session.name=null;
+	res.send('ok');
+});
+
+/* Web Service API */
 var CustomerDAO=require('../DAO/CustomerDAO');
 
 

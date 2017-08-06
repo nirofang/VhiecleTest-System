@@ -1,0 +1,30 @@
+var express = require('express');
+var router = express.Router();
+
+var VhiecleDAO=require('../DAO/VhiecleDAO');
+
+
+/* 读取车辆信息 */
+router.get('/', function(req, res, next) {
+	
+  	VhiecleDAO.find(true,function(err,result){
+		//console.log(err);
+		console.log(result);
+		
+		if(err)
+		{
+			res.render('error', { title: 'error' });
+		}
+		else
+		{
+			res.render('vhiecles', 
+			{ title: '车辆维修订单' 
+			, vhiecles: result
+			});
+		}
+	});
+  
+});
+
+
+module.exports = router;

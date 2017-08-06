@@ -16,5 +16,12 @@ UserDAO.save=function(user,callback){
 	});
 };
 
+UserDAO.find=function(condition,callback){
+	UserInfo.find(condition,function(err,result){
+		callback(err,result);
+	});
+};
+
+
 module.exports=UserDAO;
 

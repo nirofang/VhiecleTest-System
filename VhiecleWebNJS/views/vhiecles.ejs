@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<% include ./partials/head %>
+  </head>
+  <body>
+  
+	<header>
+		<% include ./partials/header %>
+    </header>
+  
+
+    <div role="main" class="main wrapper">
+      <a href="#nav" id="toggle">Menu</a>
+      <div class="panel panel-default content">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">列表</div>
+
+	  <div class="panel-body">
+		<p>...</p>    
+	  </div>
+
+
+  <!-- Table -->
+  <table class="table">
+		<!-- <thead> -->
+		  <!-- <tr> -->
+			<!-- <th width = "80px">序号</th> -->
+			<!-- <th width = "150px" min-width = "150px" max-width = "150px">用户</th> -->
+			<!-- <th>密码</th> -->
+			<!-- <th width = "150px">加入日期</th> -->
+			<!-- <th></th> -->
+		  <!-- </tr> -->
+		<!-- </thead> -->
+		<tbody>
+		<%
+		  vhiecles.forEach(function(vhiecle) {
+		%>
+		  <tr>
+			<td><%=vhiecle.MachineCode%></td>
+			<td><%=vhiecle.VhiecleId%></td>
+			<td><%=vhiecle.RegNo%></td>
+			<td><%=vhiecle.MakeType%></td>
+			<td><%=vhiecle.Milage%></td>
+			<td><%=vhiecle.Date%></td>
+			<td><%=vhiecle.Sign%></td>
+			<td><%=vhiecle.CustomerData%></td>
+			<td><%=vhiecle.InfoPage%></td>
+			<td><%=vhiecle.SteerboxB%></td>
+			<td><%=vhiecle.SteerboxA%></td>
+			<td><%=vhiecle.a%></td>
+			<td><%=vhiecle.Done%></td>
+			<td><%=vhiecle.Side%></td>
+			<td><%=vhiecle.CenterLine%></td>
+			<td><%=vhiecle.RefAxle%></td>
+			<td><%=vhiecle.RefType%></td>
+			<td><%=vhiecle.CL_F%></td>
+			<td><%=vhiecle.CL_R%></td>
+			<td><%=vhiecle.Offset_F0%></td>
+			<td><%=vhiecle.Offset_R0%></td>
+			<td><%=vhiecle.Type%></td>
+			<td><%=vhiecle.FloorscalesUsed%></td>
+			<td><%=vhiecle.Model%></td>
+			<td><%=vhiecle.RadarType%></td>
+			<td><%=vhiecle.RadarHorizontalB%></td>
+			<td><%=vhiecle.RadarHorizontalA%></td>
+			<td><%=vhiecle.RadarVerticalB%></td>
+			<td><%=vhiecle.RadarVerticalA%></td>
+			<td><%=vhiecle.RadarAZOF%></td>
+			<td><%=vhiecle.RadarELOF%></td>
+			<td><%=vhiecle.FrameFrontWidth%></td>
+			<td><%=vhiecle.FrameRearWidth%></td>
+			<td><%=vhiecle.FrameGauge%></td>
+			<td><%=vhiecle.WACreated%></td>
+			<td><%=vhiecle.FMCreated%></td>
+		  </tr>
+		<%
+		  });
+		%>  
+	</tbody>
+  </table>
+	  
+	</div>
+
+	<footer>
+		<% include ./partials/footer %>
+    </footer>
+    </div>
+	
+      <!-- script -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/video.js"></script>
+    <script src="/js/flat-ui.min.js"></script>
+    <script src="/js/application.js"></script>
+    <!-- <script src='/js/responsive-nav.js' /> -->
+    <script>
+	   $(function(){
+    <!-- var navigation = responsiveNav(".nav-collapse"); -->
+      videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
+
+      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
+	
+    </script>
+    <!-- script -->
+
+  </body>
+</html>
