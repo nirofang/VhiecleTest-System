@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using System.Data.SQLite;
 
 namespace AppController
 {
@@ -19,11 +20,11 @@ namespace AppController
             {
                 if (mySQLiteService == null)
                 {
-                    SQLiteService srv = new SQLiteService();
-                     ConnectionState state = mySQLiteService.ConnectToDB(SQLiteUtil.GetVehiecleDBPath());
-                    if (state == ConnectionState.Open)
+                    SQLiteConnection conn = SQLiteUtil.ConnectToDB(SQLiteUtil.GetVehiecleDBPath());
+                    if (conn.State == ConnectionState.Open)
                     {
-                        mySQLiteService = srv;
+                        mySQLiteService = new SQLiteService();
+                        mySQLiteService.Conn = conn;
                     }
                     else
                     {

@@ -10,14 +10,7 @@ namespace AppController
 
         internal SQLiteConnection Conn {
             get { return conn; }
-            //set { conn = value; }
-        }
-
-        internal ConnectionState ConnectToDB(string filename)
-        {
-
-            conn = SQLiteUtil.ConnectToDB(filename);
-            return conn.State;
+            set { conn = value; }
         }
 
         internal string JsonOfSQL(string sql)
