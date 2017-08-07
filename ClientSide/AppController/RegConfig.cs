@@ -1,14 +1,40 @@
-﻿using AppWcfService;
+﻿using AppController.Util;
+using AppWcfService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace AppController
 {
     static class RegConfig
     {
+        static SQLiteService mySQLiteService;
+
+        public static SQLiteService MySQLiteService
+        {
+            get
+            {
+                if (mySQLiteService == null)
+                {
+                    SQLiteService srv = new SQLiteService();
+                     ConnectionState state = mySQLiteService.ConnectToDB(SQLiteUtil.GetVehiecleDBPath());
+                    if (state == ConnectionState.Open)
+                    {
+                        mySQLiteService = srv;
+                    }
+                    else
+                    {
+                        mySQLiteService = null;
+                    }
+
+                }
+                return mySQLiteService;
+            }
+        }
+
         static MyWcfService myWcfService;
 
         // Machine code

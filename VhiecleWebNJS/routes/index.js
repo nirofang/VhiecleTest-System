@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 
-var UserDAO=require('../DAO/CustomerDAO');
+var UserDAO=require('../DAO/UserDAO');
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -183,5 +183,35 @@ router.get('/GetCustomerAll', function(req, res, next) {
 
 });
 
+var VhiecleDAO=require('../DAO/VhiecleDAO');
+
+router.post('/TestPost',function(req,res,next){
+	console.log(req.body.Table);
+	// var laptopData = [...];
+	// for(var laptopItem in laptopData){
+		// new Laptop(laptopData[laptopItem])
+		  // .save()
+		  // .catch((err)=>{
+			// console.log(err.message);
+		  // });
+	// }
+	
+	for(var vi in req.body.Table){
+		VhiecleDAO.save(req.body.Table[vi],function(err,result){
+			if(err)
+			{
+				res.send({ err:err});
+				return;
+			}
+			else
+			{
+				//res.send({ result:result});
+				console.log(result);
+			}
+		})
+	}	
+	res.send("ok");
+
+});
 
 module.exports = router;
