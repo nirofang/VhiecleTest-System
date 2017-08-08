@@ -8,12 +8,13 @@ namespace AppController
     {
         SQLiteConnection conn;
 
-        internal SQLiteConnection Conn {
+        internal SQLiteConnection Conn
+        {
             get { return conn; }
             set { conn = value; }
         }
 
-        internal string JsonOfSQL(string sql)
+        internal string GetJsonOfSQL(string sql)
         {
             return SQLiteUtil.GetTableFromSqlite(conn, sql);
         }

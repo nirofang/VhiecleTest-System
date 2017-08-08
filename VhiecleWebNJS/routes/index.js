@@ -186,16 +186,7 @@ router.get('/GetCustomerAll', function(req, res, next) {
 var VhiecleDAO=require('../DAO/VhiecleDAO');
 
 router.post('/TestPost',function(req,res,next){
-	console.log(req.body.Table);
-	// var laptopData = [...];
-	// for(var laptopItem in laptopData){
-		// new Laptop(laptopData[laptopItem])
-		  // .save()
-		  // .catch((err)=>{
-			// console.log(err.message);
-		  // });
-	// }
-	
+	console.log(req.body.Table);	
 	for(var vi in req.body.Table){
 		VhiecleDAO.save(req.body.Table[vi],function(err,result){
 			if(err)
@@ -205,7 +196,6 @@ router.post('/TestPost',function(req,res,next){
 			}
 			else
 			{
-				//res.send({ result:result});
 				console.log(result);
 			}
 		})
@@ -213,5 +203,33 @@ router.post('/TestPost',function(req,res,next){
 	res.send("ok");
 
 });
+
+router.get('/GetLatestVehiecleId', function(req, res, next) {
+	VhiecleDAO.findOneSort({
+		MachineCode:req.query.MachineCode},{
+		'_id': -1
+	},function(err,result){
+		//console.log(err);
+		console.log(result);
+		if(err)
+		{
+			res.send({ err:err});
+		}
+		else
+		{
+			//res.send({ result: result});
+			if(result.length != 0)
+			{
+				res.send({ result:{VehicleId:result[0].VehicleId}});
+			}
+			else
+			{
+				res.send({ result:{}});
+			}
+		}
+	});
+
+});
+
 
 module.exports = router;

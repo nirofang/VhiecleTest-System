@@ -14,6 +14,9 @@ using System.Timers;
 using System.Net.Sockets;
 using AppWcfService.Util;
 using System.Runtime.Serialization.Json;
+using System.IO;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace AppController
 {
@@ -304,9 +307,11 @@ namespace AppController
                     //this.EventLog.WriteEntry(String.Format("customerData.result[0].CustomerName: {0}", customerData.result[0].CustomerName), EventLogEntryType.Information);
                     //this.EventLog.WriteEntry(String.Format("RegConfig.KeyStatus: {0}", RegConfig.KeyStatus), EventLogEntryType.Information);
 
-                    // Check if CDKey not need to be updated
+                    // If no command has been sent from website
                     if (string.IsNullOrEmpty(customerData.result[0].WebCommand))
                     {
+                        // Check if CDKey not need to be updated
+
                         // Check if CDKey != webCDKey, need to udpate the webCDKey
                         if (RegConfig.Cdkey != customerData.result[0].CDKey || RegConfig.KeyStatus != customerData.result[0].MachineStatus || webCreationDate != CreationDate || webValidDate != ValidDate || customerData.result[0].CustomerName != RegConfig.FacName)
                         {
@@ -322,6 +327,16 @@ namespace AppController
                             }
 
                         }
+
+                        // Upload vhiecle data from sqlite db to web mongo db
+                        int vhiecleId = GetLatestVehicle(RegConfig.MachineCode);
+
+                        if (vhiecleId != -1)
+                        {
+                            string sql = string.Format("select * from Vehicle where VehicleId > {0}", vhiecleId - 1);
+                            AppendSqlDbToMongo(sql);
+                        }
+
                         return;
                     }
 
@@ -432,6 +447,107 @@ namespace AppController
                 this.EventLog.WriteEntry(String.Format("Get Web Data Message {0}", ex.Message), EventLogEntryType.Information);
             }
             return null;
+        }
+
+        public static string GetUrltoText(string Url)
+        {
+            try
+            {
+                System.Net.WebRequest wReq = System.Net.WebRequest.Create(Url);
+                // Get the response instance.
+                System.Net.WebResponse wResp = wReq.GetResponse();
+                using (System.IO.Stream respStream = wResp.GetResponseStream())
+                {
+                    StreamReader readStream = new StreamReader(respStream, Encoding.UTF8); // Pipes the stream to a higher level stream reader with the required encoding format. 
+                    return readStream.ReadToEnd();
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(String.Format("Get Web Data Message {0}", ex.Message));
+            }
+            return null;
+        }
+
+        private static void AppendSqlDbToMongo(string sql)
+        {
+            if (RegConfig.MySQLiteService != null)
+            {
+
+                string jsonContent = RegConfig.MySQLiteService.GetJsonOfSQL(sql);
+
+                if (jsonContent != null)
+                {
+                    Dictionary<string, string> userinfo = new Dictionary<string, string> { { "MachineCode", "123456" }, { "CustomerName", "abcabc" } };
+
+                    jsonContent = AddUserInfoToJson(jsonContent, userinfo);
+                    if (jsonContent != null)
+                    {
+                        TestHttpPost(jsonContent);
+                    }
+                }
+            }
+        }
+
+        private static void TestHttpPost(string vehiecle)
+        {
+            //string url = "https://api.baidu.com/json/sms/v3/AccountService/getAccountInfo";
+
+            string url = "http://localhost:3000/TestPost";
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            //string data = "{n\"vhiecle\": {\n\"CustomerName\": \"30xxx6aaxxx93ac8cxx8668xx39xxxx\",\n\"MachineCode\": \"jdads\",\n\"RegNo\": \"liuqiangdong2010\",\n\"MakeType\": \"\"\n},\n\"body\": {}\n}";
+            //string data = "{\"vhiecle\": {\"CustomerName\": \"30xxx6aaxxx93ac8cxx8668xx39xxxx\",\"MachineCode\": \"jdads\",\"RegNo\": \"liuqiangdong2010\",\"MakeType\": \"\"}}";
+
+            //string data = "{\"vhiecle\": [{\"CustomerName\": \"30xxx6aaxxx93ac8cxx8668xx39xxxx\",\"MachineCode\": \"jdads\",\"RegNo\": \"liuqiangdong2010\",\"MakeType\": \"\"}, {\"CustomerName\": \"30xxx6aaxxx93ac8cxx8668xx39xxxx\",\"MachineCode\": \"jdads1\",\"RegNo\": \"liuqiangdong2010\",\"MakeType\": \"\"}]}";
+
+            byte[] byteData = UTF8Encoding.UTF8.GetBytes(vehiecle);
+            request.ContentLength = byteData.Length;
+
+            using (Stream postStream = request.GetRequestStream())
+            {
+                postStream.Write(byteData, 0, byteData.Length);
+            }
+
+            using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+            {
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                Console.WriteLine(reader.ReadToEnd());
+            }
+
+        }
+
+        private static string AddUserInfoToJson(string jsonContent, Dictionary<string, string> userinfo)
+        {
+            var list = JsonConvert.DeserializeObject<IDictionary<string, IEnumerable<IDictionary<string, object>>>>(jsonContent);
+
+            foreach (var item in userinfo)
+            {
+                for (int i = 0; i < list["Table"].Count(); i++)
+                {
+                    list["Table"].ElementAt(i)[item.Key] = item.Value;
+                }
+            }
+
+            return JsonConvert.SerializeObject(list);
+        }
+
+
+        private static int GetLatestVehicle(string MachineCode)
+        {
+            string vhiecleIdJson = GetUrltoText(string.Format("http://sqlvm-194:3000/GetLatestVehiecleId?MachineCode={0}", MachineCode));
+            var vhiecleIdData = JsonConvert.DeserializeObject<IDictionary<string, IDictionary<string, string>>>(vhiecleIdJson);
+
+            if (vhiecleIdData["result"] != null && vhiecleIdData["result"]["VehicleId"] != null)
+            {
+                return int.Parse(vhiecleIdData["result"]["VehicleId"]);
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }

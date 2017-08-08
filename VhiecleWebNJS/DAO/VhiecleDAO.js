@@ -10,7 +10,7 @@ VhiecleDAO.save=function(c,callback){
 	var vhiecle=new Vhiecle({
 		CustomerName:c.CustomerName,
 		MachineCode:c.MachineCode,
-		VhiecleId:c.VhiecleId,
+		VehicleId:c.VehicleId,
 		RegNo:c.RegNo,
 		MakeType:c.MakeType,
 		Milage:c.Milage,
@@ -55,6 +55,12 @@ VhiecleDAO.find=function(condition,callback){
 		callback(err,result);
 	});
 };
+VhiecleDAO.findOneSort=function(condition,orderby,callback){
+	Vhiecle.find(condition,function(err,result){
+		callback(err,result);
+	}).sort(orderby).limit(1);
+};
+
 // CustomerDAO.update=function(condition,newValues,callback){
 	// Customer.update(condition,{$set:newValues},{upsert : true},function(err,result){
 		// callback(err,result);

@@ -24,7 +24,11 @@ namespace AppController.Util
             if (File.Exists(filename))
             {
                 conn = new SQLiteConnection("Data Source=" + filename + ";Version=3;");
-
+                conn.Open();
+            }
+            else
+            {
+                throw new FileNotFoundException("Cannnot find the file: ", filename);
             }
             return conn;
         }
@@ -38,7 +42,6 @@ namespace AppController.Util
         {
             try
             {
-                conn.Open();
                 DataSet ds = new DataSet();
                 var da = new SQLiteDataAdapter(sql, conn);
                 da.Fill(ds);

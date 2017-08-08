@@ -7,7 +7,7 @@ mongoose.connect(config.uri);
 var VhiecleSchema = new mongoose.Schema({ //定义一个Schema
 	CustomerName: {type:String,default:"xxxxxxxxxxxxx"},
 	MachineCode: {type:String,default:"xxxxxxxxxxxxx"},
-    VhiecleId:Number,//订单编号
+    VehicleId:Number,//订单编号
 	RegNo: {type:String,default:"xxxxxxxxxxxxx"},
 	MakeType: {type:String,default:"xxxxxxxxxxxxx"},
 	Milage: {type:String,default:"xxxxxxxxxxxxx"},
