@@ -15,7 +15,7 @@ namespace AppController.Util
 
         internal static string GetVehiecleDBPath()
         {
-            return Environment.GetEnvironmentVariable("localappdata") + @"\CamAligner\Support\Data\Vehicle.db";
+            return RegConfig.InstallUserPath + @"\CamAligner\Support\Data\Vehicle.db";
         }
 
         internal static SQLiteConnection ConnectToDB(string filename)
@@ -23,7 +23,8 @@ namespace AppController.Util
             SQLiteConnection conn = null;
             if (File.Exists(filename))
             {
-                conn = new SQLiteConnection("Data Source=" + filename + ";Version=3;");
+                //conn = new SQLiteConnection("Data Source=" + filename + ";Version=3;");
+                conn = new SQLiteConnection("Data Source=" + filename);
                 conn.Open();
             }
             else
@@ -44,6 +45,7 @@ namespace AppController.Util
             {
                 DataSet ds = new DataSet();
                 var da = new SQLiteDataAdapter(sql, conn);
+
                 da.Fill(ds);
                 return ds2json(ds);
             }

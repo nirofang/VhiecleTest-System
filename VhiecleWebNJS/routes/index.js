@@ -185,23 +185,17 @@ router.get('/GetCustomerAll', function(req, res, next) {
 
 var VhiecleDAO=require('../DAO/VhiecleDAO');
 
-router.post('/TestPost',function(req,res,next){
-	console.log(req.body.Table);	
+router.post('/PostVehicleData',function(req,res,next){
+	console.log(req.body.Table);
 	for(var vi in req.body.Table){
 		VhiecleDAO.save(req.body.Table[vi],function(err,result){
 			if(err)
 			{
-				res.send({ err:err});
-				return;
-			}
-			else
-			{
-				console.log(result);
+				console.log({ err:err});
 			}
 		})
 	}	
-	res.send("ok");
-
+	res.send('ok');
 });
 
 router.get('/GetLatestVehiecleId', function(req, res, next) {
@@ -210,7 +204,7 @@ router.get('/GetLatestVehiecleId', function(req, res, next) {
 		'_id': -1
 	},function(err,result){
 		//console.log(err);
-		console.log(result);
+		//console.log(result);
 		if(err)
 		{
 			res.send({ err:err});
@@ -220,10 +214,12 @@ router.get('/GetLatestVehiecleId', function(req, res, next) {
 			//res.send({ result: result});
 			if(result.length != 0)
 			{
+				console.log({ result:{VehicleId:result[0].VehicleId}});
 				res.send({ result:{VehicleId:result[0].VehicleId}});
 			}
 			else
 			{
+				console.log({ result:{}});
 				res.send({ result:{}});
 			}
 		}

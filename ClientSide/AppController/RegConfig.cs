@@ -42,6 +42,8 @@ namespace AppController
         public static string MachineCode { get; internal set; }
         // CDKey
         public static string Cdkey { get; internal set; }
+        // InstallUserPath
+        public static string InstallUserPath { get; internal set; }
 
         public static string HostLink { get; internal set; }
 
