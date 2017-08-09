@@ -10,9 +10,9 @@
     </header>
   
 
-    <div role="main" class="main wrapper">
+    <div role="main" class="main">
       <a href="#nav" id="toggle">Menu</a>
-      <div class="panel panel-default content">
+      <div class="panel panel-default">
 	  <!-- Default panel contents -->
 	  <div class="panel-heading">列表</div>
 
@@ -23,22 +23,55 @@
 
   <!-- Table -->
   <table class="table">
-		<!-- <thead> -->
-		  <!-- <tr> -->
-			<!-- <th width = "80px">序号</th> -->
-			<!-- <th width = "150px" min-width = "150px" max-width = "150px">用户</th> -->
-			<!-- <th>密码</th> -->
-			<!-- <th width = "150px">加入日期</th> -->
-			<!-- <th></th> -->
-		  <!-- </tr> -->
-		<!-- </thead> -->
+		<thead>
+		  <tr>
+			<th width = "80px">MachineCode</th>
+			<th width = "80px">CustomerName</th>
+			<th width = "80px">VehicleId</th>
+			<th width = "80px">RegNo</th>
+			<th width = "80px">MakeType</th>
+			<th width = "80px">Milage</th>
+			<th width = "80px">Date</th>
+			<th width = "80px">Sign</th>
+			<th width = "80px">CustomerData</th>
+			<th width = "80px">InfoPage</th>
+			<th width = "80px">SteerboxB</th>
+			<th width = "80px">SteerboxA</th>
+			<th width = "80px">a</th>
+			<th width = "80px">Done</th>
+			<th width = "80px">Side</th>
+			<th width = "80px">CenterLine</th>
+			<th width = "80px">RefAxle</th>
+			<th width = "80px">RefType</th>
+			<th width = "80px">CL_F</th>
+			<th width = "80px">CL_R</th>
+			<th width = "80px">Offset_F0</th>
+			<th width = "80px">Offset_R0</th>
+			<th width = "80px">Type</th>
+			<th width = "80px">FloorscalesUsed</th>
+			<th width = "80px">Model</th>
+			<th width = "80px">RadarType</th>
+			<th width = "80px">RadarHorizontalB</th>
+			<th width = "80px">RadarHorizontalA</th>
+			<th width = "80px">RadarVerticalB</th>
+			<th width = "80px">RadarVerticalA</th>
+			<th width = "80px">RadarAZOF</th>
+			<th width = "80px">RadarELOF</th>
+			<th width = "80px">FrameFrontWidth</th>
+			<th width = "80px">FrameRearWidth</th>
+			<th width = "80px">FrameGauge</th>
+			<th width = "80px">WACreated</th>
+			<th width = "80px">FMCreated</th>
+		  </tr>
+		</thead>
 		<tbody>
 		<%
 		  vhiecles.forEach(function(vhiecle) {
 		%>
 		  <tr>
 			<td><%=vhiecle.MachineCode%></td>
-			<td><%=vhiecle.VhiecleId%></td>
+			<td><%=vhiecle.CustomerName%></td>
+			<td><%=vhiecle.VehicleId%></td>
 			<td><%=vhiecle.RegNo%></td>
 			<td><%=vhiecle.MakeType%></td>
 			<td><%=vhiecle.Milage%></td>

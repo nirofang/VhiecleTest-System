@@ -10,7 +10,7 @@ var users = require('./routes/users');
 var home = require('./routes/home');
 var logs = require('./routes/logs');
 var vhiecles = require('./routes/vhiecles');
-// var pass = require('./routes/pass');
+var pass = require('./routes/pass');
 // var help = require('./routes/help');
 var session = require('express-session');
 var app = express();
@@ -37,7 +37,7 @@ app.use(session({
 app.use('/', index);
 app.use('/users', users);
 app.use('/home', home);
-// app.use('/pass', pass);
+app.use('/pass', pass);
 app.use('/logs', logs);
 app.use('/vhiecles', vhiecles);
 // app.use('/help', help);

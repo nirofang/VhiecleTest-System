@@ -9,24 +9,27 @@ require('date-utils');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	CustomerDAO.find(true,function(err,result){
-		//console.log(err);
-		console.log(result);
-		
-		if(err)
-		{
-			res.render('error', { title: 'error' });
-		}
-		else
-		{
-			res.render('home', 
-			{ title: 'HomePage' 
-			, customers: result
-			});
-		}
-	});
-  // res.render('home', { title: '首页' });
-  // console.log(req.session.name);
+	if(req.session.name){
+		CustomerDAO.find(true,function(err,result){
+			//console.log(err);
+			console.log(result);
+			
+			if(err)
+			{
+				res.render('error', { title: 'error' });
+			}
+			else
+			{
+				res.render('home', 
+				{ title: 'HomePage' 
+				, customers: result
+				});
+			}
+		});
+	}else{
+	　　req.session.error = "请先登录"
+　　　　res.redirect('/');
+	}
 });
 
 router.get('/addUser',function(req,res,next){

@@ -1,24 +1,4 @@
-<!-- views/partials/header.ejs -->
-
-<!-- <nav class="navbar navbar-default" role="navigation"> -->
-    <!-- <div class="container-fluid"> -->
-
-        <!-- <div class="navbar-header"> -->
-            <!-- <a class="navbar-brand" href="#"> -->
-                <!-- <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span> -->
-                <!-- EJS Is Fun -->
-            <!-- </a> -->
-        <!-- </div> -->
-
-        <!-- <ul class="nav navbar-nav"> -->
-            <!-- <li><a href="/">Home</a></li> -->
-            <!-- <li><a href="/about">About</a></li> -->
-        <!-- </ul> -->
-
-    <!-- </div> -->
-<!-- </nav> -->
-
-     <div role="navigation" id="nav">
+    <div role="navigation" id="nav">
       <ul class="content">
         <li class="active"><a href="/home">首页</a></li>
         <!-- <li><a href="/pass">修改密码</a></li> -->
@@ -35,6 +15,15 @@
 <script src="/js/video.js"></script>
 <script src="/js/flat-ui.min.js"></script>
 <script src="/js/application.js"></script>
+      
+<!-- <script src='/js/responsive-nav.js' /> -->
+<script>
+   $(function(){
+<!-- var navigation = responsiveNav(".nav-collapse"); -->
+  videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
+</script>
+<!-- script -->
+
 <script>
     $(function(){
     	//console.log("可视化的数据显示");

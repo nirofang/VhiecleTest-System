@@ -19,6 +19,7 @@ Filename: "{app}\service\AppController.exe"; Parameters: "--uninstall"; WorkingD
 [Registry]
 Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}"; Flags: createvalueifdoesntexist deletekey
 Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "HostLink"; ValueData: "http://localhost:3000"; Flags: createvalueifdoesntexist deletekey
+Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "InstallUserPath"; ValueData: "{localappdata}"; Flags: createvalueifdoesntexist deletekey
 
 [Files]
 Source: "Cam_AppFiles\ReportViewerSetup\setup.exe"; DestDir: "{app}\ReportViewerSetup\"; Flags: ignoreversion

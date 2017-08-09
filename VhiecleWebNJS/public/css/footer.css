@@ -1,27 +1,8 @@
-.wrapper {
-  /* background-color: #e3f2fd; */
-  min-height: 100%;
-  height: auto !important;
-  margin-bottom: -50px; /* the bottom margin is the negative value of the footer's total height */
-}
-
-.wrapper:after {
-  content: "";
-  display: block;
-  height: 50px; /* the footer's total height */
-}
-
-.content {
-  height: 100%;
-}
 
 .footer {
-  height: 25; /* the footer's total height */
-}
+   position:absolute;
+   bottom:0;
+   /* width:100%; */
+   height:60px;   /* Height of the footer */
 
-.footer-content {
-  /* background-color: #f3e5f5; */
-  /* border: 1px solid #ab47bc; */
-  height: 32px; /* height + top/bottom paddding + top/bottom border must add up to footer height */
-  padding: 8px;
 }

@@ -9,7 +9,7 @@ var router = express.Router();
 var UserInfoDAO=require('../DAO/UserDAO');
 
 
-/* GET home page. */
+/* GET user page. */
 router.get('/', function(req, res, next) {
 	//res.render('logs', { title: '日志' });
 	if(req.session.name){

@@ -1,23 +1,22 @@
 require('../model/User.js');
 var mongoose = require('mongoose');
 
-var UserInfo=mongoose.model('UserInfo');
+var User=mongoose.model('User');
 
 var UserDAO={};
 
 UserDAO.save=function(user,callback){
-	var userInfo=new UserInfo({
-		UserId:user.id||1,
+	var user=new User({
 		name:user.name||'临时用户',
 		passwd:user.passwd||'123456'
 	});
-	userInfo.save(function(err,result){
+	user.save(function(err,result){
 		callback(err,result);
 	});
 };
 
 UserDAO.find=function(condition,callback){
-	UserInfo.find(condition,function(err,result){
+	User.find(condition,function(err,result){
 		callback(err,result);
 	});
 };

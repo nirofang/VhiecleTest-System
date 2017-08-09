@@ -34,6 +34,7 @@ namespace AppController
                 }
                 return mySQLiteService;
             }
+            set { }
         }
 
         static MyWcfService myWcfService;

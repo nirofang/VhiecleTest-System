@@ -1,101 +1,68 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>修改密码</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
-    <!-- Loading Bootstrap -->
-<!--     <link href="/css/bootstrap.min.css" rel="stylesheet"> -->
-    <!-- Loading Flat UI -->
-    <!-- <link href="/css/flat-ui.min.css" rel="stylesheet">
-    <link href="/css/demo.css" rel="stylesheet"> -->
-    <link rel="shortcut icon" href="img/favicon.ico">
-    
-    <!-- <link rel='stylesheet' href='/css/style.css' /> -->
-    <link rel='stylesheet' href='/css/responsive-nav.css' />
-
-
+	<% include ./partials/head %>
   </head>
   <body>
-     <div role="navigation" id="nav">
-      <ul>
-        <li ><a href="/home">首页</a></li>
-        <li class="active"><a href="/pass">修改密码</a></li>
-        <li><a href="/logs">日志</a></li>
-        <li><a href="/help">帮组文档</a></li>
-      </ul>
-    </div>
-
+  
+	<% include ./partials/header %>
+  
     <div role="main" class="main">
       <a href="#nav" id="toggle">Menu</a>
       <div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">Panel heading</div>
-  <div class="panel-body">
-    <p>...</p>
-  </div>
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">列表</div>
 
-  <!-- Table -->
-  <table class="table">
-    <thead>
-          <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-  </table>
-</div>
+	  <div class="panel-body">
+		<p>...</p>    
+	  </div>
+
+
+	<p>请输入用户名密码</p>
+	<div class="login-form">
+
+	<div class="form-group">
+	  <input type="text" class="form-control login-field" value="" placeholder="用户名" id="login-name" />
+	  <label class="login-field-icon fui-user" for="login-name"></label>
+	</div>
+
+	<div class="form-group">
+	  <input type="password" class="form-control login-field" value="" placeholder="密码" id="login-pass" />
+	  <label class="login-field-icon fui-lock" for="login-pass"></label>
+	</div>
+	</div>
+	<p>
+		<input type= "button" class="btn btn-primary btn-lg btn-block loginBtn" value= "新建"/>
+	</p>  
+	</div>
+
+	<% include ./partials/footer %>
     </div>
-      <!-- script -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/video.js"></script>
-    <script src="/js/flat-ui.min.js"></script>
-    <script src="/js/application.js"></script>
-    <script src='/js/responsive-nav.js' />
-    <script>
+	    <script>
     $(function(){
-    var navigation = responsiveNav(".nav-collapse");
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
-
+    	//console.log("可视化的数据显示");
     	$('.loginBtn').click(function(){
     		var name=$('#login-name').val();
     		var pwd=$('#login-pass').val();
     		$.ajax({
-    			url:'/login',
+    			url:'/SaveNewUser',
     			data:{
     				name:name,
     				pwd:pwd
     			},
     			success:function(data){
     				console.log(data);
+    				if(data=='ok'){
+    					window.location.href='/home';
+    				}else{
+    					alert('error!')
+    				}
     			}
     		});
     	});
     });
-
+      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
     </script>
-       <!-- script -->
+	
   </body>
 </html>

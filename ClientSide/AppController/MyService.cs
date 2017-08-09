@@ -507,34 +507,43 @@ namespace AppController
 
         private void AppendSqlDbToMongo(string sql, string MachineCode, string CustomerName)
         {
-            if (RegConfig.MySQLiteService != null)
+            try
             {
-                // Get new data from sqlite and convert to json string
-                string jsonContent = RegConfig.MySQLiteService.GetJsonOfSQL(sql);
-
-                this.EventLog.WriteEntry(String.Format("jsonContent: {0}", jsonContent), EventLogEntryType.Information);
-                
-                if (jsonContent != null)
+                if (RegConfig.MySQLiteService != null)
                 {
-                    var list = JsonConvert.DeserializeObject<IDictionary<string, IEnumerable<IDictionary<string, object>>>>(jsonContent);
 
+                    // Get new data from sqlite and convert to json string
+                    string jsonContent = RegConfig.MySQLiteService.GetJsonOfSQL(sql);
 
-                    // e.g.
-                    // jsonContent:
-                    // {
-                    //     "Table": []
-                    // }
-                    if (list["Table"].Count() != 0)
+                    //this.EventLog.WriteEntry(String.Format("jsonContent: {0}", jsonContent), EventLogEntryType.Information);
+
+                    if (jsonContent != null)
                     {
-                        Dictionary<string, string> userinfo = new Dictionary<string, string> { { "MachineCode", MachineCode }, { "CustomerName", CustomerName } };
+                        var list = JsonConvert.DeserializeObject<IDictionary<string, IEnumerable<IDictionary<string, object>>>>(jsonContent);
 
-                        jsonContent = AddUserInfoToJson(jsonContent, list, userinfo);
-                        if (jsonContent != null)
+
+                        // e.g.
+                        // jsonContent:
+                        // {
+                        //     "Table": []
+                        // }
+                        if (list["Table"].Count() != 0)
                         {
-                            PostLatestVehicleData(jsonContent);
+                            Dictionary<string, string> userinfo = new Dictionary<string, string> { { "MachineCode", MachineCode }, { "CustomerName", CustomerName } };
+
+                            jsonContent = AddUserInfoToJson(jsonContent, list, userinfo);
+                            if (jsonContent != null)
+                            {
+                                PostLatestVehicleData(jsonContent);
+                            }
                         }
                     }
                 }
+            }
+            catch {
+
+                RegConfig.MySQLiteService = null;
+                throw;
             }
         }
 
