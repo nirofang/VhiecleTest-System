@@ -255,3 +255,5 @@ paket-files/
 
 # exclude everything except directory foo/bar
 !**/VhiecleWebNJS/bin
+
+!**/ClientSide/Dlls/**

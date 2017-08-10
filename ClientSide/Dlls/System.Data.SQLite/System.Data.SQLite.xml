@@ -5078,130 +5078,6 @@
             SQL statement text as the statement first begins executing
             </summary>
         </member>
-        <member name="T:System.Data.SQLite.NullConnectionPool">
-            <summary>
-            This class implements a connection pool where all methods of the
-            <see cref="T:System.Data.SQLite.ISQLiteConnectionPool" /> interface are NOPs.  This class
-            is used for testing purposes only.
-            </summary>
-        </member>
-        <member name="F:System.Data.SQLite.NullConnectionPool.log">
-            <summary>
-            This field keeps track of all method calls made into the
-            <see cref="T:System.Data.SQLite.ISQLiteConnectionPool" /> interface methods of this
-            class.
-            </summary>
-        </member>
-        <member name="F:System.Data.SQLite.NullConnectionPool.dispose">
-            <summary>
-            Non-zero to dispose of database connection handles received via the
-            <see cref="M:System.Data.SQLite.NullConnectionPool.Add(System.String,System.Object,System.Int32)" /> method.
-            </summary>
-        </member>
-        <member name="M:System.Data.SQLite.NullConnectionPool.#ctor">
-            <summary>
-            Constructs a connection pool object where all methods of the
-            <see cref="T:System.Data.SQLite.ISQLiteConnectionPool" /> interface are NOPs.  This
-            class is used for testing purposes only.
-            </summary>
-        </member>
-        <member name="M:System.Data.SQLite.NullConnectionPool.#ctor(System.Boolean)">
-            <summary>
-            Constructs a connection pool object where all methods of the
-            <see cref="T:System.Data.SQLite.ISQLiteConnectionPool" /> interface are NOPs.  This
-            class is used for testing purposes only.
-            </summary>
-            <param name="dispose">
-            Non-zero to dispose of database connection handles received via the
-            <see cref="M:System.Data.SQLite.NullConnectionPool.Add(System.String,System.Object,System.Int32)" /> method.
-            </param>
-        </member>
-        <member name="M:System.Data.SQLite.NullConnectionPool.GetCounts(System.String,System.Collections.Generic.Dictionary{System.String,System.Int32}@,System.Int32@,System.Int32@,System.Int32@)">
-            <summary>
-            Counts the number of pool entries matching the specified file name.
-            </summary>
-            <param name="fileName">
-            The file name to match or null to match all files.
-            </param>
-            <param name="counts">
-            The pool entry counts for each matching file.
-            </param>
-            <param name="openCount">
-            The total number of connections successfully opened from any pool.
-            </param>
-            <param name="closeCount">
-            The total number of connections successfully closed from any pool.
-            </param>
-            <param name="totalCount">
-            The total number of pool entries for all matching files.
-            </param>
-        </member>
-        <member name="M:System.Data.SQLite.NullConnectionPool.ClearPool(System.String)">
-            <summary>
-            Disposes of all pooled connections associated with the specified
-            database file name.
-            </summary>
-            <param name="fileName">
-            The database file name.
-            </param>
-        </member>
-        <member name="M:System.Data.SQLite.NullConnectionPool.ClearAllPools">
-            <summary>
-            Disposes of all pooled connections.
-            </summary>
-        </member>
-        <member name="M:System.Data.SQLite.NullConnectionPool.Add(System.String,System.Object,System.Int32)">
-            <summary>
-            Adds a connection to the pool of those associated with the
-            specified database file name.
-            </summary>
-            <param name="fileName">
-            The database file name.
-            </param>
-            <param name="handle">
-            The database connection handle.
-            </param>
-            <param name="version">
-            The connection pool version at the point the database connection
-            handle was received from the connection pool.  This is also the
-            connection pool version that the database connection handle was
-            created under.
-            </param>
-        </member>
-        <member name="M:System.Data.SQLite.NullConnectionPool.Remove(System.String,System.Int32,System.Int32@)">
-            <summary>
-            Removes a connection from the pool of those associated with the
-            specified database file name with the intent of using it to
-            interact with the database.
-            </summary>
-            <param name="fileName">
-            The database file name.
-            </param>
-            <param name="maxPoolSize">
-            The new maximum size of the connection pool for the specified
-            database file name.
-            </param>
-            <param name="version">
-            The connection pool version associated with the returned database
-            connection handle, if any.
-            </param>
-            <returns>
-            The database connection handle associated with the specified
-            database file name or null if it cannot be obtained.
-            </returns>
-        </member>
-        <member name="M:System.Data.SQLite.NullConnectionPool.ToString">
-            <summary>
-            Overrides the default <see cref="M:System.Object.ToString" /> method
-            to provide a log of all methods called on the
-            <see cref="T:System.Data.SQLite.ISQLiteConnectionPool" /> interface.
-            </summary>
-            <returns>
-            A string containing a log of all method calls into the
-            <see cref="T:System.Data.SQLite.ISQLiteConnectionPool" /> interface, along with their
-            parameters, delimited by <see cref="P:System.Environment.NewLine" />.
-            </returns>
-        </member>
         <member name="T:System.Data.SQLite.ISQLiteConnectionPool">
             <summary>
             This interface represents a custom connection pool implementation
@@ -9402,6 +9278,17 @@
             The default log event handler.
             </summary>
         </member>
+        <member name="F:System.Data.SQLite.SQLiteLog._callback">
+            <summary>
+            The log callback passed to native SQLite engine.  This must live
+            as long as the SQLite library has a pointer to it.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteLog._sql">
+            <summary>
+            The base SQLite object to interop with.
+            </summary>
+        </member>
         <member name="F:System.Data.SQLite.SQLiteLog._enabled">
             <summary>
             This will be non-zero if logging is currently enabled.
@@ -10370,67 +10257,6 @@
             <returns>
             Non-zero if this transaction is valid; otherwise, false.
             </returns>
-        </member>
-        <member name="T:System.Data.SQLite.DebugData">
-            <summary>
-            This class encapsulates some tracking data that is used for debugging
-            and testing purposes.
-            </summary>
-        </member>
-        <member name="F:System.Data.SQLite.DebugData.staticSyncRoot">
-            <summary>
-            This lock is used to protect several static fields.
-            </summary>
-        </member>
-        <member name="F:System.Data.SQLite.DebugData.settingReadCounts">
-            <summary>
-            This dictionary stores the read counts for the runtime configuration
-            settings.  This information is only recorded when compiled in the
-            "Debug" build configuration.
-            </summary>
-        </member>
-        <member name="F:System.Data.SQLite.DebugData.settingFileReadCounts">
-            <summary>
-            This dictionary stores the read counts for the runtime configuration
-            settings via the XML configuration file.  This information is only
-            recorded when compiled in the "Debug" build configuration.
-            </summary>
-        </member>
-        <member name="F:System.Data.SQLite.DebugData.otherCounts">
-            <summary>
-            This dictionary stores miscellaneous counts used for debugging
-            purposes.  This information is only recorded when compiled in the
-            "Debug" build configuration.
-            </summary>
-        </member>
-        <member name="M:System.Data.SQLite.DebugData.Initialize">
-            <summary>
-            Creates dictionaries used to store the read counts for each of
-            the runtime configuration settings.  These numbers are used for
-            debugging and testing purposes only.
-            </summary>
-        </member>
-        <member name="M:System.Data.SQLite.DebugData.IncrementSettingReadCount(System.String,System.Boolean)">
-            <summary>
-            Increments the read count for the specified runtime configuration
-            setting.  These numbers are used for debugging and testing purposes
-            only.
-            </summary>
-            <param name="name">
-            The name of the setting being read.
-            </param>
-            <param name="viaFile">
-            Non-zero if the specified setting is being read from the XML
-            configuration file.
-            </param>
-        </member>
-        <member name="M:System.Data.SQLite.DebugData.IncrementOtherCount(System.String)">
-            <summary>
-            Increments the specified counter.
-            </summary>
-            <param name="name">
-            The name of the counter being incremented.
-            </param>
         </member>
         <member name="T:System.Data.SQLite.HelperMethods">
             <summary>
