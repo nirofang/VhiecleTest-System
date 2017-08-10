@@ -45,7 +45,7 @@
     		var name=$('#login-name').val();
     		var pwd=$('#login-pass').val();
     		$.ajax({
-    			url:'/SaveNewUser',
+    			url:'/users/SaveNewUser',
     			data:{
     				name:name,
     				pwd:pwd
@@ -53,9 +53,9 @@
     			success:function(data){
     				console.log(data);
     				if(data=='ok'){
-    					window.location.href='/home';
+    					window.location.href='/users';
     				}else{
-    					alert('error!')
+    					alert(data)
     				}
     			}
     		});

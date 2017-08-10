@@ -20,6 +20,7 @@
 	  </div>
 	  <p>
 		<input id="newUser" type="button" class="savebtn" value = "新建用户"/>
+		<input id="delUser" type="button" class="delbtn" disabled="disabled" value = "删除用户"/>
 
 	  </p>
   <!-- Table -->
@@ -40,9 +41,10 @@
 		%>
 		  <tr>
 			<td scope="row"><%=i%></td>
-			<td width = "150px"><%=userinfo.name%></td>
+			<td width = "150px" id="username_<%=i%>"><%=userinfo.name%></td>
 			<td width = "80px"><%=userinfo.passwd%></td>
 			<td width = "150px"><%=userinfo.CreateTime.toLocaleString()%></td>
+			<td><input id="<%=i%>" class="seluser" type="checkbox" onclick="enable_delete()"/></td>
 		  </tr>
 		<%
 		  i++;
@@ -58,14 +60,63 @@
 
     </div>
     <script>
+	    function enable_delete()
+		{
+			//console.log("可视化的数据显示");
+			var flag = false;
+			$(".seluser").each(function(){
+				if ($(this).prop('checked'))
+				{
+					$('#delUser').attr("disabled",false);
+					flag = true;
+					return true;
+				}
+			});
+			if (flag==false)
+			{
+				$('#delUser').attr("disabled",true);
+			}
+			
+		}
+	
 	   $(function(){
     <!-- var navigation = responsiveNav(".nav-collapse"); -->
       videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
 			$('.savebtn').click(function(){
 			window.location.href='/pass';
+			});
+
+			$('.delbtn').click(function(){
+
+			var objJson = [];
+						
+    		$(".seluser:checked").each(function(){
+			var id=$(this).attr("id");
+			var username=$('#username_'+id).text();
+			
+			var userobj = {};
+			userobj[name] = username;
+			objJson.push(userobj);
+			});
+
+			
+			console.log(objJson);
+    		$.ajax({
+    			url:'/users/DelSelUser',
+    			data:{
+    				users:objJson
+    			},
+    			success:function(data){
+    				console.log(data);
+    				if(data=='ok'){
+    					window.location.href='/users';
+    				}else{
+    					alert(data)
+    				}
+    			}
+    		});			
 		});
     });
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
 	
     </script>
 	

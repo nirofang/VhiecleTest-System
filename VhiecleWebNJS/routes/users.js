@@ -36,5 +36,60 @@ router.get('/', function(req, res, next) {
 	
 });
 
+router.get('/DelSelUser', function(req, res, next) {
+	
+	for(var vi in req.query.users){
+		console.log(req.query.users[vi]);
+	}
+	
+	res.send("ok");
+	
+	// if(req.query.name == '')
+	// {
+		// res.send("用户名不能为空");
+		// return;
+	// }
+	// if(req.query.pwd == '')
+	// {
+		// res.send("密码不能为空");
+		// return;
+	// }
+	// UserDAO.find({
+		// name:req.query.name
+	// },function(err,result){
+		// if(err)
+		// {
+			// res.send("查询用户名失败");
+
+		// }
+		// else
+		// {
+			// console.log(result);
+			// if (result != "")
+			// {
+				// res.send("用户名重复");
+				// return;
+			// }
+			// UserDAO.save({
+				// name:req.query.name,
+				// passwd:req.query.pwd,
+			// },function(err,result){
+				// if(err)
+				// {
+					// console.log(err);
+					// res.send("建立用户失败");
+				// }
+				// else
+				// {
+					// console.log(result);
+					// //res.send({ result:result});
+					// res.send('ok');
+				// }
+			// });
+
+		// }
+	// });
+});
+
 
 module.exports = router;
