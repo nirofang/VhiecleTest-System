@@ -43,7 +43,7 @@
 		  <tr>
 			<td scope="row"><%=i%></td>
 			<td>
-			<% if (customer.MachineStatus != "密钥失效") { %>
+			<% if (customer.MachineStatus == "密钥正常") { %>
 					<font color = 'green'>
 				<%} else {%>
 					<font color = 'red'>

@@ -33,8 +33,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>car-repair-garage_318-9407.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -158,7 +162,14 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\zhukai_corp_logo.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="car-repair-garage_318-9407.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>robocopy $(TargetDir) $(SolutionDir)\..\..\VehicleSetupFiles\Cam_AppFiles\ $(TargetName).* /xf *.pdb
+exit 0 /b</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

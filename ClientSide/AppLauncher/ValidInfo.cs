@@ -208,12 +208,6 @@ namespace AppLauncher
             }
 
 
-            // Machine Code 合法，写注册表
-            if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", "MachineCode", machineCode) == false)
-            {
-                MessageBox.Show("机器码写入注册表失败");
-                return;
-            }
 
             // CDKey 不存在 或者 需要重新输入（因为过期），重新输入
             if (string.IsNullOrEmpty(cdKey) || reEnterCDKey)
@@ -262,8 +256,8 @@ namespace AppLauncher
                 button1.Enabled = false;
                 timer1.Enabled = false;
 
-                return;
             }
+
 
             // CDKey 合法，写注册表
             if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", "CDKey", cdKey) == false)
@@ -271,6 +265,14 @@ namespace AppLauncher
                 MessageBox.Show("由于系统问题无法注册软件");
                 return;
             }
+
+            // Machine Code 合法，写注册表
+            if (RegUtil.CreateKeyValue(@"SOFTWARE\Wow6432Node\CamAligner", "MachineCode", machineCode) == false)
+            {
+                MessageBox.Show("机器码写入注册表失败");
+                return;
+            }
+
         }
 
         private void ValidInfo_FormClosed(object sender, FormClosedEventArgs e)

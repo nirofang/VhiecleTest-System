@@ -1,9 +1,16 @@
+#define MyAppName "CamAligner" 
+#define MyAppVersion "1.0" 
+#define MyAppPublisher "Publisher" 
+#define MyAppExeName "CamAligner.exe" 
+
 [Setup]
 AppName=CamAligner
 AppVersion=1.1.0.0
 AppCopyright=2017
 DefaultDirName=C:\CamAligner
 DisableDirPage=yes
+DisableProgramGroupPage=auto
+DefaultGroupName=CamAligner
 
 [Run]
 Filename: "{src}\Run-Time Engine\2013 SP1 (32-bit) f6 Patch\Standard\setup.exe"; Parameters: "/qf /AcceptLicenses yes /disableNotificationCheck /r:n"; Flags: waituntilterminated
@@ -17,9 +24,9 @@ Filename: "{app}\service\AppController.exe"; Parameters: "--stop"; WorkingDir: "
 Filename: "{app}\service\AppController.exe"; Parameters: "--uninstall"; WorkingDir: "{app}\service"; Flags: waituntilterminated
 
 [Registry]
-Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}"; Flags: createvalueifdoesntexist deletekey
-Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "HostLink"; ValueData: "http://localhost:3000"; Flags: createvalueifdoesntexist deletekey
-Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "InstallUserPath"; ValueData: "{localappdata}"; Flags: createvalueifdoesntexist deletekey
+Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}"
+Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "HostLink"; ValueData: "http://localhost:3000"
+Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "InstallUserPath"; ValueData: "{localappdata}"
 
 [Files]
 Source: "Cam_AppFiles\ReportViewerSetup\setup.exe"; DestDir: "{app}\ReportViewerSetup\"; Flags: ignoreversion
@@ -31,8 +38,16 @@ Source: "Cam_AppFiles\ReportViewerSetup\SqlClrTypes_x86\SQLSysClrTypes.msi"; Des
 Source: "Cam_AppFiles\service\AppController.exe"; DestDir: "{app}\service\"; Flags: ignoreversion
 Source: "Cam_AppFiles\service\AppController.exe.config"; DestDir: "{app}\service\"; Flags: ignoreversion
 Source: "Cam_AppFiles\service\AppWcfService.dll"; DestDir: "{app}\service\"; Flags: ignoreversion
+Source: "Cam_AppFiles\service\AppWcfService.dll.config"; DestDir: "{app}\service\"; Flags: ignoreversion
 Source: "Cam_AppFiles\service\SKGL.dll"; DestDir: "{app}\service\"; Flags: ignoreversion
 Source: "Cam_AppFiles\service\SKGL.xml"; DestDir: "{app}\service\"; Flags: ignoreversion
+Source: "Cam_AppFiles\service\Newtonsoft.Json.dll"; DestDir: "{app}\service\"; Flags: ignoreversion
+Source: "Cam_AppFiles\service\Newtonsoft.Json.xml"; DestDir: "{app}\service\"; Flags: ignoreversion
+Source: "Cam_AppFiles\service\System.Data.SQLite.dll"; DestDir: "{app}\service\"; Flags: ignoreversion
+Source: "Cam_AppFiles\service\System.Data.SQLite.dll.config"; DestDir: "{app}\service\"; Flags: ignoreversion
+Source: "Cam_AppFiles\service\System.Data.SQLite.xml"; DestDir: "{app}\service\"; Flags: ignoreversion
+Source: "Cam_AppFiles\service\x64\SQLite.Interop.dll"; DestDir: "{app}\service\x64\"; Flags: ignoreversion
+Source: "Cam_AppFiles\service\x86\SQLite.Interop.dll"; DestDir: "{app}\service\x86\"; Flags: ignoreversion
 Source: "Cam_AppFiles\CamAligner.aliases"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Cam_AppFiles\CamAligner.chm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Cam_AppFiles\CamAligner.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -555,3 +570,8 @@ Source: "Cam_AppFiles\Support\Translation\Language\Swedish.tlf"; DestDir: "{loca
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{localappdata}\CamAligner"
+
+[Icons]
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\CamAligner.exe"; IconIndex: 0
+Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\CamAligner.exe"; IconIndex: 0

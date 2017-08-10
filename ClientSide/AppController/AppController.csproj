@@ -136,8 +136,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>robocopy $(TargetDir) C:\CamAligner\service\ /s /xf *.pdb
-robocopy $(ProjectDir)\..\Dlls\System.Data.SQLite\ C:\CamAligner\service\ /s
+    <PostBuildEvent>robocopy $(TargetDir) $(SolutionDir)\..\..\VehicleSetupFiles\Cam_AppFiles\service\ /s /xf *.pdb
+robocopy $(ProjectDir)\..\Dlls\System.Data.SQLite\ $(SolutionDir)\..\..\VehicleSetupFiles\Cam_AppFiles\service\ /s
+robocopy $(ProjectDir)\..\Dlls\SQLite_Native\ $(SolutionDir)\..\..\VehicleSetupFiles\Cam_AppFiles\service\ /s
 exit 0 /b</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

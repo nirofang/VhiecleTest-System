@@ -436,9 +436,9 @@ namespace AppController
                 }
 
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
-                this.EventLog.WriteEntry(String.Format("Get Web Data Message {0}", ex.Message), EventLogEntryType.Information);
+                //this.EventLog.WriteEntry(String.Format("Get Web Data Message {0}", ex.Message), EventLogEntryType.Information);
             }
             return null;
         }
