@@ -21,6 +21,11 @@ UserDAO.find=function(condition,callback){
 	});
 };
 
+UserDAO.remove=function(condition,callback){
+	User.remove(condition,function(err,result){
+		callback(err,result);
+	});
+};
 
 module.exports=UserDAO;
 
