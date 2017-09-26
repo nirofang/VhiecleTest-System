@@ -3,20 +3,31 @@
   <head>
 	<% include ./partials/head %>
   </head>
+  <style type="text/css">
+  td,th{
+	min-width:80px;
+	max-width:300px;
+	width:100px;/*这个根据实际需要设置大小*/
+	
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+  }
+  </style>
   <body>
   
 
 	<% include ./partials/header %>
 
 
-    <div role="main" class="main">
+    <div role="main" class="main" style="overflow-x:auto">
       <a href="#nav" id="toggle">Menu</a>
       <div class="panel panel-default">
 	  <!-- Default panel contents -->
 	  <div class="panel-heading">列表</div>
 
 	  <div class="panel-body">
-		<p>...</p>    
+		<p style="font-size:10px">用户名为<font color ='green'>绿色</font>表示在线， <font color ='red'>红色</font>表示脱机</p>    
 	  </div>
 
 

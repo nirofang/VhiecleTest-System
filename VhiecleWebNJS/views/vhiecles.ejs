@@ -10,7 +10,7 @@
     </header>
   
 
-    <div role="main" class="main">
+    <div role="main" class="main" style="overflow-x:scroll;padding-bottom:10px">
       <a href="#nav" id="toggle">Menu</a>
       <div class="panel panel-default">
 	  <!-- Default panel contents -->
@@ -20,6 +20,7 @@
 		<p>...</p>    
 	  </div>
 
+	  
 
   <!-- Table -->
   <table class="table">
@@ -112,12 +113,12 @@
 		%>  
 	</tbody>
   </table>
-	  
-	</div>
-
 	<footer>
 		<% include ./partials/footer %>
-    </footer>
+    </footer>	  
+	</div>
+
+
     </div>
 	
       <!-- script -->
@@ -130,9 +131,7 @@
 	   $(function(){
     <!-- var navigation = responsiveNav(".nav-collapse"); -->
       videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
-
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
-	
+		})
     </script>
     <!-- script -->
 
