@@ -16,148 +16,149 @@
   </style>
   <body>
   
-
-	<% include ./partials/header %>
-
+    <% include ./partials/header %>
 
     <div role="main" class="main" style="overflow-x:auto">
       <a href="#nav" id="toggle">Menu</a>
-      <div class="panel panel-default">
-	  <!-- Default panel contents -->
-	  <div class="panel-heading">列表</div>
+      
+      <div class="content">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">列表</div>
 
-	  <div class="panel-body">
-		<p style="font-size:10px">用户名为<font color ='green'>绿色</font>表示在线， <font color ='red'>红色</font>表示脱机</p>    
-	  </div>
+          <div class="panel-body">
+          <p style="font-size:10px">用户名为<font color ='green'>绿色</font>表示在线， <font color ='red'>红色</font>表示脱机</p>
 
-
-	  <!-- Table -->
-	  <table class="table">
-		<thead>
-		  <tr>
-			<th width = "80px">序号</th>
-			<th width = "150px" min-width = "150px" max-width = "150px">密钥状态</th>
-			<th width = "150px" min-width = "150px" max-width = "150px">用户</th>
-			<th width = "300px" min-width = "300px" max-width = "300px">密钥</th>
-			<th width = "80px">机器码</th>
-			<th width = "150px">起始有效期</th>
-			<th width = "150px">截止有效期</th>
-			<th width = "150px">操作</th>
-			<th></th>
-		  </tr>
-		</thead>
-		<tbody>
-		<%
-		  var i = 1;    
-		  customers.forEach(function(customer) {
-		%>
-		  <tr>
-			<td scope="row"><%=i%></td>
-			<td>
-			<% if (customer.MachineStatus == "密钥正常") { %>
-					<font color = 'green'>
-				<%} else {%>
-					<font color = 'red'>
-				<% } %>
-				<%= customer.MachineStatus%>
-				</font>
-			</td>
-			<td id="customerName_<%= customer.MachineCode%>">
-				<% if (Math.abs((Date.now() - customer.LastLogTime)/1000) < 6) { %>
-					<font color = 'green'>
-				<%} else {%>
-					<font color = 'red'>
-				<% } %>
-					<%= customer.CustomerName%>
-				</font>
-			</td>
-			<td><%= customer.CDKey%></td>
-			<td id="machineCode_<%= customer.MachineCode%>">
-				<%= customer.MachineCode%>
-			</td>
-			<td id="creation_<%= customer.MachineCode%>">
-			<% if (customer.CreationDate == null) {%>
-			<%= "N/A"%>
-			<%} else {%>
-			<%= customer.CreationDate.toLocaleDateString()%>
-			<% } %>
-			</td>
-			<td id="valid_<%= customer.MachineCode%>">
-			<% if (customer.ValidDate == null) {%>
-			<%= "N/A"%>
-			<%} else {%>
-			<%= customer.ValidDate.toLocaleDateString()%>
-			<% } %>
-			</td>
-			<td>
-			<select id="date_operation_<%= customer.MachineCode%>">
-			<option value="-1">立即停用</option>
-			<option value="1">延期一个月</option>
-			<option value="3">延期三个月</option>
-			<option value="6">延期六个月</option>
-			<option value="12">延期一年</option>
-			<option value="24">延期两年</option>
-			<option value="0">永久有效</option>
-			</select>
-			</td>
-			<td>
-				<input id="<%= customer.MachineCode%>" type="button" class="savebtn" value = "保存"/>
-			</td>
-		  </tr>
-		<%
-		  i++;
-		  });
-		%>  
-		</tbody>
-	  </table>
-	  
-	</div>
-
-
-	<% include ./partials/footer %>
-
+            <!-- Table -->
+            <table class="table">
+              <thead>
+                <tr>
+                <th width = "80px">序号</th>
+                <th width = "150px" min-width = "150px" max-width = "150px">密钥状态</th>
+                <th width = "150px" min-width = "150px" max-width = "150px">用户</th>
+                <th width = "300px" min-width = "300px" max-width = "300px">密钥</th>
+                <th width = "80px">机器码</th>
+                <th width = "150px">起始有效期</th>
+                <th width = "150px">截止有效期</th>
+                <th width = "150px">操作</th>
+                <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <%
+                  var i = 1;    
+                  customers.forEach(function(customer) {
+                %>
+                <tr>
+                  <td scope="row"><%=i%></td>
+                  <td>
+                    <font color = 
+                    <% if (customer.MachineStatus == "密钥正常") { %>
+                      'green'
+                    <%} else {%>
+                      'red'
+                    <% } %>
+                    >
+                    <%= customer.MachineStatus%>
+                    </font>
+                  </td>
+                  <td id="customerName_<%= customer.MachineCode%>">
+                    <font color = 
+                    <% if (Math.abs((Date.now() - customer.LastLogTime)/1000) < 6) { %>
+                      'green'
+                    <%} else {%>
+                      'red'
+                    <% } %>
+                      >
+                      <%= customer.CustomerName%>
+                    </font>
+                  </td>
+                  <td><%= customer.CDKey%></td>
+                  <td id="machineCode_<%= customer.MachineCode%>">
+                    <%= customer.MachineCode%>
+                  </td>
+                  <td id="creation_<%= customer.MachineCode%>">
+                  <% if (customer.CreationDate == null) {%>
+                  <%= "N/A"%>
+                  <%} else {%>
+                  <%= customer.CreationDate.toLocaleDateString()%>
+                  <% } %>
+                  </td>
+                  <td id="valid_<%= customer.MachineCode%>">
+                  <% if (customer.ValidDate == null) {%>
+                  <%= "N/A"%>
+                  <%} else {%>
+                  <%= customer.ValidDate.toLocaleDateString()%>
+                  <% } %>
+                  </td>
+                  <td>
+                  <select id="date_operation_<%= customer.MachineCode%>">
+                  <option value="-1">立即停用</option>
+                  <option value="1">延期一个月</option>
+                  <option value="3">延期三个月</option>
+                  <option value="6">延期六个月</option>
+                  <option value="12">延期一年</option>
+                  <option value="24">延期两年</option>
+                  <option value="0">永久有效</option>
+                  </select>
+                  </td>
+                  <td>
+                    <input id="<%= customer.MachineCode%>" type="button" class="savebtn" value = "保存"/>
+                  </td>
+                </tr>
+                <%
+                i++;
+                });
+                %>  
+              </tbody>
+            
+            </table>
+          </div>
+        </div>
+        <!-- <script src='/js/responsive-nav.js' /> -->
+        <script>
+         $(function(){
+        <!-- var navigation = responsiveNav(".nav-collapse"); -->
+          videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
+          $('.savebtn').click(function(){
+         var id=$(this).attr("id");
+         var selectVal=$('#date_operation_'+id).val();
+         var valid=$('#valid_'+id).text().replace(/\s/g,'');
+         var creation=$('#creation_'+id).text().replace(/\s/g,'');
+         var operation=$('#date_operation_'+id).find("option:selected").text();;
+         var customerName=$('#customerName_'+id).text().replace(/\s/g,'');;
+         var machineCode=id;
+         <!-- alert(id +":" + selectVal); -->
+                $.ajax({
+              url:'/home/ChangeValidDate',
+            type:"post",
+              data:{
+                id:id,
+                extendSel:selectVal,
+              valid:valid,
+              creation:creation,
+              operation,
+              customerName,
+              machineCode,	
+              },
+              success:function(data){
+                console.log(data);
+                if(data=='ok'){
+                  window.location.href='/home';
+                }else{
+                  alert('error!')
+                }
+              }
+            });
+        });
+        });
+          videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
+      
+        </script>
+        <!-- script -->
+      </div>
+      <% include ./partials/footer %>
     </div>
-    <!-- <script src='/js/responsive-nav.js' /> -->
-    <script>
-	   $(function(){
-    <!-- var navigation = responsiveNav(".nav-collapse"); -->
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf";
-			$('.savebtn').click(function(){
-		 var id=$(this).attr("id");
-		 var selectVal=$('#date_operation_'+id).val();
-		 var valid=$('#valid_'+id).text().replace(/\s/g,'');
-		 var creation=$('#creation_'+id).text().replace(/\s/g,'');
-		 var operation=$('#date_operation_'+id).find("option:selected").text();;
-		 var customerName=$('#customerName_'+id).text().replace(/\s/g,'');;
-		 var machineCode=id;
-		 <!-- alert(id +":" + selectVal); -->
-		    		$.ajax({
-    			url:'/home/ChangeValidDate',
-				type:"post",
-    			data:{
-    				id:id,
-    				extendSel:selectVal,
-					valid:valid,
-					creation:creation,
-					operation,
-					customerName,
-					machineCode,	
-    			},
-    			success:function(data){
-    				console.log(data);
-    				if(data=='ok'){
-    					window.location.href='/home';
-    				}else{
-    					alert('error!')
-    				}
-    			}
-    		});
-		});
-    });
-      videojs.options.flash.swf = "dist/js/vendors/video-js.swf"
-	
-    </script>
-    <!-- script -->
-
   </body>
+
 </html>

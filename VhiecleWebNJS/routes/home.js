@@ -10,8 +10,8 @@ require('date-utils');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	if(req.session.name){
-		CustomerDAO.find(true,function(err,result){
-			//console.log(err);
+		CustomerDAO.find({},function(err,result){
+			console.log(err);
 			console.log(result);
 			
 			if(err)
@@ -118,7 +118,7 @@ router.post('/ChangeValidDate',function(req,res,next){
 				Operation:req.body.operation
 			},
 			function(err,result){
-				//console.log(err);
+				console.log(err);
 				console.log(result);
 				if(err)
 				{

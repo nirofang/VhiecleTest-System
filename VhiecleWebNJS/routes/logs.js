@@ -8,7 +8,7 @@ var LogInfoDAO=require('../DAO/LogDAO');
 router.get('/', function(req, res, next) {
 	if(req.session.name)
 	{
-		LogInfoDAO.find(true,function(err,result){
+		LogInfoDAO.find({},function(err,result){
 			//console.log(err);
 			console.log(result);
 			

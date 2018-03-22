@@ -8,7 +8,7 @@ var VhiecleDAO=require('../DAO/VhiecleDAO');
 router.get('/', function(req, res, next) {
 	if(req.session.name)
 	{
-		VhiecleDAO.find(true,function(err,result){
+		VhiecleDAO.find({},function(err,result){
 			//console.log(err);
 			console.log(result);
 			

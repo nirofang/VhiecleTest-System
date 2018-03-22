@@ -1,5 +1,5 @@
 var config={
-	uri:'mongodb://localhost/fzol',
+	uri:'mongodb://sa:123456@localhost/fzol',
 	hostname:'localhost',
 	// uri:'mongodb://nirovm2-pc/fzol',
 	// hostname:'nirovm2-pc',	

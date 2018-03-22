@@ -166,7 +166,7 @@ router.get('/GetCustomerInfo', function(req, res, next) {
 
 
 router.get('/GetCustomerAll', function(req, res, next) {
-	CustomerDAO.find(true,function(err,result){
+	CustomerDAO.find({},function(err,result){
 		//console.log(err);
 		console.log(result);
 		if(err)

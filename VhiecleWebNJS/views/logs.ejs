@@ -5,54 +5,56 @@
   </head>
   <body>
   
-	<% include ./partials/header %>
+    <% include ./partials/header %>
   
 
-    <div role="main" class="main">
+    <div role="main" class="main" style="overflow-x:auto">
+      
       <a href="#nav" id="toggle">Menu</a>
-      <div class="panel panel-default">
-	  <!-- Default panel contents -->
-	  <div class="panel-heading">列表</div>
+      
+      <div class="content">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">列表</div>
 
-	  <div class="panel-body">
-		<p>...</p>    
-	  </div>
+          <div class="panel-body">
+          <p>...</p>    
+          </div>
 
-
-  <!-- Table -->
-  <table class="table">
-		<thead>
-		  <tr>
-			<th width = "80px">序号</th>
-			<th width = "150px" min-width = "150px" max-width = "150px">用户</th>
-			<th>机器码</th>
-			<th width = "150px">操作</th>
-			<th width = "150px">操作日期</th>
-			<th></th>
-		  </tr>
-		</thead>
-		<tbody>
-		<%
-		  var i = 1;    
-		  loginfos.forEach(function(loginfo) {
-		%>
-		  <tr>
-			<td scope="row"><%=i%></td>
-			<td width = "150px"><%=loginfo.CustomerName%></td>
-			<td width = "80px"><%=loginfo.MachineCode%></td>
-			<td width = "150px"><%=loginfo.Operation%></td>
-			<td width = "300px"><%=loginfo.OperationDate.toLocaleString()%></td>
-		  </tr>
-		<%
-		  i++;
-		  });
-		%>  
-	</tbody>
-  </table>
-	  
-	</div>
-
-	<% include ./partials/footer %>
+          <!-- Table -->
+          <table class="table">
+          <thead>
+            <tr>
+            <th width = "80px">序号</th>
+            <th width = "150px" min-width = "150px" max-width = "150px">用户</th>
+            <th>机器码</th>
+            <th width = "150px">操作</th>
+            <th width = "150px">操作日期</th>
+            <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          <%
+            var i = 1;    
+            loginfos.forEach(function(loginfo) {
+          %>
+            <tr>
+            <td scope="row"><%=i%></td>
+            <td width = "150px"><%=loginfo.CustomerName%></td>
+            <td width = "80px"><%=loginfo.MachineCode%></td>
+            <td width = "150px"><%=loginfo.Operation%></td>
+            <td width = "300px"><%=loginfo.OperationDate.toLocaleString()%></td>
+            </tr>
+          <%
+            i++;
+            });
+          %>  
+          </tbody>
+        </table>
+      
+        </div>
+      </div>
+      <% include ./partials/footer %>
     </div>
 	
   </body>

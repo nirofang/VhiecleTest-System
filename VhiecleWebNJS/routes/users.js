@@ -13,7 +13,7 @@ var UserInfoDAO=require('../DAO/UserDAO');
 router.get('/', function(req, res, next) {
 	//res.render('logs', { title: '日志' });
 	if(req.session.name){
-		UserInfoDAO.find(true,function(err,result){
+		UserInfoDAO.find({},function(err,result){
 			//console.log(err);
 			console.log(result);
 			
