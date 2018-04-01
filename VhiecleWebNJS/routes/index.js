@@ -5,6 +5,8 @@ var router = express.Router();
 
 var UserDAO=require('../DAO/UserDAO');
 
+var UserInfoDAO=require('../DAO/UserDAO');
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -13,12 +15,36 @@ router.get('/login',function(req,res,next){
 	var name=req.query.name;
 	var pwd=req.query.pwd;
 	console.log(name+"---"+pwd);
-	if(name=='abc'&&pwd=='123456'){
-		req.session.name=name;
-		res.send('ok');
-	}else{
-		res.send('error');
-	}
+  
+  // Get query user and password from db.users
+  UserInfoDAO.find({name: name, passwd: pwd},function(err,result){
+			console.log(err);
+			console.log(result);
+			
+			if(err || result.length == 0)
+			{
+        console.log("test login err");
+        //req.flash('error', '用户口令错误');
+        //res.redirect('/');
+        res.send('error');
+			}
+			else
+			{
+        console.log("test login ok");
+				req.session.name=name;
+        //req.flash('ok', '登陆成功');
+        //res.redirect('/home');
+        res.send('ok');
+        
+			}
+		});
+    
+	// if(name=='abc'&&pwd=='123456'){
+		// req.session.name=name;
+		// res.send('ok');
+	// }else{
+		// res.send('error');
+	// }
 });
 
 router.get('/logout',function(req,res,next){

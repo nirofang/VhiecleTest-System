@@ -30,7 +30,7 @@
               <tr>
               <th width = "80px">序号</th>
               <th width = "150px" min-width = "150px" max-width = "150px">用户</th>
-              <th>密码</th>
+              <!-- <th>密码</th> -->
               <th width = "150px">加入日期</th>
               <th></th>
               </tr>
@@ -43,7 +43,7 @@
                 <tr>
                 <td scope="row"><%=i%></td>
                 <td width = "150px" id="username_<%=i%>"><%=userinfo.name%></td>
-                <td width = "80px"><%=userinfo.passwd%></td>
+                <!-- <td width = "80px"><%=userinfo.passwd%></td> -->
                 <td width = "150px"><%=userinfo.CreateTime.toLocaleString()%></td>
                 <td><input id="<%=i%>" class="seluser" type="checkbox" onclick="enable_delete()"/></td>
                 </tr>

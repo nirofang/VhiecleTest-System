@@ -2,12 +2,14 @@
       <ul class="content">
         <li class="active"><a href="/home">首页</a></li>
         <!-- <li><a href="/pass">修改密码</a></li> -->
-		<li><a href="/users">用户管理</a></li>
+        <% if (user == "admin") { %>
+          <li><a href="/users">用户管理</a></li>
+        <%}%>
         <li><a href="/logs">日志</a></li>
-		<li><a href="/vhiecles">车辆维修订单</a></li>
+        <li><a href="/vhiecles">车辆维修订单</a></li>
         <!-- <li><a href="/help">帮组文档</a></li> -->
 
-		<li><a class="btn btn-primary btn-lg btn-block logoutBtn" href="#">注销</a></li>
+		<li><a class="btn btn-primary btn-lg btn-block logoutBtn" href="#">注销 <%=user%></a></li>
       </ul>
 	  
 	</div>

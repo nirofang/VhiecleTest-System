@@ -4,15 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var index = require('./routes/index');
 var users = require('./routes/users');
+// var flash = require('connect-flash');
 var home = require('./routes/home');
 var logs = require('./routes/logs');
 var vhiecles = require('./routes/vhiecles');
 var pass = require('./routes/pass');
 // var help = require('./routes/help');
 var session = require('express-session');
+// var MongoStore = require('connect-mongo')(session);
+
 var app = express();
 
  
@@ -24,6 +26,7 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+// app.use(flash());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -34,6 +37,20 @@ app.use(session({
     secret: 'xwdsfw', //secret的值建议使用随机字符串
     cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
 }));
+
+app.use(function(req, res, next){
+  // console.log("app.usr local");
+  // console.log("req.session.user: " + req.session.name);
+  res.locals.user = req.session.name;
+  res.locals.post = req.session.post;
+  // var error = req.flash('error');
+  // res.locals.error = error.length ? error : null;
+  // var success = req.flash('success');
+  // res.locals.success = success.length ? success : null;
+
+  next();
+ });
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/home', home);

@@ -22,8 +22,7 @@ router.get('/', function(req, res, next) {
 			{
 				res.render('home', 
 				{ title: 'HomePage' 
-				, customers: result,
-				username: 'abc'
+				, customers: result
 				});
 			}
 		});
