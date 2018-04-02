@@ -27,10 +27,10 @@ namespace AppController.Util
                 conn = new SQLiteConnection("Data Source=" + filename);
                 conn.Open();
             }
-            else
-            {
-                throw new FileNotFoundException("Cannnot find the file: ", filename);
-            }
+            //else
+            //{
+            //    throw new FileNotFoundException("Cannnot find the file: ", filename);
+            //}
             return conn;
         }
 

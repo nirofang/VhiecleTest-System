@@ -14,23 +14,23 @@ router.get('/', function(req, res, next) {
 router.get('/login',function(req,res,next){
 	var name=req.query.name;
 	var pwd=req.query.pwd;
-	console.log(name+"---"+pwd);
+	//console.log(name+"---"+pwd);
   
   // Get query user and password from db.users
   UserInfoDAO.find({name: name, passwd: pwd},function(err,result){
-			console.log(err);
-			console.log(result);
+			//console.log(result);
 			
 			if(err || result.length == 0)
 			{
-        console.log("test login err");
+        console.log(err);
+        //console.log("test login err");
         //req.flash('error', '用户口令错误');
         //res.redirect('/');
         res.send('error');
 			}
 			else
 			{
-        console.log("test login ok");
+        //console.log("test login ok");
 				req.session.name=name;
         //req.flash('ok', '登陆成功');
         //res.redirect('/home');
@@ -61,10 +61,10 @@ router.get('/testFind', function(req, res, next) {
 	CustomerDAO.find({
 		CustomerId:id,
 	},function(err,result){
-		//console.log(err);
-		console.log(result);
+		//console.log(result);
 		if(err)
 		{
+      console.log(err);
 			res.send({ err:err});
 		}
 		else
@@ -85,10 +85,10 @@ router.get('/UploadCustomerInfo', function(req, res, next) {
 		CreationDate:req.query.CreationDate,
 		ValidDate:req.query.ValidDate,
 	},function(err,result){
-		//console.log(err);
-		console.log(result);
+		//console.log(result);
 		if(err)
 		{
+      console.log(err);
 			res.send({ err:err});
 		}
 		else
@@ -108,10 +108,10 @@ router.get('/UpdateLastLogTime', function(req, res, next) {
 		MachineCode:req.query.MachineCode
 	},{LastLogTime:Date.now()},
 	function(err,result){
-		//console.log(err);
-		console.log(result);
+		//console.log(result);
 		if(err)
 		{
+      console.log(err);
 			res.send({ err:err});
 		}
 		else
@@ -132,10 +132,10 @@ router.get('/UpdateCDKey', function(req, res, next) {
 		WebCommand:''
 		},
 	function(err,result){
-		//console.log(err);
-		console.log(result);
+		//console.log(result);
 		if(err)
 		{
+      console.log(err);
 			res.send({ err:err});
 		}
 		else
@@ -157,10 +157,10 @@ router.get('/UpdateCustomer', function(req, res, next) {
 		CustomerName:req.query.CustomerName,
 		},
 	function(err,result){
-		//console.log(err);
-		console.log(result);
+		//console.log(result);
 		if(err)
 		{
+      console.log(err);
 			res.send({ err:err});
 		}
 		else
@@ -175,10 +175,10 @@ router.get('/GetCustomerInfo', function(req, res, next) {
 	CustomerDAO.find({
 		MachineCode:req.query.MachineCode,
 	},function(err,result){
-		//console.log(err);
-		console.log(result);
+		//console.log(result);
 		if(err)
 		{
+      console.log(err);
 			res.send({ err:err});
 		}
 		else
@@ -193,10 +193,10 @@ router.get('/GetCustomerInfo', function(req, res, next) {
 
 router.get('/GetCustomerAll', function(req, res, next) {
 	CustomerDAO.find({},function(err,result){
-		//console.log(err);
-		console.log(result);
+		//console.log(result);
 		if(err)
 		{
+      console.log(err);
 			res.send({ err:err});
 		}
 		else
@@ -212,7 +212,7 @@ router.get('/GetCustomerAll', function(req, res, next) {
 var VhiecleDAO=require('../DAO/VhiecleDAO');
 
 router.post('/PostVehicleData',function(req,res,next){
-	console.log(req.body.Table);
+	//console.log(req.body.Table);
 	for(var vi in req.body.Table){
 		VhiecleDAO.save(req.body.Table[vi],function(err,result){
 			if(err)
@@ -229,10 +229,10 @@ router.get('/GetLatestVehiecleId', function(req, res, next) {
 		MachineCode:req.query.MachineCode},{
 		'_id': -1
 	},function(err,result){
-		//console.log(err);
 		//console.log(result);
 		if(err)
 		{
+      console.log(err);
 			res.send({ err:err});
 		}
 		else
@@ -240,12 +240,12 @@ router.get('/GetLatestVehiecleId', function(req, res, next) {
 			//res.send({ result: result});
 			if(result.length != 0)
 			{
-				console.log({ result:{VehicleId:result[0].VehicleId}});
+				//console.log({ result:{VehicleId:result[0].VehicleId}});
 				res.send({ result:{VehicleId:result[0].VehicleId}});
 			}
 			else
 			{
-				console.log({ result:{}});
+				//console.log({ result:{}});
 				res.send({ result:{}});
 			}
 		}

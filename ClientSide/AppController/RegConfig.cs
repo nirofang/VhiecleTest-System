@@ -21,7 +21,7 @@ namespace AppController
                 if (mySQLiteService == null)
                 {
                     SQLiteConnection conn = SQLiteUtil.ConnectToDB(SQLiteUtil.GetVehiecleDBPath());
-                    if (conn.State == ConnectionState.Open)
+                    if (conn!=null && conn.State == ConnectionState.Open)
                     {
                         mySQLiteService = new SQLiteService();
                         mySQLiteService.Conn = conn;

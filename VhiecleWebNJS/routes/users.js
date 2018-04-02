@@ -14,11 +14,11 @@ router.get('/', function(req, res, next) {
 	//res.render('logs', { title: '日志' });
 	if(req.session.name){
 		UserInfoDAO.find({},function(err,result){
-			//console.log(err);
-			console.log(result);
+			//console.log(result);
 			
 			if(err)
 			{
+        console.log(err);
 				res.render('error', { title: 'error' });
 			}
 			else
@@ -41,21 +41,19 @@ router.get('/DelSelUser', function(req, res, next) {
 	for(var vi in req.query.users){
 		
 		var username = req.query.users[vi];
-		console.log(req.query.users[vi]);
-		if (username == "admin")
-		{
-			console.log("不能删除admin");
-			//res.render('error', { title: 'error' });
-		}
-		else
+		//console.log(req.query.users[vi]);
+    //console.log("不能删除admin");
+    //res.render('error', { title: 'error' });
+    
+		if (username != "admin")
 		{
 			UserInfoDAO.remove(
 			{name : username}
 			,function(err,result){
 			if(err)
 			{
-				// res.render('error', { title: 'error' });
-				console.log("删除" + username + "失败");
+				//res.render('error', { title: 'error' });
+				//console.log("删除" + username + "失败");
 			}});
 		}
 	}

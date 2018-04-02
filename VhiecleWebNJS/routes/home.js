@@ -11,11 +11,11 @@ require('date-utils');
 router.get('/', function(req, res, next) {
 	if(req.session.name){
 		CustomerDAO.find({},function(err,result){
-			console.log(err);
-			console.log(result);
+			//console.log(result);
 			
 			if(err)
 			{
+        console.log(err);
 				res.render('error', { title: 'error' });
 			}
 			else
@@ -102,10 +102,10 @@ router.post('/ChangeValidDate',function(req,res,next){
 		WebCommand:webCommand
 	},
 	function(err,result){
-		//console.log(err);
-		console.log(result);
+		//console.log(result);
 		if(err)
 		{
+      console.log(err);
 			res.send({ err:err});
 		}
 		else
@@ -114,13 +114,14 @@ router.post('/ChangeValidDate',function(req,res,next){
 			LogInfoDAO.save({
 				CustomerName:req.body.customerName,
 				MachineCode:req.body.machineCode,
-				Operation:req.body.operation
+				Operation:req.body.operation,
+        Operator:res.locals.user
 			},
 			function(err,result){
-				console.log(err);
-				console.log(result);
+        //console.log(result);
 				if(err)
 				{
+          console.log(err);
 					res.send({ err:err});
 				}
 				else

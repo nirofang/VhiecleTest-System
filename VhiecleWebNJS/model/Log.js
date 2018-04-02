@@ -8,6 +8,7 @@ var LogInfoSchema = new mongoose.Schema({ //定义一个Schema
     CustomerName:String,
     MachineCode: String,
     Operation: String,
+    Operator: String,
     OperationDate:{ type:Date,default:Date.now},
 });
 

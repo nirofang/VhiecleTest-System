@@ -9,11 +9,11 @@ router.get('/', function(req, res, next) {
 	if(req.session.name)
 	{
 		VhiecleDAO.find({},function(err,result){
-			//console.log(err);
-			console.log(result);
+			//console.log(result);
 			
 			if(err)
 			{
+        console.log(err);
 				res.render('error', { title: 'error' });
 			}
 			else

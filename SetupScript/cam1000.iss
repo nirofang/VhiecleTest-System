@@ -1,4 +1,4 @@
-#define MyAppName "CamAligner" 
+﻿#define MyAppName "CamAligner" 
 #define MyAppVersion "1.0" 
 #define MyAppPublisher "Publisher" 
 #define MyAppExeName "CamAligner.exe" 
@@ -14,6 +14,8 @@ DefaultGroupName=CamAligner
 
 [Run]
 Filename: "{src}\Run-Time Engine\2013 SP1 (32-bit) f6 Patch\Standard\setup.exe"; Parameters: "/qf /AcceptLicenses yes /disableNotificationCheck /r:n"; Flags: waituntilterminated
+Filename: "{localappdata}\temp\vc_redist.x86.exe"; Parameters: "/install /passive"; WorkingDir: "{src}\Run-Time Engine\DotNetFrame452"; Flags: waituntilterminated; StatusMsg: "Installing Microsoft Visual C++ Runtime ..."; Check: VCRedistNeedsInstall
+Filename: "{src}\Run-Time Engine\DotNetFrame452\NDP452-KB2901907-x86-x64-AllOS-ENU.exe"; Parameters: "/norestart /passive"; WorkingDir: "{src}\Run-Time Engine\DotNetFrame452"; Flags: waituntilterminated; StatusMsg: "Installing Microsoft DotNet Framework 4.5.2 ..."; Check: Framework45IsNotInstalled
 Filename: "netsh"; Parameters: "http add urlacl url= http://+:3302/MyWcfService.svc/ user=.\users"; Flags: waituntilterminated
 Filename: "{app}\service\AppController.exe"; Parameters: "--install"; WorkingDir: "{app}\service"; Flags: waituntilterminated
 Filename: "{app}\service\AppController.exe"; Parameters: "--start"; WorkingDir: "{app}\service"; Flags: waituntilterminated
@@ -25,7 +27,7 @@ Filename: "{app}\service\AppController.exe"; Parameters: "--uninstall"; WorkingD
 
 [Registry]
 Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "InstallPath"; ValueData: "{app}"
-Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "HostLink"; ValueData: "http://localhost:3000"
+Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "HostLink"; ValueData: "http://47.95.218.137"
 Root: "HKLM32"; Subkey: "SOFTWARE\CamAligner"; ValueType: string; ValueName: "InstallUserPath"; ValueData: "{localappdata}"
 
 [Files]
@@ -567,6 +569,32 @@ Source: "Cam_AppFiles\Support\Translation\Language\Romanian.tlf"; DestDir: "{loc
 Source: "Cam_AppFiles\Support\Translation\Language\Russian.tlf"; DestDir: "{localappdata}\CamAligner\Support\Translation\Language\"; Flags: ignoreversion
 Source: "Cam_AppFiles\Support\Translation\Language\Spanish.tlf"; DestDir: "{localappdata}\CamAligner\Support\Translation\Language\"; Flags: ignoreversion
 Source: "Cam_AppFiles\Support\Translation\Language\Swedish.tlf"; DestDir: "{localappdata}\CamAligner\Support\Translation\Language\"; Flags: ignoreversion
+; Visual C++ redist
+Source: "Runtime\vc_2017_25008\vc_redist.x86.exe"; DestDir: "{localappdata}\temp"; Flags: deleteafterinstall; Check: VCRedistNeedsInstall
+
+[Code]
+function VCRedistNeedsInstall: Boolean;
+var
+  dName: String;
+begin
+  Result := False;
+  if RegQueryStringValue(HKLM, 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{44b03b2c-46e6-4c3d-91c3-87175a02e274}', 'DisplayName', dName) = false then begin
+    Result := true;
+  end;
+end;
+
+function Framework45IsNotInstalled(): Boolean;
+var
+  bSuccess: Boolean;
+  regVersion: Cardinal;
+begin
+  Result := True;
+
+  bSuccess := RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', regVersion);
+  if (True = bSuccess) and (regVersion >= 378389) then begin
+    Result := False;
+  end;
+end;
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{localappdata}\CamAligner"

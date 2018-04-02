@@ -10,7 +10,7 @@ var router = express.Router();
 router.get('/heartbeat／{id}',function(req,res,next){
 	var id=req.query.id;
 	var pwd=req.query.pwd;
-	console.log(name+"---"+pwd);
+	//console.log(name+"---"+pwd);
 	if(name=='abc'&&pwd=='123456'){
 		res.send('ok');
 		req.session.name=name;

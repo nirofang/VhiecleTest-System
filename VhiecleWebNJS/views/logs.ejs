@@ -29,6 +29,7 @@
             <th width = "150px" min-width = "150px" max-width = "150px">用户</th>
             <th>机器码</th>
             <th width = "150px">操作</th>
+            <th width = "150px">操作人</th>
             <th width = "150px">操作日期</th>
             <th></th>
             </tr>
@@ -43,6 +44,7 @@
             <td width = "150px"><%=loginfo.CustomerName%></td>
             <td width = "80px"><%=loginfo.MachineCode%></td>
             <td width = "150px"><%=loginfo.Operation%></td>
+            <td width = "150px"><%=loginfo.Operator%></td>
             <td width = "300px"><%=loginfo.OperationDate.toLocaleString()%></td>
             </tr>
           <%

@@ -30,7 +30,7 @@ router.get('/SaveNewUser', function(req, res, next) {
 		}
 		else
 		{
-			console.log(result);
+			//console.log(result);
 			if (result != "")
 			{
 				res.send("用户名重复");
@@ -47,7 +47,7 @@ router.get('/SaveNewUser', function(req, res, next) {
 				}
 				else
 				{
-					console.log(result);
+					//console.log(result);
 					//res.send({ result:result});
 					res.send('ok');
 				}

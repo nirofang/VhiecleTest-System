@@ -10,7 +10,8 @@ LogInfoDAO.save=function(c,callback){
 		CustomerName:c.CustomerName||'临时用户',
 		MachineCode:c.MachineCode||'123456',
 		OperationDate:c.OperationDate||Date.now(),
-		Operation:c.Operation||'延期'
+		Operation:c.Operation||'延期',
+    Operator:c.Operator||'admin'
 	});
 	logInfo.save(function(err,result){
 		callback(err,result);
